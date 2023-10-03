@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatToolbarModule } from "@angular/material/toolbar";
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MatIconModule } from "@angular/material/icon";
-import { MatTabsModule } from '@angular/material/tabs';
-
+import { TabMenuModule } from 'primeng/tabmenu';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { MenubarModule } from "primeng/menubar";
 
 @NgModule({
   declarations: [
@@ -14,9 +14,9 @@ import { MatTabsModule } from '@angular/material/tabs';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTabsModule 
+    TabMenuModule,
+    MenubarModule,
+    MegaMenuModule 
   ],
   providers: [],
   bootstrap: [

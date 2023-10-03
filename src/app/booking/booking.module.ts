@@ -3,6 +3,7 @@ import { BookingComponent } from "./booking.component";
 import { RouterModule } from "@angular/router";
 import { BOOKING_CHILD_ROUTE } from "./booking.route";
 import { FooterComponent } from "../layout/footer/footer.component";
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
     declarations: [
@@ -10,6 +11,7 @@ import { FooterComponent } from "../layout/footer/footer.component";
         FooterComponent
     ],
     imports: [
+        ButtonModule,
         RouterModule.forChild(BOOKING_CHILD_ROUTE),
     ],
     exports: [
