@@ -1,1 +1,16 @@
+<mat-toolbar class="title-toolbar">
+  <mat-toolbar-row>
+    <div class="col-md-10">
+      <span class="title-center">WBMS</span>
+    </div>
+
+    <nav mat-tab-nav-bar ngClass = "tabs">
+      <a mat-tab-link routerLink="/home" routerLinkActive="active-link">Home</a>
+      <a mat-tab-link routerLink="/booking" routerLinkActive="active-link">Booking</a>
+      <a mat-tab-link routerLink="/workspace" routerLinkActive="active-link">Workspace</a>
+      <a mat-tab-link routerLink="/profile" routerLinkActive="active-link">Profile</a>
+   </nav>
+  </mat-toolbar-row>
+</mat-toolbar>
+
 <router-outlet></router-outlet>
