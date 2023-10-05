@@ -4,17 +4,17 @@ import { HomeComponent } from './layout/app/home.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
-// import { errorRoute } from './layouts/error/error.route';
-// import { navbarRoute } from './layouts/navbar/navbar.route';
-// import { DEBUG_INFO_ENABLED } from 'app/app.constants';
+import { LoginComponent } from './login/login.component';
 
-// const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
+
+
  const ROOT_ROUTES: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'home'
-  },
+  // {
+  //   path: '',
+  //   pathMatch: 'full',
+  //   redirectTo: 'home'
+  // },
+  { path: '', component: LoginComponent },
   {
     path: 'home',
     component: HomeComponent

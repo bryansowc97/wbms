@@ -41,6 +41,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { BookingComponent } from './booking/booking.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
 import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './login/login.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -50,14 +52,15 @@ import { ProfileComponent } from './profile/profile.component';
     AppComponent,
     BookingComponent,
     CreateWorkspaceComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginComponent,
+    NavbarComponent
     // GenerateNameComponent,
     // LoginComponent,
     // SignupComponent,
     // AdminComponent,
     // SchoolAdminComponent,
     // StudentParentComponent,
-    // NavbarComponent,
     // ContactResultvaultAdminComponent,
     // UploadResultComponent,
     // ManageSchoolDashboardComponent,
