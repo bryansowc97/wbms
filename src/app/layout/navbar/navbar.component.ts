@@ -39,14 +39,19 @@ export class NavbarComponent {
                 routerLink: '/home'
             },
             {
+                label: 'Workspace',
+                icon: 'pi pi-briefcase',
+                routerLink: '/workspace'
+            },            
+            {
                 label: 'Booking',
                 icon: 'pi pi-calendar-plus',
                 routerLink: '/booking'
             },
             {
-                label: 'Workspace',
-                icon: 'pi pi-briefcase',
-                routerLink: '/workspace'
+                label: 'Manage User',
+                icon: 'pi pi-users',
+                routerLink: '/profile'
             }
         );
         /*

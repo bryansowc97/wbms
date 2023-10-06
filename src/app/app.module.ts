@@ -1,8 +1,8 @@
 // Import FusionCharts library and chart modules
-// import * as FusionCharts from "fusioncharts";
-// import * as charts from "fusioncharts/fusioncharts.charts";
-// import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
-// import { FusionChartsModule } from "angular-fusioncharts";
+import * as FusionCharts from "fusioncharts";
+import * as charts from "fusioncharts/fusioncharts.charts";
+import * as FusionTheme from "fusioncharts/themes/fusioncharts.theme.fusion";
+import { FusionChartsModule } from "angular-fusioncharts";
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -43,10 +43,11 @@ import { CreateWorkspaceComponent } from './workspace/create_workspace/create_wo
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
+import { TagModule } from 'primeng/tag';
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
-// FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
+FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +89,8 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
     ReactiveFormsModule,
     CardModule,
     CheckboxModule,
-    // FusionChartsModule,
+    TagModule,
+    FusionChartsModule,
     // NgxPaginationModule,
     MessagesModule,
     ToastModule,
