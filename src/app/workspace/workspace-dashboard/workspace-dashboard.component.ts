@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./workspace-dashboard.component.scss']
 })
 export class WorkspaceDashboardComponent {
+
   // formGroup: any;
   selectedResourceDTL:any;
   selectedResource:any;
@@ -52,4 +53,5 @@ export class WorkspaceDashboardComponent {
     console.log(this.selectedResourceDTL);
     // this.clearForm();
   } 
+
 }
