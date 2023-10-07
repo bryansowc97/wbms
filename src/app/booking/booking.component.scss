@@ -1,14 +1,10 @@
-.contant-layout{
-    padding-top: 10px;
-}
+// .contant-layout{
+//     padding-top: 10px;
+// }
 
-.flex-display{
-    display: flex;
-}
-
-.card{
+.chart-display{
     width: 50%;
-    margin: 1%;
+    margin: 0.5%;
 }
 
 .flex{
@@ -35,16 +31,6 @@
     padding-left: 35px;
     width: 200px;
     height: 30px;
-}
-
-.booked{
-    color: rgb(32, 212, 32);
-    font-weight: bold;
-}
-
-.cancel{
-    color: red;
-    font-weight: bold;
 }
 
 :host ::ng-deep .p-calendar {
