@@ -44,6 +44,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { TagModule } from 'primeng/tag';
+import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -55,7 +56,8 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     CreateWorkspaceComponent,
     ProfileComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    WorkspaceDashboardComponent
     // GenerateNameComponent,
     // LoginComponent,
     // SignupComponent,

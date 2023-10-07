@@ -3,17 +3,38 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+.homeBg{
+  background: url(../src/assets/211609-P083E3-624.jpg) no-repeat center center fixed;
+  -webkit-background: cover;
+  -moz-background: cover;
+  -o-background: cover;
+  background: cover;
+  background-size:cover;
+}
+
+//display 
+.flex-display{
+  display: flex;
+}
+
+//font
+.p-inputtext{
+  padding: 5px;
+  font-size: small;
+}
+
+.p-disabled, .p-component:disabled {
+  opacity: 0.6;
+  background-color: #8080803b
+}
+
+// button
 .p-button-primary{
   padding: 10px;
   margin-top: 10px;
 }
 
-.p-inputtext{
-  padding: 5px;
-    font-size: small;
-}
-
-
+//tag
 .p-tag{
   display: flex;
     align-items: center;
@@ -47,12 +68,13 @@
 }
 
 
-.homeBg{
-  background: url(../src/assets/211609-P083E3-624.jpg) no-repeat center center fixed;
-  -webkit-background: cover;
-  -moz-background: cover;
-  -o-background: cover;
-  background: cover;
-  background-size:cover;
+//card
+.card{
+  margin: 1%;
 }
 
+
+.overlay {
+  opacity: 0.5;
+  background-color: black;
+}

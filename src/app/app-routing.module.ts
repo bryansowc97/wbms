@@ -5,6 +5,7 @@ import { CreateWorkspaceComponent } from './workspace/create_workspace/create_wo
 import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
+import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
 
 
 
@@ -20,8 +21,13 @@ import { LoginComponent } from './login/login.component';
     component: HomeComponent
   },
   {
-    path: 'workspace',
+    path: 'createWorkspace',
     component: CreateWorkspaceComponent
+    // loadChildren: () => import('src/app/workspace/workspace.module').then(m => m.WorkspaceModule)
+  },
+  {
+    path: 'workspaceDashboard',
+    component: WorkspaceDashboardComponent
     // loadChildren: () => import('src/app/workspace/workspace.module').then(m => m.WorkspaceModule)
   },
   {

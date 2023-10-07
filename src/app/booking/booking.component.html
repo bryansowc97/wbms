@@ -2,19 +2,22 @@
 <div class="container-fluid">
     
     <div class="row flex-display">
-        <p-card class="card">
-            <a>chart</a>
-        </p-card>
-        
-        <p-card class="card">
-            <a>chart2</a>
-            <!-- <fusioncharts
-            type="world"
-            width="800"
-            height="500"
-            dataSource="source">
-        </fusioncharts> -->
-        </p-card>
+        <div class="col chart-display">
+            <p-card class="card">
+                <a>chart</a>
+            </p-card>
+        </div>
+        <div class="col chart-display">
+            <p-card class="card">
+                <a>chart2</a>
+                <!-- <fusioncharts
+                type="world"
+                width="800"
+                height="500"
+                dataSource="source">
+            </fusioncharts> -->
+            </p-card>
+        </div>
     </div>
 
     <!-- <ng-template pTemplate="header">
@@ -52,11 +55,6 @@
                 <td>{{ booking.Emp_name }}</td>
                 <td>{{ booking.date }}</td>
                 <td>{{ booking.time }}</td>
-                <!-- <td>
-                    <div [ngClass]="{'booked': booking.status === 'BOOKED', 'cancel': (booking.status === 'CANCEL') }">
-                        {{booking.status}}
-                    </div>
-                </td> -->
                 <td><p-tag class="status-tag" [value]="booking.status" [severity]="getSeverity(booking.status)"></p-tag></td>
                 <td>{{ booking.action }}</td>
             </tr>

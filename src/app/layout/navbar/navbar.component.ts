@@ -41,7 +41,16 @@ export class NavbarComponent {
             {
                 label: 'Workspace',
                 icon: 'pi pi-briefcase',
-                routerLink: '/workspace'
+                items:[
+                  {
+                    label: 'Dashboard',
+                    routerLink: '/workspaceDashboard'
+                  },
+                  {
+                    label: 'Create Workspace',
+                    routerLink: '/createWorkspace'
+                  }
+                ]
             },            
             {
                 label: 'Booking',

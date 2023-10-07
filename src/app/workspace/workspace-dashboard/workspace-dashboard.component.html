@@ -1,0 +1,57 @@
+<ic-navbar></ic-navbar>
+<div class="container-fluid">
+    
+    <div class="row flex-display">
+        <div class="col map-display">
+            <p-card class="card resourceMap">
+                <p-button icon="pi pi-plus" class="float" label="Create Facility" styleClass="p-button-warning"></p-button>
+                <div class="row flex-display center">
+                    <div class="col card">
+                        <label>Type: </label>
+                        <p-dropdown 
+                        [options]="resource" 
+                        optionLabel="type"
+                        (onChange)="getSelectedResType($event)"
+                        placeholder="Select Type"
+                        ></p-dropdown>
+                    </div>
+                    <div class="col card">
+                        <label>Facility: </label>
+                        <p-dropdown 
+                            [options]="selectedResource" 
+                            optionLabel="name"
+                            (onChange)="getSelectedResName($event)"
+                            placeholder="Select Facility"
+                        ></p-dropdown>
+                    </div>
+                </div>
+                
+                <p>worspace map include meeting room & work desk</p>    
+                <ng-template pTemplate="start">
+                    <img src="../../../assets/classroom-36510_960_720.png" height="80%" />
+                </ng-template>
+            </p-card>
+        </div>
+        <div class="col dtl-display ">
+            <p-card class="card ">
+                <h3>Workspace Details</h3>
+                <ng-template pTemplate="body" >
+                    
+                    <span class="card">
+                        <label>Name</label> 
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.name }}" disabled />
+                    </span>
+                    <br>
+                    <span class="card">
+                        <label>Location</label>
+                    <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.map }}" disabled />
+                    </span>
+                    <button pButton class="p-button-primary">BOOK</button>    
+                </ng-template>
+            </p-card>
+        </div>
+    </div>
+    
+</div>
+
+
