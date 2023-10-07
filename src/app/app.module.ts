@@ -45,6 +45,9 @@ import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { TagModule } from 'primeng/tag';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
+import { AuthenticationService } from './services/authentication.service';
+import { RequestService } from './services/request.service';
+import { MessageService } from 'primeng/api';
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -110,10 +113,13 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
     FieldsetModule,
     InputSwitchModule,
     ConfirmDialogModule,
-    ToggleButtonModule
+    ToggleButtonModule,
   ],
   providers: [
     // SafePipe
+    RequestService,
+    AuthenticationService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

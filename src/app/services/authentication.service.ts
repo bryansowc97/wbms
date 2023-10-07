@@ -2,20 +2,23 @@ import { Injectable } from '@angular/core';
 
 // import { environment } from 'src/environments/environment';
 // import { Amplify, Auth } from 'aws-amplify';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { UserProfile } from '../models/profile.model';
+import { RequestService } from './request.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-    /*
-  constructor() {
+  
+  constructor(
+    private requestService: RequestService
+  ) {
     // Amplify.configure({
     //   Auth: environment.cognito
     // })
   }
-
+  /*
   // signUp(user: UserProfile):Promise<any>{
   //   return Auth.signUp({
   //     username: user.email,
@@ -189,4 +192,10 @@ export class AuthenticationService {
     });
   }
   */
+
+
+  // For local only, not aws
+  public testDb(): Observable<any> {
+    return this.requestService.find(`/api/profile/testDb`);
+  }
 }
