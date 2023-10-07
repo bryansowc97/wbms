@@ -1,0 +1,15 @@
+<div class="card mb-2">
+    <p-menubar [model]="items" *ngIf="visible">
+        <ng-template pTemplate="start">
+            <img src="../../../assets/3547397.jpg" height="40" class="mr-2" />
+        </ng-template>
+        <ng-template pTemplate="end">
+            <p-overlayPanel #userMenu styleClass="userMenuContent">
+                <ng-template pTemplate="content" styleClass="userMenuContent">
+                    <p-menu [model]="userMenuItems"></p-menu>
+                </ng-template>
+            </p-overlayPanel>
+            <button pButton icon="pi pi-user" class="transparentBtn" (click)="userMenu.toggle($event)"></button> 
+        </ng-template>
+    </p-menubar>
+</div>
