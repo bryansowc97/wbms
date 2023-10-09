@@ -1,0 +1,42 @@
+<ic-navbar></ic-navbar>
+<div class="container-fluid">
+    <div class="row flex-display">
+        <div class="col map-display">
+            <p-card class="card resourceMap">
+                <h3>Create New Workspace </h3>
+                <ng-template pTemplate="start">
+                    <img src="../../../assets/classroom-36510_960_720.png" height="80%" />
+                </ng-template>
+            </p-card>
+        </div>
+        <div class="col dtl-display ">
+            <p-card class="card ">
+                <h3>Workspace Details</h3>
+                <ng-template pTemplate="body" >
+                    
+                    <span class="card">
+                        <label>Name</label> 
+                        <input pInputText class="input-field" type="text" />
+                    </span>
+                    <br>
+                    <span class="card">
+                        <label>Type</label> 
+                        <input pInputText class="input-field" type="text" />
+                    </span>
+                    <br>
+                    <span class="card">
+                        <label>Location</label>
+                    <input pInputText class="input-field" type="text" />
+                    </span>
+                    <span class="card">
+                        <label>Status</label> 
+                        <input pInputText class="input-field" type="text" />
+                    </span>
+                    <br>
+                    <p-button label="SAVE" styleClass="p-button-primary"></p-button>
+                    <p-button label="CANCEL" styleClass="p-button-outlined p-button-danger"></p-button>
+                </ng-template>
+            </p-card>
+        </div>
+    </div>
+</div>

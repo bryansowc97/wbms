@@ -1,0 +1,44 @@
+.map-display{
+    width: 80%;
+    margin: 0.5%;
+}
+
+.dtl-display{
+    width: 20%;
+    margin: 0.5%;
+}
+
+:host ::ng-deep{
+    .resourceMap .p-card .p-card-content {
+        padding: 1.25rem 0;
+        text-align: center;
+    }
+}
+
+:host ::ng-deep{
+    .type .p-dropdown {
+        width: 20%;
+    }
+}
+
+
+.center{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.float{
+    float: right;
+}
+
+.card{
+    margin-bottom: unset;
+    margin-top: unset;
+ } 
+
+ 
+.input-field{
+    margin-bottom: 5%;
+  }
+
