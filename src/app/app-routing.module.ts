@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './layout/app/home.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-dashboard.component';
 import { BookingComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
@@ -31,8 +31,8 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
     // loadChildren: () => import('src/app/workspace/workspace.module').then(m => m.WorkspaceModule)
   },
   {
-    path: 'profile',
-    component: ProfileComponent
+    path: 'profileDashboard',
+    component: ProfileDashboardComponent
     // loadChildren: () => import('src/app/profile/profile.module').then(m => m.ProfileModule)
   },
   {

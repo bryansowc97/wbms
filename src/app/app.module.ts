@@ -40,7 +40,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { BookingComponent } from './booking/booking.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { TagModule } from 'primeng/tag';
@@ -57,7 +57,7 @@ import { MessageService } from 'primeng/api';
     AppComponent,
     BookingComponent,
     CreateWorkspaceComponent,
-    ProfileComponent,
+    ProfileDashboardComponent,
     LoginComponent,
     NavbarComponent,
     WorkspaceDashboardComponent

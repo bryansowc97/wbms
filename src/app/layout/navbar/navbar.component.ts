@@ -60,7 +60,7 @@ export class NavbarComponent {
             {
                 label: 'Manage User',
                 icon: 'pi pi-users',
-                routerLink: '/profile'
+                routerLink: '/profileDashboard'
             }
         );
         /*

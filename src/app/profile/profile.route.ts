@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
-import { ProfileComponent } from "./profile.component";
+import { ProfileDashboardComponent } from "./profile-dashboard/profile-dashboard.component";
 
 export const PROFILE_CHILD_ROUTE: Routes = [
     {
         path: '',
-        component: ProfileComponent,
+        component: ProfileDashboardComponent,
         children: []
     }
 ]

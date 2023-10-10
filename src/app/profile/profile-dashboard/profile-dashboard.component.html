@@ -1,0 +1,34 @@
+<ic-navbar></ic-navbar>
+<div class="container-fluid">
+    <div class="create-button flex">
+        <p-button icon="pi pi-plus" label="Create User Profile" styleClass="p-button-warning"></p-button>
+    </div>
+    
+    <p-table [value]="profiles" (sortFunction)="customSort($event)" [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption" >
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
+                    <i class="pi pi-search"></i>
+                    <input pInputText class="input-field" type="text" (input)="search_key.filterGlobal($event, 'contains')" placeholder="Search ID or Name" />
+                </span>
+                <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(search_key)"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="empId" style="width:25%">Employee ID <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="empName" style="width:25%">Employee Name <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="empEmail" style="width:25%">Email <p-sortIcon field="code"></p-sortIcon></th>
+                <th>Action </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-profile>
+            <tr>
+                <td>{{ profile.empId }}</td>
+                <td>{{ profile.empName }}</td>
+                <td>{{ profile.empEmail }}</td>
+                <td>view/edit/delete</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
