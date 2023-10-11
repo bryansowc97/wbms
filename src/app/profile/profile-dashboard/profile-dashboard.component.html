@@ -1,7 +1,7 @@
 <ic-navbar></ic-navbar>
 <div class="container-fluid">
     <div class="create-button flex">
-        <p-button icon="pi pi-plus" label="Create User Profile" styleClass="p-button-warning"></p-button>
+        <p-button icon="pi pi-plus" label="Create Profile" styleClass="p-button-warning" [routerLink]="['/profile']" [queryParams]="{mode:'create'}"></p-button>
     </div>
     
     <p-table [value]="profiles" (sortFunction)="customSort($event)" [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
@@ -24,10 +24,14 @@
         </ng-template>
         <ng-template pTemplate="body" let-profile>
             <tr>
-                <td>{{ profile.empId }}</td>
-                <td>{{ profile.empName }}</td>
-                <td>{{ profile.empEmail }}</td>
-                <td>view/edit/delete</td>
+                <td>{{ profile.empID }}</td>
+                <td>{{ profile.fullname }}</td>
+                <td>{{ profile.email }}</td>
+                <td>
+                    <p-button label="View" styleClass="p-button-primary" (onClick)="onClickProfile('view', profile)"></p-button>
+                    <p-button label="Edit" styleClass="p-button-primary" (onClick)="onClickProfile('edit', profile)"></p-button>
+                    delete
+                </td>
             </tr>
         </ng-template>
     </p-table>

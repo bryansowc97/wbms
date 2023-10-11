@@ -3,44 +3,63 @@
     <div class="flex-display">
         <div class="dtls-display">
         <p-card class="card">
-            <h3>My Profile</h3>
+            <h3 *ngIf="mode == 'self'">My Profile</h3>
+            <h3 *ngIf="mode == 'create'">Create Profile</h3>
             <div class ="dtls-container">
                 <div class="flex-container">
                     <label>Employee ID</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.empID" [disabled]="mode!='create'"/>
+                </div>
+                <div class="flex-container">
+                    <label>Employee Role</label>
+                    <!-- <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.role" [disabled]="mode!='create'"/> -->
+                    <p-dropdown 
+                        class="input-field"
+                        [options]="roles" 
+                        optionLabel="label"
+                        optionValue="value"
+                        [(ngModel)] = "empDtls.role"
+                        placeholder="Select Role"
+                        [style]="{'width':'100%'}"
+                        [disabled]="mode=='view'"
+                        >
+                    </p-dropdown>
                 </div>
             </div>
             <div class ="dtls-container">
                 <div class="flex-container">
-                    <label>Username</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <label>Full Name</label>
+                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.fullname" [disabled]="mode=='view'" />
                 </div> 
                 <div class="flex-container">
                     <label>Email</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.email" [disabled]="mode=='view'" />
                 </div> 
             </div>
             <div class ="dtls-container">
                 <div class="flex-container">
                     <label>Contact Number</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.contact" [disabled]="mode=='view'" />
                 </div>
             </div>
             <div class ="dtls-container">
                 <div class="flex-container">
                     <label>Password</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="password" [(ngModel)]="empDtls.password" [disabled]="mode=='view'" />
                 </div> 
                 <div class="flex-container">
                     <label>Confirm Password</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="password" [(ngModel)]="empDtls.confirmPassword" [disabled]="mode=='view'" />
                 </div> 
             </div>
             <div class ="dtls-container">
                 <div class="flex-container">
                     <label>New Password</label>
-                    <input pInputText class="input-field" type="text" placeholder="..." disabled />
+                    <input pInputText class="input-field" type="password" [(ngModel)]="empDtls.newPassword" [disabled]="mode=='view'" />
                 </div>
+            </div>
+            <div class = "btn-container">
+                <p-button label="Save" styleClass="p-button-primary"></p-button>
             </div>
         </p-card>
         </div>

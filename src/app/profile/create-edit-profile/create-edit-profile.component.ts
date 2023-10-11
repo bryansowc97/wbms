@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserProfile } from 'src/app/models/profile.model';
 
 @Component({
   selector: 'app-profile',
@@ -6,43 +8,61 @@ import { Component } from '@angular/core';
   styleUrls: ['./create-edit-profile.component.scss']
 })
 export class ProfileComponent {
-  search_key: any;
+  mode: string = "";
+  empDtls: UserProfile = {
+    empID: "",
+    fullname : "",
+    email : "",
+    showPassword: false,
+    contact: "",
+    role: "",
+    status: "",
+  };
 
-  profiles: any[]=[
-    {
-      empId : 'P1234456',
-      empName : 'Alvin Tan',
-      empEmail : 'alvin.tan@wbms.com.sg'
-    },
-    {
-      empId : 'P1234677',
-      empName : 'Alvin Lee',
-      empEmail : 'alvin.lee@wbms.com.sg'
-    },
-    {
-      empId : 'P1234452',
-      empName : 'Alvin Chew',
-      empEmail : 'alvin.chew@wbms.com.sg'
-    },
-    {
-      empId : 'P1234829',
-      empName : 'Alvin Lim',
-      empEmail : 'alvin.lim@wbms.com.sg'
-    }
+  roles:any[] =[
+    { value:'admin', label: 'Admin'},
+    { value:'staff', label: 'Staff'}
   ];
 
-  constructor(){
-    
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ){
+    let details = this.router.getCurrentNavigation()?.extras.state;
+    if (details) {
+      this.empDtls.empID = details['empID'];
+      this.empDtls.fullname = details['fullname'];
+      this.empDtls.email = details['email'];
+      this.empDtls.contact = details['contact'];
+      this.empDtls.role = details['role'];
+    }
   }
 
   ngOnInit(): void {
-
-  }
-
-  customSort(event:any):void{}
-
-  clear(event:any):void{
-    this.search_key="";
+    this.route.queryParams.subscribe(params => {
+      this.mode = params['mode'];
+      if (this.mode === 'self') {
+        // api to get profile details
+        // dummy data
+        this.empDtls = {
+          empID: 'P1234456',
+          fullname : "Alvin Tans",
+          email : "alvin.tan@wbms.com.sg",
+          showPassword: false,
+          contact: "98765432",
+          role: "staff",
+          status: "",
+        }
+      } else if (this.mode !== 'create') {
+        // check admin rights
+        // enable admin features
+        if (this.mode == 'view') {
+          this.empDtls.password = '1234567890'
+        }
+      } else {
+        // check admin rights to create profile
+      }
+    })
   }
 
 }
