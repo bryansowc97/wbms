@@ -58,8 +58,9 @@
                     <input pInputText class="input-field" type="password" [(ngModel)]="empDtls.newPassword" [disabled]="mode=='view'" />
                 </div>
             </div>
-            <div class = "btn-container">
-                <p-button label="Save" styleClass="p-button-primary" (click)="saveBtn()" ></p-button>
+            <div class = "btn-container" *ngIf="mode!='view'">
+                <p-button label="Save" styleClass="p-button-primary" (click)="saveBtn()" *ngIf="mode!='create'" ></p-button>
+                <p-button label="Create" styleClass="p-button-primary" (click)="createBtn()" *ngIf="mode=='create'" ></p-button>
             </div>
         </p-card>
         </div>
