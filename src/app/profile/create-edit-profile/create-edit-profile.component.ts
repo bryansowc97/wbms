@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfile } from 'src/app/models/profile.model';
-
+import { ConfirmationService, MessageService } from 'primeng/api';
+   
 @Component({
   selector: 'app-profile',
   templateUrl: './create-edit-profile.component.html',
@@ -26,7 +27,9 @@ export class ProfileComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
   ){
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
@@ -65,4 +68,14 @@ export class ProfileComponent {
     })
   }
 
+  saveBtn() {
+    this.confirmationService.confirm({
+        message: 'Are you sure that you want to save the changes?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Changes have been saved.' });
+        }
+    });
+  }
 }

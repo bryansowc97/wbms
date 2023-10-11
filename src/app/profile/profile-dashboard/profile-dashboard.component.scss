@@ -9,6 +9,13 @@
 .flex {
     text-align: right;
 }
+
 .create-button {
     margin: 1% 0%;
 } 
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3%;
+}

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { UserProfile } from 'src/app/models/profile.model';
 import { Router } from '@angular/router';
-
+import { ConfirmationService, MessageService } from 'primeng/api';
+  
 @Component({
   selector: 'app-profile',
   templateUrl: './profile-dashboard.component.html',
@@ -47,6 +48,8 @@ export class ProfileDashboardComponent {
 
   constructor(
     private router: Router,
+    private confirmationService: ConfirmationService, 
+    private messageService: MessageService
   ){
     
   }
@@ -63,5 +66,13 @@ export class ProfileDashboardComponent {
 
   onClickProfile(mode: string, empDtls: UserProfile) {
     this.router.navigateByUrl(`/profile?mode=${mode}`, {state: empDtls});
+  }
+
+  deleteProfile() {
+    this.confirmationService.confirm({
+        accept: () => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Profile has been deleted.' });
+        }
+    });
   }
 }

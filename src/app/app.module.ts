@@ -49,6 +49,8 @@ import { AuthenticationService } from './services/authentication.service';
 import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
+import { ConfirmationService } from 'primeng/api';
+
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -121,7 +123,8 @@ import { ProfileComponent } from './profile/create-edit-profile/create-edit-prof
     // SafePipe
     RequestService,
     AuthenticationService,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })
