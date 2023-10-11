@@ -6,7 +6,7 @@ import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-d
 import { BookingComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
-
+import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
 
 
  const ROOT_ROUTES: Routes = [
@@ -33,6 +33,11 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
   {
     path: 'profileDashboard',
     component: ProfileDashboardComponent
+    // loadChildren: () => import('src/app/profile/profile.module').then(m => m.ProfileModule)
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent
     // loadChildren: () => import('src/app/profile/profile.module').then(m => m.ProfileModule)
   },
   {
