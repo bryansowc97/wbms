@@ -50,6 +50,7 @@ import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
 import { ConfirmationService } from 'primeng/api';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
@@ -118,6 +119,7 @@ import { ConfirmationService } from 'primeng/api';
     InputSwitchModule,
     ConfirmDialogModule,
     ToggleButtonModule,
+    MatGridListModule
   ],
   providers: [
     // SafePipe
