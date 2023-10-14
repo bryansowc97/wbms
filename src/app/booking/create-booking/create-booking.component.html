@@ -1,0 +1,32 @@
+<p-dialog header="Create New Booking" [(visible)]="showCreateBook" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+        <p-card class="left">
+            <div class="row ">
+                <div class="col">
+                    <label>Facility Name</label> 
+                    <input pInputText class="input-field" type="text" />
+                </div>
+                <div class="col">
+                    <label>Facility Type</label> 
+                    <input pInputText class="input-field" type="text" />
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col">
+                    <label>Employee ID</label> 
+                    <input pInputText class="input-field" type="text" />
+                </div>
+                <div class="col">
+                    <label>Date</label> 
+                    <input pInputText class="input-field" type="text" />
+                </div>
+                <div class="col">
+                    <label>Slot</label> 
+                    <input pInputText class="input-field" type="text" />
+                </div>
+            </div>
+
+        </p-card>
+        <p-button label="SAVE" styleClass="p-button-primary p-button-success right-margin"></p-button>
+        <p-button label="CANCEL" styleClass="p-button-outlined p-button-danger right-margin"></p-button>
+                    
+</p-dialog>

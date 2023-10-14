@@ -6,6 +6,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { BookingComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
+import { CreateBookingComponent } from './booking/create-booking/create-booking.component';
 
 
 

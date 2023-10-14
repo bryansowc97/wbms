@@ -41,7 +41,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="Ws_code" style="width:20%">Workspace Code <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="Ws_code" style="width:20%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="Emp_name" style="width:20%">Employee Name <p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="date" style="width:20%">Date <p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="time" style="width:20%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
@@ -56,7 +56,11 @@
                 <td>{{ booking.date }}</td>
                 <td>{{ booking.time }}</td>
                 <td><p-tag class="status-tag" [value]="booking.status" [severity]="getSeverity(booking.status)"></p-tag></td>
-                <td>{{ booking.action }}</td>
+                <td>
+                    <p-button>
+                        edit,view,delete
+                    </p-button>
+                </td>
             </tr>
         </ng-template>
     </p-table>

@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class WorkspaceDashboardComponent {
 
   // formGroup: any;
+  showCreateBook: boolean = false;
   selectedResourceDTL:any;
   selectedResource:any;
   resource:any[] =[
@@ -53,5 +54,9 @@ export class WorkspaceDashboardComponent {
     console.log(this.selectedResourceDTL);
     // this.clearForm();
   } 
+
+  showPopup(){
+    this.showCreateBook = true
+  }
 
 }

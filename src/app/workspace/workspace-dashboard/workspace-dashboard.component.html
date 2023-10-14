@@ -46,7 +46,11 @@
                         <label>Location</label>
                     <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.map }}" disabled />
                     </span>
-                    <button pButton class="p-button-primary">BOOK</button>    
+                    <button pButton class="p-button-primary" onclick="showPopup()">BOOK</button>    
+                    <ng-template *ngIf="showCreateBook">
+                        <ic-create-booking></ic-create-booking>
+                    </ng-template>
+                    
                 </ng-template>
             </p-card>
         </div>

@@ -48,6 +48,7 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
 import { AuthenticationService } from './services/authentication.service';
 import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
+import { CreateBookingComponent } from './booking/create-booking/create-booking.component';
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -60,7 +61,8 @@ import { MessageService } from 'primeng/api';
     ProfileComponent,
     LoginComponent,
     NavbarComponent,
-    WorkspaceDashboardComponent
+    WorkspaceDashboardComponent,
+    CreateBookingComponent
     // GenerateNameComponent,
     // LoginComponent,
     // SignupComponent,
