@@ -1,0 +1,54 @@
+<ic-navbar></ic-navbar>
+<div class="container-fluid">
+    <div class="create-button flex">
+        <p-button icon="pi pi-plus" label="Create Profile" styleClass="p-button-warning" [routerLink]="['/profile']" [queryParams]="{mode:'create'}"></p-button>
+    </div>
+    
+    <p-table [value]="profiles" (sortFunction)="customSort($event)" [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="caption" >
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
+                    <i class="pi pi-search"></i>
+                    <input pInputText class="input-field" type="text" (input)="search_key.filterGlobal($event, 'contains')" placeholder="Search ID or Name" />
+                </span>
+                <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(search_key)"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="empId" style="width:25%">Employee ID <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="empName" style="width:25%">Employee Name <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="empEmail" style="width:25%">Email <p-sortIcon field="code"></p-sortIcon></th>
+                <th>Action </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-profile>
+            <tr>
+                <td>{{ profile.empID }}</td>
+                <td>{{ profile.fullname }}</td>
+                <td>{{ profile.email }}</td>
+                <td>
+                    <p-button label="View" styleClass="p-button-primary" (onClick)="onClickProfile('view', profile)"></p-button>
+                    <p-button label="Edit" styleClass="p-button-primary" (onClick)="onClickProfile('edit', profile)"></p-button>
+                    <p-button label="Delete" styleClass="p-button-primary" (onClick)="deleteProfile()"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-confirmDialog #cd [style]="{ width: '50vw' }">
+    <ng-template pTemplate="header">
+        <h3>Delete Profile</h3>
+    </ng-template>
+    <ng-template pTemplate="message">
+        <div class="flex-container">
+            <p>Please enter master password to continue</p>
+            <input pInputText class="input-field" type="password" />
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button styleClass="p-button-primary" label="Cancel" (onClick)="cd.reject()"></p-button>
+        <p-button styleClass="p-button-primary" label="Delete" (onClick)="cd.accept()"></p-button>
+    </ng-template>
+</p-confirmDialog>
