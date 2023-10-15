@@ -34,7 +34,7 @@
                     <!-- (input)="search_key.filterGlobal($event.target.value, 'contains')" -->
                 </span>
                 <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
-                    <p-calendar [(ngModel)]="date" [showIcon]="true" placeholder="Filter Date"></p-calendar>
+                    <p-calendar appendTo="body" [(ngModel)]="date" [showIcon]="true" placeholder="Filter Date"></p-calendar>
                 </span>
                 <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(search_key)"></button>
             </div>
