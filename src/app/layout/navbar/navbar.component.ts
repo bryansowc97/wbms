@@ -17,7 +17,10 @@ export class NavbarComponent {
       {
         label: 'My Profile',
         icon: 'pi pi-id-card',
-        routerLink: '/profile'
+        routerLink: '/profile',
+        queryParams: {
+          mode: 'self'
+        }
       },
       {
         label: 'Logout',
@@ -60,7 +63,7 @@ export class NavbarComponent {
             {
                 label: 'Manage User',
                 icon: 'pi pi-users',
-                routerLink: '/profile'
+                routerLink: '/profileDashboard'
             }
         );
         /*

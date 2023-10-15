@@ -40,7 +40,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { BookingComponent } from './booking/booking.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { TagModule } from 'primeng/tag';
@@ -49,6 +49,9 @@ import { AuthenticationService } from './services/authentication.service';
 import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
 import { CreateBookingComponent } from './booking/create-booking/create-booking.component';
+import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
+import { ConfirmationService } from 'primeng/api';
+
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -58,11 +61,12 @@ import { CreateBookingComponent } from './booking/create-booking/create-booking.
     AppComponent,
     BookingComponent,
     CreateWorkspaceComponent,
-    ProfileComponent,
+    ProfileDashboardComponent,
     LoginComponent,
     NavbarComponent,
     WorkspaceDashboardComponent,
-    CreateBookingComponent
+    CreateBookingComponent,
+    ProfileComponent
     // GenerateNameComponent,
     // LoginComponent,
     // SignupComponent,
@@ -121,7 +125,8 @@ import { CreateBookingComponent } from './booking/create-booking/create-booking.
     // SafePipe
     RequestService,
     AuthenticationService,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })
