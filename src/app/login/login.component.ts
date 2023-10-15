@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../services/authentication.service';
+import { HttpResponse } from '@angular/common/http';
+import { CognitoService, IUser } from '../cognito.service';
 
 @Component({
   selector: 'app-login',
@@ -11,42 +13,71 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  user: UserProfile = {} as UserProfile;
-  newPasswordRequired: boolean = false;
-  authenticationUser  = new BehaviorSubject(null);
+  // user: UserProfile = {} as UserProfile;
+  // newPasswordRequired: boolean = false;
+  // authenticationUser  = new BehaviorSubject(null);
+  loading: boolean;
+  user: IUser;
+  isAuthenticated: boolean;
 
   constructor(
     private router: Router, 
     private authenticationService: AuthenticationService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private cognitoService: CognitoService
+  ) {
+    this.loading = false;
+    this.user = {} as IUser;
+      this.isAuthenticated = false;
+  }
+
+  ngOnInit(): void {
+    this.cognitoService.isAuthenticated()
+    .then((success: boolean) => {
+      this.isAuthenticated = success;
+    }).catch(() => {
+      //help, failed to login
+    });
+  }
 
   public login(): void{
-    /*
-    this.authenticationService.signIn(this.user).then((data)=>{
-      this.authenticationUser.next(data);
-      if (data.challengeName === 'NEW_PASSWORD_REQUIRED') {
-        this.newPasswordRequired = true;
-      } else {
-        this.messageService.add({
-          key:"confirm",
-          severity: "success",
-          summary: "Login Successful",
-          detail: "Welcome to WBMS!",
-          sticky: true,
-        }); 
-      }
-    }).catch((error)=>{
+    this.loading = true;
+    this.cognitoService.signIn(this.user).then((data)=>{
       this.messageService.add({
-        key:"error",
+        severity: "success",
+        summary: "Login Successful",
+        detail: "Welcome to WBMS!",
+        sticky: false,
+      }); 
+      this.router.navigate(['/profile']);
+    }).catch((error)=>{
+      this.loading = false;
+      this.messageService.add({
         severity: "warn",
         summary: "Login Failed!",
-        detail: error,
-        sticky: true,
+        detail: error.message,
+        sticky: false,
       }); 
     })
-    */
   }
+
+  public signUp(): void {
+    this.router.navigate(['/signUp']);
+  }
+
+  public signOut(): void {
+    this.cognitoService.signOut()
+    .then(() => {
+      this.messageService.add({
+        severity: "success",
+        summary: "Log out Successful",
+        detail: "See you next time!",
+        sticky: false,
+      }); 
+      this.router.navigate(['/login']);      
+    });
+  }
+
 
   public updatePassword():void{
     /*

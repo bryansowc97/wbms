@@ -1,4 +1,6 @@
 import { Component,OnInit } from '@angular/core';
+import { CognitoService, IUser } from '../cognito.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-booking',
@@ -10,6 +12,8 @@ export class BookingComponent implements OnInit {
   search_key: any ;
   date: any;
   source: any;
+  loading: boolean;
+  user: IUser;
   booking: any[]=[
     {
       Ws_code : 'B6-A1-09',
@@ -45,12 +49,26 @@ export class BookingComponent implements OnInit {
     }
   ];
 
-  constructor(){
-    
+  constructor(
+    private cognitoService: CognitoService,
+    private messageService: MessageService
+  ){
+    this.loading = false;
+    this.user = {} as IUser;
   }
 
   ngOnInit(): void {
-
+    this.cognitoService.getUser()
+    .then((user: any) => {
+      this.user = user.attributes;
+      this.messageService.add({
+        key:"error",
+        severity: "warn",
+        summary: "user info",
+        detail: user,
+        sticky: false,
+      }); 
+    });
   }
 
   customSort(event:any):void{}

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { CognitoService } from './cognito.service';
 
 @Component({
   selector: 'app-root',
@@ -12,27 +13,33 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit{
 
   title = 'WBMS';
-  isAuthenticated: boolean = false;
+  isAuthenticated: boolean;
 
   constructor(
     protected router: Router, 
     private http: HttpClient,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private cognitoService: CognitoService,
   ){
-
+    this.isAuthenticated = false;
   }
   
   
   ngOnInit(): void {
     const role = 'Admin'
-    // this.authenticationService.getRole().then((role)=>{
-      if(role){
-        this.isAuthenticated = true;
-      }
-      else{
-        this.isAuthenticated = false;
-      }
-    // });
+    this.cognitoService.isAuthenticated()
+    .then((success: boolean) => {
+      this.isAuthenticated = success;
+    }).catch(() => {
+      //help, failed to login
+    });
+  }
+
+  public signOut(): void {
+    this.cognitoService.signOut()
+    .then(() => {
+      this.router.navigate(['/signIn']);
+    });
   }
 
 }

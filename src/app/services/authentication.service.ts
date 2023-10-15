@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { UserProfile } from '../models/profile.model';
 import { RequestService } from './request.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'

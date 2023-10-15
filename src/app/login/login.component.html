@@ -3,7 +3,6 @@
         <div class="col-4" style="margin-top: 10%; padding-bottom: 30%;">
             <p-card>
             <h2 class="text-center" style="margin-top: unset;"><b>Welcome To WBMS</b></h2>
-            <div *ngIf="!newPasswordRequired">
             <form action="" class="mt-4 p-5" style="padding-left: 20px;">
                 <h3 class="text-primary mb-3">Login</h3>
                 <div class="form-floating mb-3">
@@ -12,15 +11,20 @@
                   <div class="form-floating mb-3">
                     <input type="password" pInputText class="form-control" style="margin-bottom: 5px;" id="floatingPassword" placeholder="Password" name="password" [(ngModel)]="user.password">
                   </div>
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end" *ngIf="!isAuthenticated">
                     <p-button label="Login" styleClass="p-button-primary" (onClick)="login()"></p-button>
-                  </div>                  
+                  </div>   
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end" *ngIf="!isAuthenticated">
+                    <p-button label="Sign Up" styleClass="p-button-primary" (onClick)="signUp()"></p-button>
+                  </div>    
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end" *ngIf="isAuthenticated">
+                    <p-button label="Sign Out" styleClass="p-button-primary" (onClick)="signOut()"></p-button>
+                  </div>            
                   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <p-button label="testDb" styleClass="p-button-primary" (onClick)="testDb()"></p-button>
                   </div>
             </form>
-            </div>
-        </p-card>
+            </p-card>
             <!-- <p-toast position="center" key="confirm" (onClose)="onReject()" [baseZIndex]="5000">
               <ng-template let-message pTemplate="message">
                   <div class="flex flex-column" style="flex: 1">
@@ -54,18 +58,6 @@
                 </ng-template>
                 </p-toast>
                 -->
-            <div *ngIf="newPasswordRequired">
-                <form action="" class="mt-4 p-5">
-                  <h5 class="text-primary mb-3">Please Change Password!</h5>
-                  <div class="form-floating mb-3">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="new password" name="new password" [(ngModel)]="user.newPassword">
-                    <label for="floatingPassword">New Password</label>
-                  </div>
-                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-outline-success me-md-2" type="button" (click)="updatePassword()">Confirm</button>
-                  </div>
-                </form>
-          </div>
         </div>
         <!-- <div class="col-6" style="margin-top: 8%; margin-left: 13%;">
             <img src="../../assets/5541.jpg" height="673px" width="703px" style="float: right;">

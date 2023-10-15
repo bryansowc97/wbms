@@ -7,6 +7,7 @@ import { BookingComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
 
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 
  const ROOT_ROUTES: Routes = [
@@ -15,10 +16,25 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
   //   pathMatch: 'full',
   //   redirectTo: 'home'
   // },
-  { path: '', component: LoginComponent },
+  { path: '', 
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'signUp',
+    component: SignUpComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
   },
   {
     path: 'createWorkspace',

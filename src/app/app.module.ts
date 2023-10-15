@@ -48,6 +48,10 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
 import { AuthenticationService } from './services/authentication.service';
 import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { CognitoService } from './cognito.service';
+
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
 // Pass the fusioncharts library and chart modules
@@ -60,7 +64,8 @@ import { MessageService } from 'primeng/api';
     ProfileComponent,
     LoginComponent,
     NavbarComponent,
-    WorkspaceDashboardComponent
+    WorkspaceDashboardComponent,
+    SignUpComponent,
     // GenerateNameComponent,
     // LoginComponent,
     // SignupComponent,
@@ -119,7 +124,8 @@ import { MessageService } from 'primeng/api';
     // SafePipe
     RequestService,
     AuthenticationService,
-    MessageService
+    MessageService,
+    CognitoService
   ],
   bootstrap: [AppComponent]
 })
