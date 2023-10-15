@@ -11,7 +11,7 @@
 	<groupId>wbms.com.sg</groupId>
 	<artifactId>accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accounts</name>
+	<name>wbms-accounts</name>
 	<description>Service for account management</description>
 	<properties>
 		<java.version>21</java.version>
@@ -55,6 +55,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+    <finalName>wbms-accounts</finalName>
 	</build>
 
 </project>
