@@ -28,3 +28,18 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## To run Swagger-api locally, Only works for individual services.
 http://localhost:8080/swagger-ui/index.html
+
+## To build Docker image
+Run docker build -t repository-name:tag .
+Below are the naming that I used - Bryan
+e.g docker build -t wbms-accounts-docker:accounts-docker .
+e.g docker build -t wbms-workspace-docker:workspace-docker .
+e.g docker build -t wbms-booking-docker:booking-docker .
+
+## To run docker image
+Run docker run -p portnumber -d repository-name:tag
+Below are the naming that I used - Bryan
+To run multiple containers at once the port numbers has to be different 
+eg. docker run -p 8080:8080 -d wbms-accounts-docker:accounts-docker
+eg. docker run -p 8081:8081 -d wbms-workspace-docker:workspace-docker
+eg. docker run -p 8082:8082 -d wbms-booking-docker:booking-docker
