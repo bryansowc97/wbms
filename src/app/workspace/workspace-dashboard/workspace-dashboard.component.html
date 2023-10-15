@@ -27,9 +27,10 @@
                 </div>
                 
                 <p>worspace map include meeting room & work desk</p>    
-                <ng-template pTemplate="start">
-                    <img src="../../../assets/classroom-36510_960_720.png" height="80%" />
-                </ng-template>
+                <mat-grid-list cols={{cols}} rowHeight="5em">
+                    <mat-grid-tile *ngFor="let a of colsArr; let index = index"><img src="{{getGridImg(colsArr[index])}}" height="60" /></mat-grid-tile>
+                    <!-- <mat-grid-tile *ngFor="let a of colsArr; let index = index">{{index}}</mat-grid-tile> -->
+                </mat-grid-list>
             </p-card>
         </div>
         <div class="col dtl-display ">

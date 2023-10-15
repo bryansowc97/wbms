@@ -51,6 +51,8 @@ import { MessageService } from 'primeng/api';
 import { CreateBookingComponent } from './booking/create-booking/create-booking.component';
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
 import { ConfirmationService } from 'primeng/api';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
@@ -120,6 +122,8 @@ import { ConfirmationService } from 'primeng/api';
     InputSwitchModule,
     ConfirmDialogModule,
     ToggleButtonModule,
+    MatGridListModule,
+    ContextMenuModule
   ],
   providers: [
     // SafePipe
