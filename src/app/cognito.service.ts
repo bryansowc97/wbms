@@ -35,6 +35,7 @@ export class CognitoService {
       password: user.password,
       attributes: {
         email: user.email,
+        name: user.name
       }
     });
   }
@@ -44,7 +45,7 @@ export class CognitoService {
   }
 
   public signIn(user: IUser): Promise<any> {
-    return Auth.signIn(user.email, user.password)
+    return Auth.signIn(user.userName, user.password)
     .then(() => {
       this.authenticationSubject.next(true);
     });
@@ -76,6 +77,16 @@ export class CognitoService {
 
   public getUser(): Promise<any> {
     return Auth.currentUserInfo();
+  }
+
+  async getUserGroups() {
+    try {
+      const user = await Auth.currentAuthenticatedUser();
+      return user.signInUserSession.accessToken.payload['cognito:groups'];
+    } catch (error) {
+      console.error('Error getting user groups:', error);
+      return [];
+    }
   }
 
   public updateUser(user: IUser): Promise<any> {

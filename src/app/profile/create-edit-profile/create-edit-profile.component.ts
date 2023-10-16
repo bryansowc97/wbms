@@ -22,6 +22,7 @@ export class ProfileComponent {
   };
   loading: boolean;
   user: IUser;
+  userGroup: any[];
 
   roles:any[] =[
     { value:'admin', label: 'Admin'},
@@ -78,7 +79,17 @@ export class ProfileComponent {
         this.cognitoService.getUser()
         .then((user: any) => {
           this.user = user.attributes;
-          this.empDtls = user;
+          this.cognitoService.getUserGroups()
+          .then((userGrp: any) => {
+            this.userGroup = userGrp;
+            this.messageService.add({
+              severity: "warn",
+              summary: "user info",
+              detail: userGrp,
+              sticky: false,
+            }); 
+            console.log("user, usergrp", user, this.userGroup);
+          });      
         });
       }
     })         

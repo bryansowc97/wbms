@@ -1,11 +1,18 @@
 <div class="row justify-content-center my-5">
     <div class="col-4">
       <div class="card">
-        <div class="card-body" *ngIf="!isConfirm">
+        <div class="card-body">
             <div class="row">
             <div class="col mb-2">
                 <label for="userName" class="form-label">Employee ID:</label>
-                <input type="userName" id="userName" name="userName" #email="ngModel" [(ngModel)]="user.userName" class="form-control form-control-sm">
+                <input type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.userName" class="form-control form-control-sm">
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+            <div class="col mb-2">
+                <label for="name" class="form-label">Employee Name:</label>
+                <input type="name" id="name" name="name" #name="ngModel" [(ngModel)]="user.name" class="form-control form-control-sm">
             </div>
         </div>
         <div class="row">

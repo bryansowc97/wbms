@@ -32,10 +32,10 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     path: 'signUp',
     component: SignUpComponent,
   },
-  {
-    path: '**',
-    redirectTo: 'login',
-  },
+  // {
+  //   path: '**',
+  //   redirectTo: 'login',
+  // },
   {
     path: 'createWorkspace',
     component: CreateWorkspaceComponent

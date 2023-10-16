@@ -26,7 +26,6 @@ export class AppComponent implements OnInit{
   
   
   ngOnInit(): void {
-    const role = 'Admin'
     this.cognitoService.isAuthenticated()
     .then((success: boolean) => {
       this.isAuthenticated = success;

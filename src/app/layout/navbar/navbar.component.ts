@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from "@angular/router";
-import { MenuItem } from "primeng/api";
+import { MenuItem, MessageService } from "primeng/api";
+import { CognitoService } from 'src/app/cognito.service';
 import { UserProfile } from 'src/app/models/profile.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -31,7 +32,9 @@ export class NavbarComponent {
   
     constructor(
       private router: Router, 
-      private authenticationService: AuthenticationService
+      private authenticationService: AuthenticationService,
+      private messageService: MessageService,
+      private cognitoService: CognitoService
     ) {}
   
     ngOnInit(): void {
@@ -132,13 +135,16 @@ export class NavbarComponent {
     }
   
     signOut(): void {
-        /*
-      this.authenticationService.signOut().then(()=>{
-        this.router.navigate(['']);
-      }).catch((error)=>{
-        alert(error);
-      })
-      */
+      this.cognitoService.signOut()
+      .then(() => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Log out Successful",
+          detail: "See you next time!",
+          sticky: false,
+      }); 
+      this.router.navigate(['login']);
+    });
     }
   
   

@@ -49,7 +49,7 @@ export class LoginComponent {
         detail: "Welcome to WBMS!",
         sticky: false,
       }); 
-      this.router.navigate(['/profile']);
+      this.router.navigate(['booking']);
     }).catch((error)=>{
       this.loading = false;
       this.messageService.add({
@@ -62,7 +62,7 @@ export class LoginComponent {
   }
 
   public signUp(): void {
-    this.router.navigate(['/signUp']);
+    this.router.navigate(['signUp']);
   }
 
   public signOut(): void {
@@ -74,7 +74,8 @@ export class LoginComponent {
         detail: "See you next time!",
         sticky: false,
       }); 
-      this.router.navigate(['/login']);      
+      this.router.navigate(['login']);
+      window.location.reload();      
     });
   }
 
@@ -110,10 +111,10 @@ export class LoginComponent {
     this.authenticationService.getRole().then((role)=>{
       this.authenticationService.getFullName().then((name)=>{
           if(role === "Employee"){
-            this.router.navigate(['/home']);
+            this.router.navigate(['home']);
           }
           if(role === "Admin"){
-            this.router.navigate(['/home']);
+            this.router.navigate(['home']);
           }
       })
     }).catch((error)=>{

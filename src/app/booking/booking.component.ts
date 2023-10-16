@@ -14,6 +14,7 @@ export class BookingComponent implements OnInit {
   source: any;
   loading: boolean;
   user: IUser;
+  userGroup: any[];
   booking: any[]=[
     {
       Ws_code : 'B6-A1-09',
@@ -61,13 +62,17 @@ export class BookingComponent implements OnInit {
     this.cognitoService.getUser()
     .then((user: any) => {
       this.user = user.attributes;
-      this.messageService.add({
-        key:"error",
-        severity: "warn",
-        summary: "user info",
-        detail: user,
-        sticky: false,
-      }); 
+      this.cognitoService.getUserGroups()
+      .then((userGrp: any) => {
+        this.userGroup = userGrp;
+        this.messageService.add({
+          severity: "warn",
+          summary: "user info",
+          detail: userGrp,
+          sticky: false,
+        }); 
+        console.log("user, usergrp", user, this.userGroup);
+      });      
     });
   }
 
