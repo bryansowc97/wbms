@@ -133,27 +133,34 @@ export class LoginComponent {
   }
 
   public testDb(): void{
-    this.authenticationService.testDb().subscribe(
-      (res: any) => {
-        if (res.status === 200) {
-          let msg = res.body;
-          this.messageService.add({
-            severity: "success",
-            summary: "Found in database",
-            detail: "Login with id \n" + msg.employeeId + " and pw " + msg.password,
-            sticky: false,
-          }); 
-        }
-        else {
-          this.messageService.add({
-            severity: "error",
-            summary: "u did something wrong",
-            detail: "nothing found in db",
-            sticky: true,
-          }); 
-        }        
-      }
-    );
+    // this.authenticationService.testDb().subscribe(
+    //   (res: any) => {
+    //     if (res.status === 200) {
+    //       let msg = res.body;
+    //       this.messageService.add({
+    //         severity: "success",
+    //         summary: "Found in database",
+    //         detail: "Login with id \n" + msg.employeeId + " and pw " + msg.password,
+    //         sticky: false,
+    //       }); 
+    //     }
+    //     else {
+    //       this.messageService.add({
+    //         severity: "error",
+    //         summary: "u did something wrong",
+    //         detail: "nothing found in db",
+    //         sticky: true,
+    //       }); 
+    //     }        
+    //   }
+    // );
+    this.cognitoService.listUsers()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error listing users:', error);
+      });
   }
 
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, zip } from 'rxjs';
 import { Auth } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
 import { environment } from 'src/environment';
+import * as AWS from 'aws-sdk';
 
 export interface IUser {
   email: string;
@@ -12,6 +14,7 @@ export interface IUser {
   showPassword: boolean;
   code: string;
   name: string;
+  contact: number;
 }
 
 @Injectable({
@@ -20,13 +23,25 @@ export interface IUser {
 export class CognitoService {
 
   private authenticationSubject: BehaviorSubject<any>;
+  private cognitoIdentityServiceProvider: AWS.CognitoIdentityServiceProvider;
+  
+  cognitoParams = {
+    UserPoolId: environment.cognito.userPoolId, // Replace with your Cognito user pool ID
+  };
 
   constructor() {
     Amplify.configure({
       Auth: environment.cognito,
     });
-
     this.authenticationSubject = new BehaviorSubject<boolean>(false);
+
+    // Set up aws cognito connection, so can use their built-in queries for user
+    AWS.config.region = environment.awsConfig.region;
+    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: environment.awsConfig.identitiyPoolId
+    })
+    this.cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+    
   }
 
   public signUp(user: IUser): Promise<any> {
@@ -94,6 +109,11 @@ export class CognitoService {
     .then((cognitoUser: any) => {
       return Auth.updateUserAttributes(cognitoUser, user);
     });
+  }
+  
+
+  public listUsers(): any {
+    return this.cognitoIdentityServiceProvider.listUsers(this.cognitoParams).promise();
   }
 
 }
