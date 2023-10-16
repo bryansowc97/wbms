@@ -11,7 +11,7 @@
 	<groupId>wbms.com.sg</groupId>
 	<artifactId>accounts</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accounts</name>
+	<name>wbms-accounts</name>
 	<description>Service for account management</description>
 	<properties>
 		<java.version>21</java.version>
@@ -24,12 +24,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-<!--			<scope>runtime</scope>-->
-      <version>19.11.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,9 +74,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>3.0.0</version>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.1.0</version>
     </dependency>
 	</dependencies>
 
@@ -93,6 +87,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+    <finalName>wbms-accounts</finalName>
 	</build>
 
 </project>

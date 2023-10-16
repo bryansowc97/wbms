@@ -42,3 +42,11 @@
     margin-bottom: 5%;
   }
 
+.mat-grid-tile {
+    background: white;
+    border: solid 1px lightgray;
+}
+
+.mat-grid-tile:hover {
+    background: whitesmoke;
+}

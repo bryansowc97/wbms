@@ -52,6 +52,8 @@ import { ProfileComponent } from './profile/create-edit-profile/create-edit-prof
 import { ConfirmationService } from 'primeng/api';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { CognitoService } from './cognito.service';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
@@ -121,6 +123,8 @@ import { CognitoService } from './cognito.service';
     InputSwitchModule,
     ConfirmDialogModule,
     ToggleButtonModule,
+    MatGridListModule,
+    ContextMenuModule
   ],
   providers: [
     // SafePipe
