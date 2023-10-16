@@ -2,15 +2,14 @@ import { Component } from '@angular/core';
 import { UserProfile } from 'src/app/models/profile.model';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-  
+import { Table } from 'primeng/table';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile-dashboard.component.html',
   styleUrls: ['./profile-dashboard.component.scss']
 })
 export class ProfileDashboardComponent {
-  search_key: any;
-
   profiles: UserProfile[]=[
     {
       empID : 'P1234456',
@@ -58,10 +57,12 @@ export class ProfileDashboardComponent {
 
   }
 
-  customSort(event:any):void{}
+  clear(table: Table) {
+    table.clear();
+  }
 
-  clear(event:any):void{
-    this.search_key="";
+  applyFilterGlobal(table: Table, $event: Event, stringVal: string) {
+    table.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
   onClickProfile(mode: string, empDtls: UserProfile) {

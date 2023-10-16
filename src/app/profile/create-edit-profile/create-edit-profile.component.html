@@ -21,7 +21,7 @@
                         [(ngModel)] = "empDtls.role"
                         placeholder="Select Role"
                         [style]="{'width':'100%'}"
-                        [disabled]="mode=='view'"
+                        [disabled]="mode=='view' || mode == 'self'"
                         >
                     </p-dropdown>
                 </div>
