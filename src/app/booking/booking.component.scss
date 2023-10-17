@@ -47,3 +47,15 @@
     padding-left: 10px;
     width: 150px;
 }
+
+.dtls-container {
+    display: flex;
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-bottom: 3%;
+}

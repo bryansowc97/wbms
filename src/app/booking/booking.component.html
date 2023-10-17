@@ -1,6 +1,5 @@
 <ic-navbar></ic-navbar>
 <div class="container-fluid">
-    
     <div class="row flex-display">
         <div class="col chart-display">
             <p-card class="card">
@@ -24,56 +23,96 @@
         <b>today and upcoming booking </b>
         <b>passed booking might need to use search / filter by date function to get</b>
     </ng-template> -->
-    <p-table [value]="booking" (sortFunction)="customSort($event)" [customSort]="true" [tableStyle]="{'min-width': '60rem'}">
+    <p-table 
+        #tbl
+        [value]="booking" 
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '60rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['empID', 'fullname']"
+        (sortFunction)="customSort($event)" 
+        [customSort]="true" 
+        [tableStyle]="{'min-width': '60rem'}"
+    >
         
         <ng-template pTemplate="caption" >
             <div class="flex">
                 <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
                     <i class="pi pi-search"></i>
-                    <input pInputText class="input-field" type="text" (input)="search_key.filterGlobal($event, 'contains')" placeholder="Search keyword" />
+                    <input pInputText class="input-field" type="text" [(ngModel)]="search_key" (input)="search_key.filterGlobal($event, 'contains')" placeholder="Search keyword" />
                     <!-- (input)="search_key.filterGlobal($event.target.value, 'contains')" -->
                 </span>
                 <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
-                    <p-calendar [(ngModel)]="date" [showIcon]="true" placeholder="Filter Date"></p-calendar>
+                    <p-calendar appendTo="body" [(ngModel)]="date" [showIcon]="true" placeholder="Filter Date"></p-calendar>
                 </span>
                 <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(search_key)"></button>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="Ws_code" style="width:20%">Workspace Code <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="Ws_code" style="width:15%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="Emp_name" style="width:20%">Employee Name <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="date" style="width:20%">Date <p-sortIcon field="code"></p-sortIcon></th>
+                <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="time" style="width:20%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="status" style="width:20%">Status <p-sortIcon field="code"></p-sortIcon></th>
-                <th>Action </th>
+                <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="code"></p-sortIcon></th>
+                <th style="width:10%">Action </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-booking>
             <tr>
-                <td>{{ booking.Ws_code }}</td>
-                <td>{{ booking.Emp_name }}</td>
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.employee_name }}</td>
                 <td>{{ booking.date }}</td>
-                <td>{{ booking.time }}</td>
-                <td><p-tag class="status-tag" [value]="booking.status" [severity]="getSeverity(booking.status)"></p-tag></td>
-                <td>{{ booking.action }}</td>
+                <td>{{ booking.timeSlot }}</td>
+                <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.bookedStatus]" [severity]="getSeverity(bookingStatusEnum[booking.bookedStatus])"></p-tag></td>
+                <td>
+                    <span class="flex-display p-buttonset">
+                        <!-- <p-button class="buttonSet" icon="pi pi-pencil" [routerLink]="['/booking']" [queryParams]="{mode:'edit'}"></p-button> -->
+                        <p-button class="buttonSet" icon="pi pi-eye" [routerLink]="['/booking']" [queryParams]="{mode:'view'}"></p-button>
+                        <p-button class="buttonSet" icon="pi pi-trash" (onClick)="deleteBooking(booking.emp_id)"></p-button>
+                    </span>
+                </td>
             </tr>
         </ng-template>
     </p-table>
-    
-    
-    <!-- <div class="contant-layout">
-        <h1>booking works!</h1>
-        <h2>booking works!</h2>
-        <body>
-            <input type="text" pInputText placeholder="test"/>
-        </body>
-        <a>test</a>
-        <div>
-            <p-button label="Submit" [disabled]="false"></p-button>
-            <p-button label="Submit" [disabled]="true"></p-button>
-        </div>    
-    </div> -->
-    
-    
 </div>
+
+
+<p-confirmDialog #cd [style]="{ width: '50vw' }">
+    <ng-template pTemplate="header">
+        <h3>Delete Booking</h3>
+    </ng-template>
+    <ng-template pTemplate="message">
+        <p-card>
+            <div class ="dtls-container">
+                <p>Confirm to delete this booking? If yes please proceed with DELETE.</p>
+            </div>
+            <div class ="dtls-container">
+                <div class="flex-container">
+                    <label>Employee ID</label> 
+                    <input pInputText class="input-field" type="text" disabled/>
+                </div>
+                <div class="flex-container">
+                    <label>Facility Name</label> 
+                    <input pInputText class="input-field" type="text" disabled/>
+                </div>
+            </div>
+            <div class ="dtls-container">
+                <div class="flex-container">
+                    <label>Date</label> 
+                    <input pInputText class="input-field" type="text" disabled/>
+                </div>
+                <div class="flex-container">
+                    <label>Slot</label> 
+                    <input pInputText class="input-field" type="text" disabled/>
+                </div>
+            </div>
+        </p-card>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button styleClass="p-button-primary" label="Cancel" (onClick)="cd.reject()"></p-button>
+        <p-button styleClass="p-button-primary" label="Delete" (onClick)="cd.accept()"></p-button>
+    </ng-template>
+</p-confirmDialog>

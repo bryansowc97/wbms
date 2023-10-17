@@ -1,4 +1,5 @@
 <ic-navbar></ic-navbar>
+<form [formGroup]="createWorkspace">
 <div class="container-fluid">
     <div class="row flex-display">
         <div class="col map-display">
@@ -19,30 +20,37 @@
                 <ng-template pTemplate="body" >
                     
                     <span class="card">
-                        <label>Name</label> 
-                        <input pInputText class="input-field" type="text" />
+                        <label>Facility Type</label> 
+                        <input formControlName="fType" pInputText class="input-field" type="text" [(ngModel)]="newFacility.fType"/>
+                        <small class="errorMsg" *ngIf="(createWorkspace.get('fType')?.touched || createWorkspace.get('fType')?.dirty) && createWorkspace.get('fType')?.value.length == 0"><br/>*Please enter facility type</small>
                     </span>
                     <br>
                     <span class="card">
-                        <label>Type</label> 
-                        <input pInputText class="input-field" type="text" />
+                        <label>Facility/Room Name</label> 
+                        <input formControlName="fName" pInputText class="input-field" type="text" [(ngModel)]="newFacility.fName"/>
+                        <small class="errorMsg" *ngIf="(createWorkspace.get('fName')?.touched || createWorkspace.get('fName')?.dirty) "><br/>*Please enter facility type</small>
                     </span>
                     <br>
                     <span class="card">
-                        <label>Location</label>
-                    <input pInputText class="input-field" type="text" />
+                        <label>Seat Name</label>
+                    <input formControlName="name" pInputText class="input-field" type="text" [(ngModel)]="newFacility.name"/>
                     </span>
                     <span class="card">
                         <label>Status</label> 
-                        <input pInputText class="input-field" type="text" />
+                        <input formControlName="status" pInputText class="input-field" type="text" [(ngModel)]="newFacility.status"/>
                     </span>
                     <br>
-                    <p-button label="SAVE" styleClass="p-button-primary"></p-button>
-                    <p-button label="CANCEL" styleClass="p-button-outlined p-button-danger"></p-button>
+                    <p-button label="SAVE" styleClass="p-button-primary p-button-success right-margin" (onClick)="createFacility()"></p-button>
+                    <p-button label="CANCEL" styleClass="p-button-outlined p-button-danger right-margin" (onClick)="cancel()"></p-button>
+                    
+                    
                 </ng-template>
             </p-card>
         </div>
     </div>
 </div>
+<p-toast></p-toast>
+</form>
+
 
 <p-contextMenu #contextMenu [model]="items" appendTo="body"></p-contextMenu>

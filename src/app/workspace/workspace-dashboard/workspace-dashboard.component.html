@@ -9,15 +9,17 @@
                     <div class="col card">
                         <label>Type: </label>
                         <p-dropdown 
-                        [options]="resource" 
-                        optionLabel="type"
-                        (onChange)="getSelectedResType($event)"
-                        placeholder="Select Type"
+                            appendTo="body"
+                            [options]="resource" 
+                            optionLabel="type"
+                            (onChange)="getSelectedResType($event)"
+                            placeholder="Select Type"
                         ></p-dropdown>
                     </div>
                     <div class="col card">
                         <label>Facility: </label>
                         <p-dropdown 
+                            appendTo="body"
                             [options]="selectedResource" 
                             optionLabel="name"
                             (onChange)="getSelectedResName($event)"
@@ -28,8 +30,14 @@
                 
                 <p>worspace map include meeting room & work desk</p>    
                 <mat-grid-list cols={{cols}} rowHeight="5em">
-                    <mat-grid-tile *ngFor="let a of colsArr; let index = index"><img src="{{getGridImg(colsArr[index])}}" height="60" /></mat-grid-tile>
-                    <!-- <mat-grid-tile *ngFor="let a of colsArr; let index = index">{{index}}</mat-grid-tile> -->
+                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" >
+                        <p-button class="seatingButton" (onClick)="selectSeat(index)"
+                            [pTooltip]="getHover(index)">
+                            <img src="{{getGridImg(colsArr[index])}}" height="60"/>
+                        </p-button>
+                    >
+                    </mat-grid-tile>
+                    
                 </mat-grid-list>
             </p-card>
         </div>
@@ -37,22 +45,65 @@
             <p-card class="card ">
                 <h3>Workspace Details</h3>
                 <ng-template pTemplate="body" >
-                    
                     <span class="card">
-                        <label>Name</label> 
-                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.name }}" disabled />
+                        <label>Facility Type</label> 
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.fType }}" disabled />
+                    </span>
+                    <span class="card">
+                        <label>Facility Name</label> 
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.fName }}" disabled />
                     </span>
                     <br>
                     <span class="card">
-                        <label>Location</label>
-                    <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.map }}" disabled />
+                        <label>Seat</label>
+                    <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.name }}" disabled />
                     </span>
-                    <button pButton class="p-button-primary">BOOK</button>    
+                    
+                    <p-button label="Book" styleClass="p-button-primary" (onClick)="createBooking()" [disabled]="!showBook"></p-button>
                 </ng-template>
             </p-card>
         </div>
     </div>
-    
 </div>
 
 
+<p-confirmDialog #cd [style]="{ width: '50vw' }">
+    <ng-template pTemplate="header">
+        <h3>Book Facility</h3>
+    </ng-template>
+    <ng-template pTemplate="message">
+        <div class="flex-container">
+            <label>Employee ID</label>
+            <input pInputText class="input-field" type="text" placeholder="P123456" disabled />
+            <div class="row" style="display: flex;">
+                <div class="flex-half-container">
+                    <label>Facility Type</label> 
+                    <input pInputText class="input-field" type="text" placeholder={{selectedResourceDTL.fType}} disabled />
+                </div>
+                <div class="flex-half-container">
+                    <label>Facility Seat</label> 
+                    <input pInputText class="input-field" type="text" placeholder={{selectedResourceDTL.name}} disabled />
+                </div>
+            </div>  
+            <div class="row" style="display: flex;">
+                <div class="flex-half-container">
+                    <label>Date</label> 
+                    <p-calendar appendTo="body" [(ngModel)]="this.bookingDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="flex-half-container">
+                    <label>Time Slot</label> 
+                    <p-dropdown appendTo="body"
+                            [options]="timeSlot" 
+                            (onChange)="getSelectedTimeSlot($event)"
+                            placeholder="Select Time"
+                    ></p-dropdown>
+                </div>
+            </div>        
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button styleClass="p-button-primary" label="Cancel" (onClick)="cd.reject()"></p-button>
+        <p-button styleClass="p-button-primary" label="Submit" (onClick)="cd.accept()"></p-button>
+    </ng-template>
+</p-confirmDialog>
+<p-toast></p-toast>

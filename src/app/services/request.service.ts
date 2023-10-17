@@ -2,6 +2,7 @@ import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environment";
+import { FacilityBooking, FacilitySeat } from "../workspace/workspace.model";
 
 
 @Injectable({
@@ -49,5 +50,20 @@ export class RequestService {
             // To add more logic for sorting if we need it
         }
         return options;
+    }
+
+    createBooking(selectedResourceDTL: FacilityBooking): void{
+        console.log('selectedResourceDTL', selectedResourceDTL);
+    // Promise<any> {
+        // return ;
+        // return this.cognitoService.getUserDetails()
+        // .then((user: any) => {
+        // // console.log("User details:", user);
+        // const params = {
+        //     schAdmin: user.email,
+        //     schEntryReqmt: schEntryReqmt
+        // };
+        // return lastValueFrom(this.http.post(`${this.baseUrl}/createSchEntryReqmt`, { params })); // convert Observable to Promise
+        // });
     }
 }
