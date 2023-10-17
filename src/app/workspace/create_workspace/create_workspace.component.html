@@ -7,7 +7,6 @@
                 <mat-grid-list cols={{cols}} rowHeight="5em">    
                     <mat-grid-tile *ngFor="let a of colsArr; let index = index">
                         <img #img src="{{getGridImg(colsArr[index])}}" height="60" (click)="openContextMenu($event,contextMenu,index)"/>
-                        <p-contextMenu #contextMenu [target]="img" [model]="items" appendTo="body"></p-contextMenu>
                     </mat-grid-tile>
                     <!-- <p-contextMenu [model]="items" appendTo="body"></p-contextMenu> -->
                     <!-- <mat-grid-tile *ngFor="let a of colsArr; let index = index">{{index}}</mat-grid-tile> -->
@@ -45,3 +44,5 @@
         </div>
     </div>
 </div>
+
+<p-contextMenu #contextMenu [model]="items" appendTo="body"></p-contextMenu>
