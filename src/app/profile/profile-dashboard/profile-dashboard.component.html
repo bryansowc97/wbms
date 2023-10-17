@@ -29,7 +29,7 @@
                 <th pSortableColumn="empID" style="width:25%">Employee ID <p-sortIcon field="empID"></p-sortIcon></th>
                 <th pSortableColumn="fullname" style="width:25%">Employee Name <p-sortIcon field="fullname"></p-sortIcon></th>
                 <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
-                <th>Action </th>
+                <th style="width:10%">Action </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-profile>
@@ -38,9 +38,14 @@
                 <td>{{ profile.fullname }}</td>
                 <td>{{ profile.email }}</td>
                 <td>
-                    <p-button label="View" styleClass="p-button-primary" (onClick)="onClickProfile('view', profile)"></p-button>
+                    <span class="flex-display p-buttonset">
+                        <p-button class="buttonSet" icon="pi pi-pencil" (onClick)="onClickProfile('edit', profile)"></p-button>
+                        <p-button class="buttonSet" icon="pi pi-eye" (onClick)="onClickProfile('view', profile)"></p-button>
+                        <p-button class="buttonSet" icon="pi pi-trash" (onClick)="deleteProfile()"></p-button>
+                    </span>
+                    <!-- <p-button label="View" styleClass="p-button-primary" (onClick)="onClickProfile('view', profile)"></p-button>
                     <p-button label="Edit" styleClass="p-button-primary" (onClick)="onClickProfile('edit', profile)"></p-button>
-                    <p-button label="Delete" styleClass="p-button-primary" (onClick)="deleteProfile()"></p-button>
+                    <p-button label="Delete" styleClass="p-button-primary" (onClick)="deleteProfile()"></p-button> -->
                 </td>
             </tr>
         </ng-template>

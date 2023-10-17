@@ -38,7 +38,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { BookingComponent } from './booking/booking.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
 import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-dashboard.component';
 import { LoginComponent } from './login/login.component';
@@ -48,11 +47,12 @@ import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/wor
 import { AuthenticationService } from './services/authentication.service';
 import { RequestService } from './services/request.service';
 import { MessageService } from 'primeng/api';
-import { CreateBookingComponent } from './booking/create-booking/create-booking.component';
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
 import { ConfirmationService } from 'primeng/api';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ContextMenuModule } from 'primeng/contextmenu';
+import { EditBookingComponent } from './booking/edit-booking/edit-booking.component';
+import { BookingDashboardComponent } from './booking/booking.component';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
@@ -61,13 +61,13 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 @NgModule({
   declarations: [
     AppComponent,
-    BookingComponent,
+    BookingDashboardComponent,
     CreateWorkspaceComponent,
     ProfileDashboardComponent,
     LoginComponent,
     NavbarComponent,
     WorkspaceDashboardComponent,
-    CreateBookingComponent,
+    EditBookingComponent,
     ProfileComponent
     // GenerateNameComponent,
     // LoginComponent,

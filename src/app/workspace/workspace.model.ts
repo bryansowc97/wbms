@@ -1,14 +1,15 @@
-export interface FacilitySeat {
+export interface FacilityBooking extends FacilitySeat{
+    emp_id:any;
+    date: any;
+    timeSlot : any;
+}
+
+export interface FacilitySeat{
     
     fType : any;
     fName : any;
-    seatName : any;
-    seatPos: any;
-    seatRotation: any;
-}
-
-export interface Seating {
     pos: any;
     rotation: any;
     name : any;
+    status: any;
 }

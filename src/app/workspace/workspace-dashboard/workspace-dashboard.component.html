@@ -30,11 +30,12 @@
                 
                 <p>worspace map include meeting room & work desk</p>    
                 <mat-grid-list cols={{cols}} rowHeight="5em">
-                    <mat-grid-tile *ngFor="let a of colsArr; let index = index">
-                        
-                        <p-button class="seatingButton" (onClick)="selectSeat(index)">
-                            <img src="{{getGridImg(colsArr[index])}}" height="60" />
+                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" >
+                        <p-button class="seatingButton" (onClick)="selectSeat(index)"
+                            [pTooltip]="getHover(index)">
+                            <img src="{{getGridImg(colsArr[index])}}" height="60"/>
                         </p-button>
+                    >
                     </mat-grid-tile>
                     
                 </mat-grid-list>
@@ -55,7 +56,7 @@
                     <br>
                     <span class="card">
                         <label>Seat</label>
-                    <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.seatName }}" disabled />
+                    <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.name }}" disabled />
                     </span>
                     
                     <p-button label="Book" styleClass="p-button-primary" (onClick)="createBooking()" [disabled]="!showBook"></p-button>
@@ -81,19 +82,19 @@
                 </div>
                 <div class="flex-half-container">
                     <label>Facility Seat</label> 
-                    <input pInputText class="input-field" type="text" placeholder={{selectedResourceDTL.seatName}} disabled />
+                    <input pInputText class="input-field" type="text" placeholder={{selectedResourceDTL.name}} disabled />
                 </div>
             </div>  
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Date</label> 
-                    <p-calendar appendTo="body" [(ngModel)]="bookingDate" mindate="currdate" [showIcon]="true"></p-calendar>
+                    <p-calendar appendTo="body" [(ngModel)]="this.bookingDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar>
                 </div>
                 <div class="flex-half-container">
                     <label>Time Slot</label> 
                     <p-dropdown appendTo="body"
                             [options]="timeSlot" 
-                            (onChange)="getSelectedResType($event)"
+                            (onChange)="getSelectedTimeSlot($event)"
                             placeholder="Select Time"
                     ></p-dropdown>
                 </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FacilitySeat, Seating } from '../workspace.model';
+import { FacilityBooking, FacilitySeat } from '../workspace.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
 
@@ -17,6 +17,7 @@ export class WorkspaceDashboardComponent {
   ){}
 
   // formGroup: any;
+  showHover: boolean = false;
   bookingDate:any;
   currdate = new Date();
   timeSlot:any[] = [
@@ -34,27 +35,32 @@ export class WorkspaceDashboardComponent {
   ];
 
   showBook: boolean = false;
+  bookingDTL : FacilityBooking = {} as FacilityBooking;
   selectedResourceDTL:FacilitySeat = {} as FacilitySeat;
   selectedResource:any;
   rows: number = 4;
   cols: number = 15;
   colsArr: any[] = [];
 
-  seating: Seating[] = [
-    {pos:17, rotation:'A', name: 'B4-MR01-17'},
-    {pos:32, rotation:'B', name: 'B4-MR01-32'},
-    {pos:18, rotation:'A', name: 'B4-MR01-18'},
-    {pos:33, rotation:'B', name: 'B4-MR01-33'},
-    {pos:19, rotation:'A', name: 'B4-MR01-19'},
-    {pos:34, rotation:'B', name: 'B4-MR01-34'},
-    {pos:23, rotation:'A', name: 'B4-MR01-23'},
-    {pos:38, rotation:'B', name: 'B4-MR01-38'},
-    {pos:24, rotation:'A', name: 'B4-MR01-24'},
-    {pos:39, rotation:'B', name: 'B4-MR01-39'},
-    {pos:22, rotation:'A', name: 'B4-MR01-22'},
-    {pos:37, rotation:'B', name: 'B4-MR01-37'},
-    {pos:27, rotation:'A', name: 'B4-MR01-27'},
-    {pos:42, rotation:'B', name: 'B4-MR01-42'},
+  bookingRecord : FacilityBooking[]=[
+    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', fName:'Meeting Room', fType:'B4-MR01', pos:17, rotation:'A', name: 'B4-MR01-17', status:'Active'},
+  ]
+
+  seating: FacilitySeat[] = [
+    {fType:'Meeting Room', fName:'B4-MR01',pos:17, rotation:'A', name: 'B4-MR01-17', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:32, rotation:'B', name: 'B4-MR01-32', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:18, rotation:'A', name: 'B4-MR01-18', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:33, rotation:'B', name: 'B4-MR01-33', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:19, rotation:'A', name: 'B4-MR01-19', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:34, rotation:'B', name: 'B4-MR01-34', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:23, rotation:'A', name: 'B4-MR01-23', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:38, rotation:'B', name: 'B4-MR01-38', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:24, rotation:'A', name: 'B4-MR01-24', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:39, rotation:'B', name: 'B4-MR01-39', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:22, rotation:'A', name: 'B4-MR01-22', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:37, rotation:'B', name: 'B4-MR01-37', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:27, rotation:'A', name: 'B4-MR01-27', status:'A'},
+    {fType:'Meeting Room', fName:'B4-MR01',pos:42, rotation:'B', name: 'B4-MR01-42', status:'A'},
   ]
 
   seating2: any[] = [
@@ -118,9 +124,14 @@ export class WorkspaceDashboardComponent {
     // this.clearForm();
   } 
 
+  getSelectedTimeSlot(event:any){
+    this.bookingDTL.timeSlot = event.value;
+  }
+
   getSelectedResName(event:any) {
     this.selectedResourceDTL!.fName = event.value.name;
     this.displaySltSeating(event.value.map);
+    this.showHover = true;
     // this.clearForm();
   } 
 
@@ -140,12 +151,12 @@ export class WorkspaceDashboardComponent {
   }
 
   selectSeat(seatIndex: any){
-    let seatDTL : Seating[] ;
-    seatDTL = this.seating.filter((seat:Seating) => seat.pos===(seatIndex));
-    this.selectedResourceDTL!.seatPos = seatIndex;
-    this.selectedResourceDTL!.seatName = seatDTL[0].rotation;
-    this.selectedResourceDTL!.seatName = seatDTL[0].name;
-    if(this.selectedResourceDTL.seatName !== undefined){
+    let seatDTL : FacilitySeat[] ;
+    seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(seatIndex));
+    this.selectedResourceDTL!.pos = seatIndex;
+    this.selectedResourceDTL!.name = seatDTL[0].rotation;
+    this.selectedResourceDTL!.name = seatDTL[0].name;
+    if(this.selectedResourceDTL.name !== undefined){
       this.showBook=true;
     }else{
       this.showBook=false;
@@ -157,14 +168,39 @@ export class WorkspaceDashboardComponent {
       this.confirmationService.confirm({
           accept: () => {
             this.submitBooking();
+          },
+          reject: () =>{
+            this.clearForm();
           }
       });
     
   }
 
+  clearForm(){
+    // this.selectedResourceDTL.fName = undefined;
+    // this.selectedResourceDTL.fType = undefined;
+    this.selectedResourceDTL.name = undefined;
+    this.selectedResourceDTL.pos = undefined;
+    this.selectedResourceDTL.rotation = undefined;
+    this.selectedResourceDTL.status = undefined;
+    this.showBook = false
+  }
+
   submitBooking(){
+    
     console.log('selectedResourceDTL',this.selectedResourceDTL);
-    this.requestService.createBooking(this.selectedResourceDTL);
+    this.bookingDTL.fType = this.selectedResourceDTL.fType;
+    this.bookingDTL.fName = this.selectedResourceDTL.fName;
+    this.bookingDTL.name = this.selectedResourceDTL.name;
+    
+    
+    this.bookingDTL.pos = this.selectedResourceDTL.pos;
+    this.bookingDTL.rotation = this.selectedResourceDTL.rotation;
+    this.bookingDTL.status = this.selectedResourceDTL.status;
+
+    console.log('bookingDTL',this.bookingDTL);
+    this.requestService.createBooking(this.bookingDTL);
+    this.clearForm();
     // .then((res: any)=>{
     //   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been created.' });
     // })
@@ -180,6 +216,7 @@ export class WorkspaceDashboardComponent {
   }
 
   ngOnInit(): void {
+    console.log('currdate', this.currdate)
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {
         this.colsArr.push(0)
@@ -194,6 +231,37 @@ export class WorkspaceDashboardComponent {
         //   this.colsArr.push(0)
         // }
       }
+    }
+  }
+
+  getHover(index: any){
+
+    if(this.showHover){
+      console.log('index',index);
+
+      let bookDTL : FacilityBooking[] ;
+      bookDTL = this.bookingRecord.filter((book:FacilityBooking) => book.pos===(index));
+      
+      let seatDTL : FacilitySeat[] ;
+      seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(index));
+      
+      if(bookDTL.length > 0 && seatDTL.length>0){
+        let result = 'name: ' + seatDTL[0].name + 
+                      '\nstatus: ' + seatDTL[0].status+
+                      '\ndate: ' + bookDTL[0].date + 
+                      '\ntime: ' + bookDTL[0].timeSlot;
+        return result;
+      }else if(seatDTL.length>0){
+        let result = 'name: ' + seatDTL[0].name + 
+                      '\nstatus: ' + seatDTL[0].status;
+        return result;
+      }else{
+        return '';
+      }
+    }
+    else{
+      console.log('index',index);
+      return '';
     }
   }
 

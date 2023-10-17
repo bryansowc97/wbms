@@ -1,0 +1,46 @@
+:host ::ng-deep{
+    .p-card .p-card-body {
+        padding: none; 
+    }
+}
+
+
+.left{
+    text-align: left;
+}
+
+:host ::ng-deep {
+    .p-button.right-margin{
+        margin-right: 5%;
+        max-height: 40px;
+        max-width: fit-content;
+    }
+}
+
+.dtls-display{
+    width: 100%;
+    margin: 0.5%;
+}
+
+.input-field {
+    margin-top: 1.5%;
+    margin-right: 2.5%;
+}
+
+.dtls-container {
+    display: flex;
+    width: 100%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-bottom: 3%;
+}
+
+.btn-container{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+}
