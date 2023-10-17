@@ -20,12 +20,12 @@ export class CreateWorkspaceComponent implements OnInit {
     private messageService: MessageService
   ){
     this.createWorkspace = this.formBuilder.group({
-      fType : [{ value: ''}, [Validators.required]],
-      fName : [{ value: ''}, [Validators.required]],
-      status: [{ value: ''}, [Validators.required]],
-      pos: [{ value: ''}, [Validators.required]],
-      rotation: [{ value: ''}, [Validators.required]],
-      name : [{ value: ''}, [Validators.required]],
+      fType : ['', Validators.required],
+      fName : ['', [Validators.required]],
+      status: ['', [Validators.required]],
+      pos: ['', [Validators.required]],
+      rotation: ['', [Validators.required]],
+      name : ['', [Validators.required]],
     });
   }
 
@@ -33,7 +33,10 @@ export class CreateWorkspaceComponent implements OnInit {
   facilityList?: FacilitySeat[];
   newFacility: FacilitySeat = {} as FacilitySeat;
   
-  isSave: boolean = true;
+  inProgress: boolean = false;
+  isComplete: boolean = false;
+  isRotate: boolean = false;
+  currIndex?: number;
   rows: number = 4;
   cols: number = 15;
   colsArr: any[] = [];
@@ -121,28 +124,100 @@ export class CreateWorkspaceComponent implements OnInit {
   }
 
   createFacility(){
-    console.log('newFacility',this.newFacility);
-    this.clear();
-    this.isSave = true;
+    //save to db
+    console.log('valid: ', this.createWorkspace.valid);
+    if(this.createWorkspace.valid){
+      this.seating.push(this.newFacility);
+      this.clear();
+    }
   }
 
   clear(){
-    this.newFacility.fName = undefined;
-    this.newFacility.fType = undefined;
-    this.newFacility.name = undefined;
-    this.newFacility.pos = undefined;
-    this.newFacility.rotation = undefined;
-    this.newFacility.status = undefined;
+    this.createWorkspace.reset();
+    this.inProgress = false;
+    this.isRotate = false;
+    this.currIndex = undefined;
   }
 
   cancel(){
     this.seating.pop();
     this.colsArr[this.newFacility.pos] = 0;
-    this.clear();
-    this.isSave = true;
+    this.clear(); 
   }
 
-  openContextMenu(event: MouseEvent, contextMenu: ContextMenu, index: number): void {
+  openContextMenu(event:MouseEvent ,contextMenu: ContextMenu, index: number): void {
+    
+    event.stopPropagation();
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    let seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(index));
+    let seatIndex = this.seating.findIndex(s =>s.pos === (index));
+
+    if (seatDTL.length > 0) {
+      
+      if (seatDTL[0].rotation == 'D') {
+        this.items = [
+          { label: 'Rotate', icon: 'pi pi-replay', command: (e) => {
+            // seatDTL[0].rotation = 'U';
+            console.log(this.seating[seatIndex].rotation);
+            this.isRotate = true;
+            this.seating[seatIndex].rotation = 'U';
+            this.colsArr[index] = 2;
+            console.log(this.seating[seatIndex].rotation);
+            
+          } },
+          { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            this.seating.splice(seatIndex);
+            this.colsArr[index] = 0
+          } }
+        ];
+      } else {
+        this.items = [
+          { label: 'Rotate', icon: 'pi pi-replay', command: (e) => {
+            // seatDTL[0].rotation = 'D'
+            this.isRotate = true;
+            this.seating[seatIndex].rotation = 'D';
+            this.colsArr[index] = 1;
+
+          } },
+          { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            this.seating.splice(seatIndex);
+            this.colsArr[index] = 0
+          } }
+        ];
+      }
+    } else {   
+      this.items = [
+        { label: 'Add', icon: 'pi pi-plus', 
+          command: (e) => {
+            this.inProgress = true;
+            
+            this.newFacility.pos = index;
+            this.newFacility.rotation = 'D';
+            this.seating.push(this.newFacility);
+            this.colsArr[index] = 1
+          } 
+        }
+      ];
+    }
+
+    if(this.inProgress || this.isRotate){
+      if(this.currIndex == index){
+        contextMenu.show(event);
+      }
+    }else{
+      this.currIndex = index;
+      contextMenu.show(event);
+    }
+    
+  }
+}
+
+
+
+/*
+openContextMenu(event: MouseEvent, contextMenu: ContextMenu, index: number): void {
     event.stopPropagation();
     event.preventDefault();
 
@@ -179,7 +254,7 @@ export class CreateWorkspaceComponent implements OnInit {
     } else {   
       this.items = [
         { label: 'Add', icon: 'pi pi-plus', command: (e) => {
-          this.isSave = false;
+          this.inProgress = true;
           this.newFacility.pos = index;
           this.newFacility.rotation = 'D';
           console.log('newResc', this.newFacility)
@@ -189,15 +264,15 @@ export class CreateWorkspaceComponent implements OnInit {
       ];
     }
 
-    if(this.isSave){
-      console.log('action: add');
+    if(this.inProgress && this.currIndex == index){
       contextMenu.show(event);
-    }else{
-      console.log('form: ',this.createWorkspace);
-      this.createWorkspace.markAllAsTouched();
-      this.createWorkspace.updateValueAndValidity();
-      console.log('form: ',this.createWorkspace);
+    }else if(!this.inProgress){
+      contextMenu.show(event);
     }
+    
+    
+
+
     // else{
     //   this.messageService.add({
     //     key:"error",
@@ -209,5 +284,4 @@ export class CreateWorkspaceComponent implements OnInit {
     // }
       
    
-  }
-}
+  }*/

@@ -23,7 +23,7 @@
                     <span class="card">
                         <label>Facility Type</label> 
                         <input formControlName="fType" pInputText class="input-field" type="text" [(ngModel)]="newFacility.fType"/>
-                        <small class="errorMsg" *ngIf="(createWorkspace.get('fType')?.touched || createWorkspace.get('fType')?.dirty) &&  createWorkspace.get('fType')?.value.length == 0"><br/>*Please enter facility type</small>
+                        <small class="errorMsg" *ngIf="(createWorkspace.get('fType')?.touched || createWorkspace.get('fType')?.dirty) && createWorkspace.get('fType')?.value.length == 0"><br/>*Please enter facility type</small>
                     </span>
                     <br>
                     <span class="card">
