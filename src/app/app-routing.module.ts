@@ -8,7 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
 
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
-import { EditBookingComponent } from './booking/edit-booking/edit-booking.component';
+import { EditBookingComponent } from './booking/edit-booking/view-booking.component';
 
 
  const ROOT_ROUTES: Routes = [

@@ -51,7 +51,7 @@ import { ProfileComponent } from './profile/create-edit-profile/create-edit-prof
 import { ConfirmationService } from 'primeng/api';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { ContextMenuModule } from 'primeng/contextmenu';
-import { EditBookingComponent } from './booking/edit-booking/edit-booking.component';
+import { EditBookingComponent } from './booking/edit-booking/view-booking.component';
 import { BookingDashboardComponent } from './booking/booking.component';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
