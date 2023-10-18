@@ -43,24 +43,24 @@ export class WorkspaceDashboardComponent {
   colsArr: any[] = [];
 
   bookingRecord : FacilityBooking[]=[
-    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', fName:'Meeting Room', fType:'B4-MR01', pos:17, rotation:'A', name: 'B4-MR01-17', status:'Active'},
+    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', sub_gp:'Meeting Room', gp:'B4-MR01', pos:17, rotation:'A', name: 'B4-MR01-17', status:'Active'},
   ]
 
   seating: FacilitySeat[] = [
-    {fType:'Meeting Room', fName:'B4-MR01',pos:17, rotation:'A', name: 'B4-MR01-17', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:32, rotation:'B', name: 'B4-MR01-32', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:18, rotation:'A', name: 'B4-MR01-18', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:33, rotation:'B', name: 'B4-MR01-33', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:19, rotation:'A', name: 'B4-MR01-19', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:34, rotation:'B', name: 'B4-MR01-34', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:23, rotation:'A', name: 'B4-MR01-23', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:38, rotation:'B', name: 'B4-MR01-38', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:24, rotation:'A', name: 'B4-MR01-24', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:39, rotation:'B', name: 'B4-MR01-39', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:22, rotation:'A', name: 'B4-MR01-22', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:37, rotation:'B', name: 'B4-MR01-37', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:27, rotation:'A', name: 'B4-MR01-27', status:'A'},
-    {fType:'Meeting Room', fName:'B4-MR01',pos:42, rotation:'B', name: 'B4-MR01-42', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:17, rotation:'A', name: 'B4-MR01-17', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:32, rotation:'B', name: 'B4-MR01-32', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:18, rotation:'A', name: 'B4-MR01-18', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:33, rotation:'B', name: 'B4-MR01-33', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:19, rotation:'A', name: 'B4-MR01-19', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:34, rotation:'B', name: 'B4-MR01-34', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:23, rotation:'A', name: 'B4-MR01-23', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:38, rotation:'B', name: 'B4-MR01-38', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:24, rotation:'A', name: 'B4-MR01-24', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:39, rotation:'B', name: 'B4-MR01-39', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:22, rotation:'A', name: 'B4-MR01-22', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:37, rotation:'B', name: 'B4-MR01-37', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:27, rotation:'A', name: 'B4-MR01-27', status:'A'},
+    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:42, rotation:'B', name: 'B4-MR01-42', status:'A'},
   ]
 
   seating2: any[] = [
@@ -120,7 +120,7 @@ export class WorkspaceDashboardComponent {
 
   getSelectedResType(event:any) {
     this.selectedResource = event.value.facility;
-    this.selectedResourceDTL!.fType = event.value.type;
+    this.selectedResourceDTL!.gp = event.value.type;
     // this.clearForm();
   } 
 
@@ -129,7 +129,7 @@ export class WorkspaceDashboardComponent {
   }
 
   getSelectedResName(event:any) {
-    this.selectedResourceDTL!.fName = event.value.name;
+    this.selectedResourceDTL!.sub_gp = event.value.name;
     this.displaySltSeating(event.value.map);
     this.showHover = true;
     // this.clearForm();
@@ -189,8 +189,8 @@ export class WorkspaceDashboardComponent {
   submitBooking(){
     
     console.log('selectedResourceDTL',this.selectedResourceDTL);
-    this.bookingDTL.fType = this.selectedResourceDTL.fType;
-    this.bookingDTL.fName = this.selectedResourceDTL.fName;
+    this.bookingDTL.gp = this.selectedResourceDTL.gp;
+    this.bookingDTL.sub_gp = this.selectedResourceDTL.sub_gp;
     this.bookingDTL.name = this.selectedResourceDTL.name;
     
     

@@ -17,8 +17,8 @@ export class EditBookingComponent {
     private router: Router
   ){
     this.booking = this.formBuilder.group({
-      fType : ['', Validators.required],
-      fName : ['', [Validators.required]],
+      gp : ['', Validators.required],
+      sub_gp : ['', [Validators.required]],
       status: ['', [Validators.required]],
       pos: ['', [Validators.required]],
       rotation: ['', [Validators.required]],

@@ -21,14 +21,14 @@
                     
                     <span class="card">
                         <label>Facility Type</label> 
-                        <input formControlName="fType" pInputText class="input-field" type="text" [(ngModel)]="newFacility.fType"/>
-                        <small class="errorMsg" *ngIf="(createWorkspace.get('fType')?.touched || createWorkspace.get('fType')?.dirty) && createWorkspace.get('fType')?.value.length == 0"><br/>*Please enter facility type</small>
+                        <input formControlName="gp" pInputText class="input-field" type="text" [(ngModel)]="newFacility.gp"/>
+                        <small class="errorMsg" *ngIf="(createWorkspace.get('gp')?.touched || createWorkspace.get('gp')?.dirty) && createWorkspace.get('gp')?.value.length == 0"><br/>*Please enter facility type</small>
                     </span>
                     <br>
                     <span class="card">
                         <label>Facility/Room Name</label> 
-                        <input formControlName="fName" pInputText class="input-field" type="text" [(ngModel)]="newFacility.fName"/>
-                        <small class="errorMsg" *ngIf="(createWorkspace.get('fName')?.touched || createWorkspace.get('fName')?.dirty) "><br/>*Please enter facility type</small>
+                        <input formControlName="sub_gp" pInputText class="input-field" type="text" [(ngModel)]="newFacility.sub_gp"/>
+                        <small class="errorMsg" *ngIf="(createWorkspace.get('sub_gp')?.touched || createWorkspace.get('sub_gp')?.dirty) "><br/>*Please enter facility type</small>
                     </span>
                     <br>
                     <span class="card">

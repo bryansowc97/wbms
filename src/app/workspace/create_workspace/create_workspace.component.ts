@@ -20,8 +20,8 @@ export class CreateWorkspaceComponent implements OnInit {
     private messageService: MessageService
   ){
     this.createWorkspace = this.formBuilder.group({
-      fType : ['', Validators.required],
-      fName : ['', [Validators.required]],
+      gp : ['', Validators.required],
+      sub_gp : ['', [Validators.required]],
       status: ['', [Validators.required]],
       pos: ['', [Validators.required]],
       rotation: ['', [Validators.required]],
@@ -63,12 +63,12 @@ export class CreateWorkspaceComponent implements OnInit {
 
   // resource:
   FacilitySeat[] =[
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:17, rotation:'A', name: 'B4-MR01-17'},
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:32, rotation:'B', name: 'B4-MR01-32'},
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:18, rotation:'A', name: 'B4-MR01-18'},
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:33, rotation:'B', name: 'B4-MR01-33'},
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:19, rotation:'A', name: 'B4-MR01-19'},
-    {fType : 'Meeting Room', fName : 'B4-MR01', status: 'A', pos:34, rotation:'B', name: 'B4-MR01-34'}
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:17, rotation:'A', name: 'B4-MR01-17'},
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:32, rotation:'B', name: 'B4-MR01-32'},
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:18, rotation:'A', name: 'B4-MR01-18'},
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:33, rotation:'B', name: 'B4-MR01-33'},
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:19, rotation:'A', name: 'B4-MR01-19'},
+    {gp : 'Meeting Room', sub_gp : 'B4-MR01', status: 'A', pos:34, rotation:'B', name: 'B4-MR01-34'}
   ];
 
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
