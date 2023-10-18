@@ -6,8 +6,8 @@ export interface FacilityBooking extends FacilitySeat{
 
 export interface FacilitySeat{
     
-    fType : any;
-    fName : any;
+    gp : any;
+    sub_gp : any;
     pos: any;
     rotation: any;
     name : any;
