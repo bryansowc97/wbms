@@ -1,5 +1,6 @@
 package wbms.com.sg.workspace.service;
 
+import wbms.com.sg.workspace.common.IConstants;
 import wbms.com.sg.workspace.dto.BookingDTO;
 import wbms.com.sg.workspace.entity.Workspace;
 import jakarta.transaction.Transactional;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wbms.com.sg.workspace.repository.WorkspaceRepository;
-import wbms.com.sg.workspace.common.RouteConstants;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class WorkspaceServiceImpl implements WorkspaceService{
   public List<BookingDTO> testBookingService() {
 
     ResponseEntity<List<BookingDTO>> response = restTemplate.exchange(
-      RouteConstants.bookingGetAllApi,
+      IConstants.bookingGetAllApi,
       HttpMethod.GET,
       null,
       new ParameterizedTypeReference<List<BookingDTO>>() {}
