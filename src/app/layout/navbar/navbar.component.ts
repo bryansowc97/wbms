@@ -61,7 +61,7 @@ export class NavbarComponent {
             {
                 label: 'Booking',
                 icon: 'pi pi-calendar-plus',
-                routerLink: '/booking'
+                routerLink: '/bookingDashboard'
             },
             {
                 label: 'Manage User',

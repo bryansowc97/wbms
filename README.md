@@ -26,20 +26,30 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-## To run Swagger-api locally, Only works for individual services.
-http://localhost:8080/swagger-ui/index.html
+## To run Swagger-api locally, Only works for individual services.  
+Change the port number accordingly to the service port number.  
+http://localhost:8081/swagger-ui/index.html for booking  
+http://localhost:8082/swagger-ui/index.html for workspace  
 
-## To build Docker image
-Run docker build -t repository-name:tag .
-Below are the naming that I used - Bryan
-e.g docker build -t wbms-accounts-docker:accounts-docker .
-e.g docker build -t wbms-workspace-docker:workspace-docker .
-e.g docker build -t wbms-booking-docker:booking-docker .
+## To build Docker image  
+Run docker build -t repository-name:tag .  
+Below are the naming that I used - Bryan  
+e.g docker build -t wbms-service-discovery-docker:service-discovery-docker .  
+e.g docker build -t wbms-workspace-docker:workspace-docker .  
+e.g docker build -t wbms-booking-docker:booking-docker .  
 
-## To run docker image
-Run docker run -p portnumber -d repository-name:tag
-Below are the naming that I used - Bryan
-To run multiple containers at once the port numbers has to be different 
-eg. docker run -p 8080:8080 -d wbms-accounts-docker:accounts-docker
-eg. docker run -p 8081:8081 -d wbms-workspace-docker:workspace-docker
-eg. docker run -p 8082:8082 -d wbms-booking-docker:booking-docker
+## To run docker image  
+Run docker run -p portnumber -d repository-name:tag  
+Below are the naming that I used - Bryan  
+To run multiple containers at once the port numbers has to be different  
+e.g docker run -p 8761:8761 -d wbms-service-discovery-docker:service-discovery-docker  
+e.g docker run -p 8081:8081 -d wbms-workspace-docker:workspace-docker  
+e.g docker run -p 8082:8082 -d wbms-booking-docker:booking-docker  
+
+## To run the microservices
+1. Run the service-discovery application  
+2. Then go to http//localhost:8761 to check if Spring Eureka is running correctly  
+3. Run the other services applications, through docker or intellij or cmd
+4. Check if the booking-service and workspace-service instances appears under Intances curently registered with Eureka
+5. If the status is UP(1) then its running already. And the services are able to communicate with each other.
+
