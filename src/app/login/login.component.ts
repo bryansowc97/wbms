@@ -51,7 +51,7 @@ export class LoginComponent {
         detail: "Welcome to WBMS!",
         sticky: false,
       }); 
-      this.router.navigate(['booking']);
+      this.router.navigate(['bookingDashboard']);
     }).catch((error)=>{
       this.loading = false;
       this.messageService.add({
@@ -163,6 +163,20 @@ export class LoginComponent {
       .catch((error) => {
         console.error('Error listing users:', error);
       });
+  }
+
+  public testDb2(): void{
+    this.authenticationService.testDb().subscribe(
+      (res: any) => {
+          let msg = res.body;
+          this.messageService.add({
+            severity: "success",
+            summary: "Found in database",
+            detail: msg,
+            sticky: false,
+          }); 
+      }
+    );
   }
 
 }

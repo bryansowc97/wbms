@@ -57,6 +57,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "eureka": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environment.ts",
+                  "with": "src/environment.eureka.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -69,6 +83,9 @@
             },
             "development": {
               "browserTarget": "wbms:build:development"
+            },
+            "eureka": {
+              "browserTarget": "wbms:build:eureka"
             }
           },
           "defaultConfiguration": "development"

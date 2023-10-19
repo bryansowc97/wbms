@@ -70,7 +70,7 @@ import { BookingDashboardComponent } from './booking/booking.component';
     NavbarComponent,
     WorkspaceDashboardComponent,
     EditBookingComponent,
-    ProfileComponent
+    ProfileComponent,
     SignUpComponent,
     // GenerateNameComponent,
     // LoginComponent,

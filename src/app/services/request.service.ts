@@ -9,37 +9,36 @@ import { FacilityBooking, FacilitySeat } from "../workspace/workspace.model";
     providedIn: 'root'
 })
 export class RequestService {
+    apiUrl: any = environment.api;
+
     constructor(
         private http: HttpClient
     ) {
     }
-
-    // Use the environment variable to construct the API URL
-    SERVER_API_URL = environment.apiUrl;
     
     // Find (http.get)
     // find<T>(url: string): Observable<HttpResponse<T>> {
-    //     return this.http.get<T>(`${this.SERVER_API_URL + url}`, { observe: 'response' });
+    //     return this.http.get<T>(`${environment.apiUrl + url}`, { observe: 'response' });
     // }
 
-    find<T>(url: string): any {
-        return this.http.get(`${this.SERVER_API_URL + url}`);
+    find<T>(url: string, service: string): any {
+        return this.http.get(`${this.apiUrl[service] + url}`);
     }
 
     // Query (http.get with params)
-    query<T>(url: string, param?: any): Observable<HttpResponse<T>> {
+    query<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
         const options = this.createRequestOption(param);
-        return this.http.get<T>(`${this.SERVER_API_URL + url}`, { params: options, observe: 'response' });
+        return this.http.get<T>(`${this.apiUrl[service] + url}}`, { params: options, observe: 'response' });
     }
 
     // Create (http.post)
-    create<T>(url: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.post<T>(`${this.SERVER_API_URL + url}`, param, { observe: 'response' });
+    create<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
+        return this.http.post<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
     }
 
     // Update (http.put)
-    update<T>(url: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.put<T>(`${this.SERVER_API_URL + url}`, param, { observe: 'response' });
+    update<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
+        return this.http.put<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
     }
 
     createRequestOption(req?: any): HttpParams {

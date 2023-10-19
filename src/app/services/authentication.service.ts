@@ -197,6 +197,6 @@ export class AuthenticationService {
 
   // For local only, not aws
   public testDb(): any {
-    return this.requestService.find(`/api/profile/testDb`);
+    return this.requestService.find(`/testWorkspaceDb`, 'workspace');
   }
 }
