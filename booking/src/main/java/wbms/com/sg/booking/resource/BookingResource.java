@@ -19,4 +19,9 @@ public class BookingResource {
   public ResponseEntity<?> testBookingDb(){
     return new ResponseEntity<>(bookingService.findAll(), HttpStatus.OK);
   }
+
+  @GetMapping("/getBookingsByUser")
+  public ResponseEntity<?> getBookingsByUser(String employeeId) {
+    return new ResponseEntity<>(bookingService.getBookingsByUser(employeeId), HttpStatus.OK);
+  }
 }
