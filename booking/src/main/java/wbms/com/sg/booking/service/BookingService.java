@@ -10,4 +10,6 @@ public interface BookingService {
   ComUserDTO getUserFromAccountsService();
 
   List<Booking> findAll();
+
+  List<Booking> getBookingsByUser(String employeeId);
 }
