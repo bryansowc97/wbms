@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { UserProfile } from '../models/profile.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, catchError, pipe, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthenticationService } from '../services/authentication.service';
-import { HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { CognitoService, IUser } from '../cognito.service';
+import { environment } from 'src/environment';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent {
     private router: Router, 
     private authenticationService: AuthenticationService,
     private messageService: MessageService,
-    private cognitoService: CognitoService
+    private cognitoService: CognitoService,
+    private http: HttpClient
   ) {
     this.loading = false;
     this.user = {} as IUser;

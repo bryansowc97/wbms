@@ -196,7 +196,7 @@ export class AuthenticationService {
 
 
   // For local only, not aws
-  public testDb(): Observable<any> {
+  public testDb(): any {
     return this.requestService.find(`/api/profile/testDb`);
   }
 }

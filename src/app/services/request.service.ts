@@ -17,9 +17,12 @@ export class RequestService {
     SERVER_API_URL = environment.apiUrl;
     
     // Find (http.get)
-    find<T>(url: string): Observable<HttpResponse<T>> {
-        // return this.http.get<T>(`${this.SERVER_API_URL + url}`, { observe: 'response' });
-        return this.http.get<T>(`${this.SERVER_API_URL + url}`, { observe: 'response' });
+    // find<T>(url: string): Observable<HttpResponse<T>> {
+    //     return this.http.get<T>(`${this.SERVER_API_URL + url}`, { observe: 'response' });
+    // }
+
+    find<T>(url: string): any {
+        return this.http.get(`${this.SERVER_API_URL + url}`);
     }
 
     // Query (http.get with params)

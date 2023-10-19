@@ -16,9 +16,8 @@ public class AccountsController {
 
   @GetMapping("/testDb")
   public ResponseEntity<?> testDb() {
-//    uam checks
-//    if ()
-    return new ResponseEntity<>(accountService.testDb(), HttpStatus.OK);
+//    return new ResponseEntity<>(accountService.testDb(), HttpStatus.OK);
+    return ResponseEntity.ok(accountService.testDb());
   }
 
 }
