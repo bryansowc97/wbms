@@ -1,68 +1,59 @@
 import { Component,OnInit } from '@angular/core';
+import { Booking } from './booking.model';
+import { BookingStatusEnum } from '../constant.enum';
+import { Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
-export class BookingComponent implements OnInit {
+export class BookingDashboardComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ){
+  }
+
+  bookingStatusEnum: { [key: string]: string } = BookingStatusEnum;
 
   search_key: any ;
   date: any;
   source: any;
-  booking: any[]=[
-    {
-      Ws_code : 'B6-A1-09',
-      Emp_name : 'Alvin Tan',
-      date : '10/06/2023',
-      time : '10:00am - 12:00pm',
-      status : 'BOOKED',
-      action : 'edit'
-    },
-    {
-      Ws_code : 'B6-A1-09',
-      Emp_name : 'Alvin Tan',
-      date : '10/06/2023',
-      time : '10:00am - 12:00pm',
-      status : 'CANCEL',
-      action : 'edit'
-    },
-    {
-      Ws_code : 'B6-A1-09',
-      Emp_name : 'Alvin Tan',
-      date : '10/06/2023',
-      time : '10:00am - 12:00pm',
-      status : 'unknown',
-      action : 'edit'
-    },
-    {
-      Ws_code : 'B6-A1-09',
-      Emp_name : 'Alvin Tan',
-      date : '10/06/2023',
-      time : '10:00am - 12:00pm',
-      status : 'SUCCESS',
-      action : 'edit'
-    }
-  ];
+  booking: Booking[]=[
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'D', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'D'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'D', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'M'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
+    { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
 
-  constructor(){
-    
-  }
+  ];
 
   ngOnInit(): void {
 
   }
 
   customSort(event:any):void{}
+  
   clear(event:any):void{
-    this.search_key="";
+    this.search_key = "";
+    this.date = "";
   }
 
   getSeverity(event:string):string{
-    return event === 'BOOKED' ? 'warning':
-            event === 'CANCEL' ? 'danger':
-            event === 'SUCCESS' ? 'success':
-            'info';
+    return event === this.bookingStatusEnum['B'] ? 'success':'danger';
+  }
+
+  deleteBooking(event: any) {
+    this.confirmationService.confirm({
+        accept: () => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });
+        }
+    });
   }
 
 }

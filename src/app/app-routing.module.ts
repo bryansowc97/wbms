@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './layout/app/home.component';
 import { CreateWorkspaceComponent } from './workspace/create_workspace/create_workspace.component';
 import { ProfileDashboardComponent } from './profile/profile-dashboard/profile-dashboard.component';
-import { BookingComponent } from './booking/booking.component';
+import { BookingDashboardComponent } from './booking/booking.component';
 import { LoginComponent } from './login/login.component';
 import { WorkspaceDashboardComponent } from './workspace/workspace-dashboard/workspace-dashboard.component';
+
 import { ProfileComponent } from './profile/create-edit-profile/create-edit-profile.component';
+import { EditBookingComponent } from './booking/edit-booking/view-booking.component';
 
 
  const ROOT_ROUTES: Routes = [
@@ -41,9 +43,13 @@ import { ProfileComponent } from './profile/create-edit-profile/create-edit-prof
     // loadChildren: () => import('src/app/profile/profile.module').then(m => m.ProfileModule)
   },
   {
-    path: 'booking',
-    component: BookingComponent
+    path: 'bookingDashboard',
+    component: BookingDashboardComponent
     // loadChildren: () => import('src/app/booking/booking.module').then(m => m.BookingModule)
+  },
+  {
+    path: 'booking',
+    component: EditBookingComponent
   }
  ]
 

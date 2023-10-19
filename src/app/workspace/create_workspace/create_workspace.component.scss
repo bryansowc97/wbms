@@ -42,6 +42,14 @@
     margin-bottom: 5%;
   }
 
+:host ::ng-deep {
+    .p-button.right-margin{
+        margin-right: 5%;
+        max-height: 40px;
+        max-width: fit-content;
+    }
+}
+
 .mat-grid-tile {
     background: white;
     border: solid 1px lightgray;

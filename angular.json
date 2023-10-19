@@ -100,11 +100,5 @@
         }
       }
     }
-<<<<<<< HEAD
-=======
-  },
-  "cli": {
-    "analytics": false
->>>>>>> setup_xy
   }
 }
