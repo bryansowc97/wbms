@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wbms.com.sg.workspace.repository.WorkspaceRepository;
+import wbms.com.sg.workspace.common.RouteConstants;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class WorkspaceServiceImpl implements WorkspaceService{
   public List<BookingDTO> testBookingService() {
 
     ResponseEntity<List<BookingDTO>> response = restTemplate.exchange(
-        "http://booking-service/api/booking/testBookingDb",
+      RouteConstants.bookingGetAllApi,
       HttpMethod.GET,
       null,
       new ParameterizedTypeReference<List<BookingDTO>>() {}
