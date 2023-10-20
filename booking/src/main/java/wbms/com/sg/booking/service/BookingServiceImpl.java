@@ -29,4 +29,8 @@ public class BookingServiceImpl implements BookingService{
 
     return bookingRepository.findAll();
   }
+
+  public List<Booking> getBookingsByUser(String employeeId) {
+    return bookingRepository.findByEmployeeId(employeeId);
+  }
 }
