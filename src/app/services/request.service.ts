@@ -22,7 +22,8 @@ export class RequestService {
     // }
 
     find<T>(url: string, service: string): any {
-        return this.http.get(`${this.apiUrl[service] + url}`);
+        // return this.http.get(`${this.apiUrl[service] + url}`);
+        return this.http.get(`http://workspace-service/api/workspace/testWorkspaceDb`);
     }
 
     // Query (http.get with params)

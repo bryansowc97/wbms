@@ -1,4 +1,4 @@
-package wbms.com.sg.workspace;
+package wbms.com.sg.servicediscovery;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
