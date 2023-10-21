@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FacilityBooking, FacilitySeat } from '../workspace.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -13,7 +14,8 @@ export class WorkspaceDashboardComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private requestService: RequestService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ){}
 
   // formGroup: any;
@@ -288,5 +290,9 @@ export class WorkspaceDashboardComponent {
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });
       }
     });
+  }
+
+  editWorkspace() {
+    this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {seating: this.seating2, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.sub_gp? this.selectedResourceDTL.sub_gp: ''}});
   }
 }

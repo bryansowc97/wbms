@@ -54,7 +54,10 @@ export class NavbarComponent {
                   },
                   {
                     label: 'Create Workspace',
-                    routerLink: '/createWorkspace'
+                    routerLink: '/createWorkspace',
+                    queryParams: {
+                      mode: 'create'
+                    }
                   }
                 ]
             },            

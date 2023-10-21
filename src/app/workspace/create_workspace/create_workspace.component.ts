@@ -4,6 +4,7 @@ import { ContextMenu } from 'primeng/contextmenu';
 import { FacilitySeat } from '../workspace.model';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { catchError, throwError } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -18,11 +19,27 @@ export class CreateWorkspaceComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
+    private route: ActivatedRoute,
+    private router: Router,
     private messageService: MessageService
   ){
+    let details = this.router.getCurrentNavigation()?.extras.state;
+    if (details) {
+      this.seating = details['seating']
+    } else {       
+      this.seating = [
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:17, rotation:'D', name: undefined},
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:32, rotation:'U', name: undefined},
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:18, rotation:'D', name: undefined},
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:33, rotation:'U', name: undefined},
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:19, rotation:'D', name: undefined},
+        {gp : undefined, sub_gp : undefined, status: 'A', pos:34, rotation:'U', name: undefined}
+      ];
+    }
+    
     this.createWorkspace = this.formBuilder.group({
-      gp : ['', Validators.required], // workspace or meeting room
-      sub_gp : ['', [Validators.required]], //eg B4-WS01
+      gp : [details? details['gp'] ? details['gp'] : '' : '', Validators.required], // workspace or meeting room
+      sub_gp : [details? details['sub_gp']? details['sub_gp'] : '' : '', [Validators.required]], //eg B4-WS01
     });
   }
 
@@ -42,14 +59,8 @@ export class CreateWorkspaceComponent implements OnInit {
   colsArr: any[] = [];
   items: MenuItem[] | undefined;
   
-  seating: FacilitySeat[] =[
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:17, rotation:'D', name: undefined},
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:32, rotation:'U', name: undefined},
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:18, rotation:'D', name: undefined},
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:33, rotation:'U', name: undefined},
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:19, rotation:'D', name: undefined},
-    {gp : undefined, sub_gp : undefined, status: 'A', pos:34, rotation:'U', name: undefined}
-  ];
+  seating: FacilitySeat[] =[];
+  mode: string = "";
 
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
   // seatingRotation: string[] = ['D','D','D','U','U','U','D','D','D','U','U','U', 'D', 'U'];
@@ -62,6 +73,13 @@ export class CreateWorkspaceComponent implements OnInit {
     }
 
     this.displaySltSeating(this.seating);
+    
+    this.route.queryParams.subscribe(params => {
+      if (params) {
+        this.mode = params['mode'];
+      }
+    })
+
     // for (let i=0;i<this.cols;i++) { 
     //   for (let i=0;i<this.rows;i++) {
     //     if (this.seatingPos.includes(this.colsArr.length)) {

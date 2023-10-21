@@ -4,7 +4,8 @@
     <div class="row flex-display">
         <div class="col map-display">
             <p-card class="card resourceMap">
-                <h3>Create New Workspace </h3>
+                <h3 *ngIf="mode === 'create'">Create New Workspace </h3>
+                <h3 *ngIf="mode === 'edit'">Edit Workspace </h3>
                 <mat-grid-list cols={{cols}} rowHeight="5em">    
                     <mat-grid-tile *ngFor="let a of colsArr; let index = index" [style.opacity]="checkOpacity(index)">
                         <img #img src="{{getGridImg(colsArr[index])}}" height="60" (click)="openContextMenu($event,contextMenu,index)"/>
