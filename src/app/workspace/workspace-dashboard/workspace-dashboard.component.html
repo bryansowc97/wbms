@@ -4,7 +4,8 @@
     <div class="row flex-display">
         <div class="col map-display">
             <p-card class="card resourceMap">
-                <p-button icon="pi pi-plus" class="float" label="Create Facility" styleClass="p-button-warning" [routerLink]="['/createWorkspace']"></p-button>
+                <p-button class="float" icon="pi pi-trash" (onClick)="deleteWorkspace()"></p-button>
+                <p-button class="float" icon="pi pi-pencil"></p-button>
                 <div class="row flex-display center">
                     <div class="col card">
                         <label>Type: </label>
@@ -28,14 +29,10 @@
                     </div>
                 </div>
                 
-                <p>worspace map include meeting room & work desk</p>    
+                <p>Workspace map include meeting room & work desk</p>    
                 <mat-grid-list cols={{cols}} rowHeight="5em">
-                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" >
-                        <p-button class="seatingButton" (onClick)="selectSeat(index)"
-                            [pTooltip]="getHover(index)">
-                            <img src="{{getGridImg(colsArr[index])}}" height="60"/>
-                        </p-button>
-                    >
+                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" >                   
+                        <img src="{{getGridImg(colsArr[index])}}" height="60" [pTooltip]="getHover(index)" (click)="selectSeat(index)"/>
                     </mat-grid-tile>
                     
                 </mat-grid-list>
@@ -69,10 +66,11 @@
 
 <p-confirmDialog #cd [style]="{ width: '50vw' }">
     <ng-template pTemplate="header">
-        <h3>Book Facility</h3>
+        <h3 *ngIf="openCreateBookgDialog">Book Facility</h3>
+        <h3 *ngIf="openDeleteWorkspaceDialog">Delete Workspace</h3>
     </ng-template>
     <ng-template pTemplate="message">
-        <div class="flex-container">
+        <div class="flex-container" *ngIf="openCreateBookgDialog">
             <label>Employee ID</label>
             <input pInputText class="input-field" type="text" placeholder="P123456" disabled />
             <div class="row" style="display: flex;">
@@ -100,10 +98,15 @@
                 </div>
             </div>        
         </div>
+        <div class="flex-container" *ngIf="openDeleteWorkspaceDialog">
+            <p>Please enter master password to continue</p>
+            <input pInputText class="input-field" type="password" />
+        </div>
     </ng-template>
     <ng-template pTemplate="footer">
         <p-button styleClass="p-button-primary" label="Cancel" (onClick)="cd.reject()"></p-button>
-        <p-button styleClass="p-button-primary" label="Submit" (onClick)="cd.accept()"></p-button>
+        <p-button styleClass="p-button-primary" label="Submit" (onClick)="cd.accept()" *ngIf="openCreateBookgDialog"></p-button>
+        <p-button styleClass="p-button-primary" label="Delete" (onClick)="cd.accept()" *ngIf="openDeleteWorkspaceDialog"></p-button>
     </ng-template>
 </p-confirmDialog>
 <p-toast></p-toast>

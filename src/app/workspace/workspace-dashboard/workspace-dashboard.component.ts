@@ -46,6 +46,9 @@ export class WorkspaceDashboardComponent {
     {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', sub_gp:'Meeting Room', gp:'B4-MR01', pos:17, rotation:'A', name: 'B4-MR01-17', status:'Active'},
   ]
 
+  openDeleteWorkspaceDialog: boolean = false;
+  openCreateBookgDialog: boolean = false;
+
   seating: FacilitySeat[] = [
     {gp:'Meeting Room', sub_gp:'B4-MR01',pos:17, rotation:'A', name: 'B4-MR01-17', status:'A'},
     {gp:'Meeting Room', sub_gp:'B4-MR01',pos:32, rotation:'B', name: 'B4-MR01-32', status:'A'},
@@ -165,15 +168,16 @@ export class WorkspaceDashboardComponent {
   }
 
   createBooking(){
-      this.confirmationService.confirm({
-          accept: () => {
-            this.submitBooking();
-          },
-          reject: () =>{
-            this.clearForm();
-          }
-      });
-    
+    this.openCreateBookgDialog = true;
+    this.openDeleteWorkspaceDialog = false;
+    this.confirmationService.confirm({
+        accept: () => {
+          this.submitBooking();
+        },
+        reject: () =>{
+          this.clearForm();
+        }
+    });
   }
 
   clearForm(){
@@ -273,5 +277,16 @@ export class WorkspaceDashboardComponent {
     } else {
       return ('../../../assets/workdesk3.png')
     }
+  }
+
+  deleteWorkspace() {
+    this.openCreateBookgDialog = false;
+    this.openDeleteWorkspaceDialog = true;
+    this.confirmationService.confirm({
+      accept: () => {
+        this.openDeleteWorkspaceDialog = false;
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });
+      }
+    });
   }
 }
