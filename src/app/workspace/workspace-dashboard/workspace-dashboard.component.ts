@@ -45,45 +45,45 @@ export class WorkspaceDashboardComponent {
   colsArr: any[] = [];
 
   bookingRecord : FacilityBooking[]=[
-    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', sub_gp:'Meeting Room', gp:'B4-MR01', pos:17, rotation:'A', name: 'B4-MR01-17', status:'Active'},
+    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', sub_gp:'MR', gp:'B4-MR01', pos:17, rotation:'U', name: 'B4-MR01-17', status:'A'},
   ]
 
   openDeleteWorkspaceDialog: boolean = false;
   openCreateBookgDialog: boolean = false;
 
   seating: FacilitySeat[] = [
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:17, rotation:'A', name: 'B4-MR01-17', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:32, rotation:'B', name: 'B4-MR01-32', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:18, rotation:'A', name: 'B4-MR01-18', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:33, rotation:'B', name: 'B4-MR01-33', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:19, rotation:'A', name: 'B4-MR01-19', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:34, rotation:'B', name: 'B4-MR01-34', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:23, rotation:'A', name: 'B4-MR01-23', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:38, rotation:'B', name: 'B4-MR01-38', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:24, rotation:'A', name: 'B4-MR01-24', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:39, rotation:'B', name: 'B4-MR01-39', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:22, rotation:'A', name: 'B4-MR01-22', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:37, rotation:'B', name: 'B4-MR01-37', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:27, rotation:'A', name: 'B4-MR01-27', status:'A'},
-    {gp:'Meeting Room', sub_gp:'B4-MR01',pos:42, rotation:'B', name: 'B4-MR01-42', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:17, rotation:'D', name: 'B4-MR01-17', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:32, rotation:'U', name: 'B4-MR01-32', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:18, rotation:'D', name: 'B4-MR01-18', status:'U'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:33, rotation:'U', name: 'B4-MR01-33', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:19, rotation:'D', name: 'B4-MR01-19', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:34, rotation:'U', name: 'B4-MR01-34', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:23, rotation:'D', name: 'B4-MR01-23', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:38, rotation:'U', name: 'B4-MR01-38', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:24, rotation:'D', name: 'B4-MR01-24', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:39, rotation:'U', name: 'B4-MR01-39', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:22, rotation:'D', name: 'B4-MR01-22', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:37, rotation:'U', name: 'B4-MR01-37', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:27, rotation:'D', name: 'B4-MR01-27', status:'A'},
+    {gp:'MR', sub_gp:'B4-MR01',pos:42, rotation:'U', name: 'B4-MR01-42', status:'A'},
   ]
 
   seating2: any[] = [
-    {pos:17, rotation:'A'},
-    {pos:32, rotation:'B'},
-    {pos:18, rotation:'A'},
-    {pos:33, rotation:'B'},
-    {pos:19, rotation:'A'},
-    {pos:34, rotation:'B'},
-    {pos:23, rotation:'A'},
-    {pos:38, rotation:'B'},
-    {pos:24, rotation:'A'},
-    {pos:39, rotation:'B'},
-    {pos:22, rotation:'A'},
-    {pos:37, rotation:'B'},
-    {pos:27, rotation:'A'},
-    {pos:3, rotation:'A'},
-    {pos:42, rotation:'B'},
+    {pos:17, rotation:'D', status:'A'},
+    {pos:32, rotation:'U', status:'A'},
+    {pos:18, rotation:'D', status:'A'},
+    {pos:33, rotation:'U', status:'A'},
+    {pos:19, rotation:'D', status:'A'},
+    {pos:34, rotation:'U', status:'A'},
+    {pos:23, rotation:'D', status:'A'},
+    {pos:38, rotation:'U', status:'A'},
+    {pos:24, rotation:'D', status:'A'},
+    {pos:39, rotation:'U', status:'A'},
+    {pos:22, rotation:'D', status:'A'},
+    {pos:37, rotation:'U', status:'A'},
+    {pos:27, rotation:'D', status:'A'},
+    {pos:3, rotation:'D', status:'A'},
+    {pos:42, rotation:'U', status:'U'},
   ]
 
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
@@ -91,7 +91,8 @@ export class WorkspaceDashboardComponent {
 
   resource:any[] =[
     { 
-      type:"Meeting Room",
+      type:"MR",
+      label:"Meeting Room",
       facility: [
         {
           name:"B4-MR01",
@@ -104,18 +105,19 @@ export class WorkspaceDashboardComponent {
       ]
     },
     {
-      type:"Work Desk",
+      type:"WD",
+      label:"Work Desk",
       facility: [
         {
-          name:"B4-WS01",
+          name:"B4-WD01",
           map: this.seating
         },
         {
-          name: "B4-WS02",
+          name: "B4-WD02",
           map: this.seating
         },
         {
-          name: "B4-WS03",
+          name: "B4-WD03",
           map: this.seating
         }
       ]
@@ -145,7 +147,7 @@ export class WorkspaceDashboardComponent {
       for (let temp = 0; temp < seatMap.length; temp++){
         let seatIndex = seatMap[temp].pos;
         if (seatIndex < (this.colsArr.length)) {
-          if (seatMap[temp].rotation == 'A') {
+          if (seatMap[temp].rotation == 'D') {
             this.colsArr[seatIndex] = 1;
           } else {
             this.colsArr[seatIndex] = 2;
@@ -243,7 +245,7 @@ export class WorkspaceDashboardComponent {
   getHover(index: any){
 
     if(this.showHover){
-      console.log('index',index);
+      // console.log('index',index);
 
       let bookDTL : FacilityBooking[] ;
       bookDTL = this.bookingRecord.filter((book:FacilityBooking) => book.pos===(index));
@@ -266,7 +268,7 @@ export class WorkspaceDashboardComponent {
       }
     }
     else{
-      console.log('index',index);
+      // console.log('index',index);
       return '';
     }
   }
@@ -294,5 +296,19 @@ export class WorkspaceDashboardComponent {
 
   editWorkspace() {
     this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {seating: this.seating2, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.sub_gp? this.selectedResourceDTL.sub_gp: ''}});
+  }
+
+  checkOpacity(index: number): string {
+    let seatIndex = this.seating.findIndex(s =>s.pos === (index));
+
+    if (seatIndex != -1) {
+      if (this.seating[seatIndex].status == 'A') {
+        return '100%'
+      } else {
+        return '50%'
+      }
+    } else {
+      return '100%'
+    }
   }
 }

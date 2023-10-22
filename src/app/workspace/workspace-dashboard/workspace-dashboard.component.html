@@ -12,7 +12,7 @@
                         <p-dropdown 
                             appendTo="body"
                             [options]="resource" 
-                            optionLabel="type"
+                            optionLabel="label"
                             (onChange)="getSelectedResType($event)"
                             placeholder="Select Type"
                         ></p-dropdown>
@@ -31,7 +31,7 @@
                 
                 <p>Workspace map include meeting room & work desk</p>    
                 <mat-grid-list cols={{cols}} rowHeight="5em">
-                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" >                   
+                    <mat-grid-tile *ngFor="let a of colsArr; let index = index" [style.opacity]="checkOpacity(index)">                   
                         <img src="{{getGridImg(colsArr[index])}}" height="60" [pTooltip]="getHover(index)" (click)="selectSeat(index)"/>
                     </mat-grid-tile>
                     
@@ -44,7 +44,7 @@
                 <ng-template pTemplate="body" >
                     <span class="card">
                         <label>Facility Type</label> 
-                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.gp }}" disabled />
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.gp == 'MR' ? 'Meeting Room' : selectedResourceDTL.gp == 'WD' ? 'Work Desk' : '' }}" disabled />
                     </span>
                     <span class="card">
                         <label>Facility Name</label> 
@@ -76,7 +76,7 @@
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Facility Type</label> 
-                    <input pInputText class="input-field" type="text" placeholder={{selectedResourceDTL.gp}} disabled />
+                    <input pInputText class="input-field" type="text" placeholder="{{selectedResourceDTL.gp == 'MR' ? 'Meeting Room' : selectedResourceDTL.gp == 'WD' ? 'Work Desk' : ''}}" disabled />
                 </div>
                 <div class="flex-half-container">
                     <label>Facility Seat</label> 
