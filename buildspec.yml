@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18  # Use the appropriate Node.js version
+      nodejs: 16  # Use the appropriate Node.js version
   pre_build:
     commands:
       - echo "Starting the build"
