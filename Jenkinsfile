@@ -10,7 +10,8 @@ pipeline {
         stage('Setting environments') {
             steps {
                 echo 'Setting environment..'
-                env.PATH = "/usr/local/apache-maven-3.9.5/bin:${env.PATH}"
+                def mavenHome = "/usr/local/apache-maven-3.9.5"
+                env.PATH = "${mavenHome}/bin:${env.PATH}"
                 echo 'Testing maven..'
                 sh 'mvn -version'
             }
