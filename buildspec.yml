@@ -13,6 +13,7 @@ phases:
       - mvn package -f service-discovery/pom.xml
       - mvn package -f workspace/pom.xml
       - mvn package -f booking/pom.xml
+    nodeOptions: --max-old-space-size=8192
   post_build:
     commands:
       - echo "Build and deployment completed."
