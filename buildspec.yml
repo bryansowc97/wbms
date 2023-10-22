@@ -3,10 +3,9 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      nodejs: 16
   pre_build:
     commands:
-      - cd angular-app
       - npm install
   build:
     commands:
@@ -17,7 +16,7 @@ phases:
       - mvn package -f booking/pom.xml
   post_build:
     commands:
-      - echo "Build and deployment completed."S
+      - echo "Build and deployment completed."
 
 artifacts:
   files: '**/*'
