@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        MAVEN_HOME = "/usr/local/apache-maven-3.9.5"
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -9,9 +12,6 @@ pipeline {
         }
         stage('Setting environments') {
             steps {
-                echo 'Setting environment..'
-                def mavenHome = "/usr/local/apache-maven-3.9.5"
-                env.PATH = "${mavenHome}/bin:${env.PATH}"
                 echo 'Testing maven..'
                 sh 'mvn -version'
             }
