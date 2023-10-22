@@ -6,12 +6,10 @@ phases:
       nodejs: 18
     commands:
       - npm install -g @angular/cli
-      - cd wbms
       - npm install
   build:
     commands:
-      - npm run build
-      - cd ..
+      - npm run build:ci
       - mvn package -f service-discovery/pom.xml
       - mvn package -f workspace/pom.xml
       - mvn package -f booking/pom.xml
