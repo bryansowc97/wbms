@@ -4,7 +4,7 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
-      java: openjdk21
+      java: corretto17
     commands:
       - npm install -g @angular/cli
       - apt-get update
