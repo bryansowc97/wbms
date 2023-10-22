@@ -9,7 +9,7 @@ phases:
       - npm install
   build:
     commands:
-      - npm run build:ci
+      - npm run build
       - mvn package -f service-discovery/pom.xml
       - mvn package -f workspace/pom.xml
       - mvn package -f booking/pom.xml
