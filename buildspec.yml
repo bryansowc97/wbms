@@ -4,13 +4,27 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
+      java: openjdk21
     commands:
       - npm install -g @angular/cli
-      - npm install
+      - apt-get update
+      - apt-get install -y maven
   build:
     commands:
-      - npm run build
-      - mvn package -f service-discovery/pom.xml
+      #build frontend
+      - cd wbms
+      - npm install
+      - ng build
+    
+      #build services
+      - cd service-discovery
+      - mvn clean install
+      - cd ../booking
+      - mvn clean install
+      - cd ../workspace
+      - mvn clean install
+
+
       - mvn package -f workspace/pom.xml
       - mvn package -f booking/pom.xml
   post_build:
@@ -18,4 +32,17 @@ phases:
       - echo "Build and deployment completed."
 
 artifacts:
-  files: '**/*'
+  files:
+    - ./dist/**/*  # Angular frontend build artifacts
+    - ./service-discovery/target/*.jar  
+    - ./workspace/target/*.jar 
+    - ./booking/target/*.jar 
+  name: wbms-artifacts
+
+#cache dependencies
+cache:
+  paths:
+    - node_modules/**/*  
+    - service-discovery/.m2/repository/**/*  
+    - workspace/.m2/repository/**/*  
+    - booking/.m2/repository/**/*  
