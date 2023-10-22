@@ -3,7 +3,7 @@
     <div class="create-button flex">
         <p-button icon="pi pi-plus" label="Create Profile" styleClass="p-button-warning" [routerLink]="['/profile']" [queryParams]="{mode:'create'}"></p-button>
     </div>
-    
+
     <!-- <p-table [value]="profiles" [tableStyle]="{'min-width': '60rem'}"> -->
     <p-table
         #tbl
@@ -26,16 +26,21 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="empID" style="width:25%">Employee ID <p-sortIcon field="empID"></p-sortIcon></th>
-                <th pSortableColumn="fullname" style="width:25%">Employee Name <p-sortIcon field="fullname"></p-sortIcon></th>
-                <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
+<!--                <th pSortableColumn="empID" style="width:25%">Employee ID <p-sortIcon field="empID"></p-sortIcon></th>-->
+<!--                <th pSortableColumn="fullname" style="width:25%">Employee Name <p-sortIcon field="fullname"></p-sortIcon></th>-->
+<!--                <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>-->
+              <th pSortableColumn="userName" style="width:25%">Employee ID <p-sortIcon field="userName"></p-sortIcon></th>
+              <th pSortableColumn="name" style="width:25%">Employee Name <p-sortIcon field="name"></p-sortIcon></th>
+              <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
                 <th style="width:10%">Action </th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-profile>
+        <ng-template pTemplate="body" *ngFor="let profile of profiles">
             <tr>
-                <td>{{ profile.empID }}</td>
-                <td>{{ profile.fullname }}</td>
+                <td>{{ profile.userName }}</td>
+<!--              <td>{{ profile.empID }}</td>-->
+                <td>{{ profile.name }}</td>
+<!--              <td>{{ profile.fullname }}</td>-->
                 <td>{{ profile.email }}</td>
                 <td>
                     <span class="flex-display p-buttonset">

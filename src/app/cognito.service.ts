@@ -12,9 +12,12 @@ export interface IUser {
   userName: string;
   password: string;
   showPassword: boolean;
+  confirmPassword?: string;
+  newPassword?: string;
   code: string;
   name: string;
-  contact: number;
+  contact: Number;
+  role: string;
 }
 
 @Injectable({
@@ -24,7 +27,7 @@ export class CognitoService {
 
   private authenticationSubject: BehaviorSubject<any>;
   private cognitoIdentityServiceProvider: AWS.CognitoIdentityServiceProvider;
-  
+
   cognitoParams = {
     UserPoolId: environment.cognito.userPoolId, // Replace with your Cognito user pool ID
   };
@@ -41,7 +44,7 @@ export class CognitoService {
       IdentityPoolId: environment.awsConfig.identitiyPoolId
     })
     this.cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
-    
+
   }
 
   public signUp(user: IUser): Promise<any> {
@@ -91,6 +94,7 @@ export class CognitoService {
   }
 
   public getUser(): Promise<any> {
+    console.log(Auth.currentUserInfo());
     return Auth.currentUserInfo();
   }
 
@@ -110,7 +114,7 @@ export class CognitoService {
       return Auth.updateUserAttributes(cognitoUser, user);
     });
   }
-  
+
 
   public listUsers(): any {
     return this.cognitoIdentityServiceProvider.listUsers(this.cognitoParams).promise();

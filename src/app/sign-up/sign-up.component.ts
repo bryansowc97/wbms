@@ -14,6 +14,10 @@ export class SignUpComponent {
   loading: boolean;
   isConfirm: boolean;
   user: IUser;
+  roles:any[] =[
+    { value:'admin', label: 'Admin'},
+    { value:'staff', label: 'Staff'}
+  ];
 
   constructor(
     private router: Router,
