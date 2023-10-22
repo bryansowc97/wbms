@@ -5,9 +5,9 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - npm install -g npm@18.18.2
-      - npm ci
+      - npm install -g @angular/cli
       - cd wbms
+      - npm install
   build:
     commands:
       - npm run build
