@@ -9,7 +9,8 @@ phases:
       - cd wbms
   pre_build:
     commands:
-      - npm install
+      - npm install -g npm@18.18.0
+      - npm ci
   build:
     commands:
       - npm run build
