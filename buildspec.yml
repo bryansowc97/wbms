@@ -4,6 +4,10 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
+      commands:
+      - echo install process started
+      - npm install -g @angular/cli
+      - cd wbms
   pre_build:
     commands:
       - npm install
