@@ -7,8 +7,7 @@ phases:
       java: corretto17
     commands:
       - npm install -g @angular/cli
-      - apt-get update
-      - apt-get install -y maven
+      - yum install -y maven
   build:
     commands:
       #build frontend
