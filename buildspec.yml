@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18  # Use the appropriate Node.js version
+  pre_build:
+    commands:
+      - echo "Starting the build"
+  build:
+    commands:
+      - npm install -g @angular/cli  # Install Angular CLI globally
+      - npm install  # Install project dependencies
+      - ng build --configuration=development  # Build the Angular application with the "development" profile
+  post_build:
+    commands:
+      - echo "Build completed"
+
+artifacts:
+  files:
+    - 'dist/*'  # Include the built files in the build artifacts
+
+cache:
+  paths:
+    - ~/.npm  # Cache npm dependencies to speed up builds
+    - ~/.cache  # Cache Angular CLI files
