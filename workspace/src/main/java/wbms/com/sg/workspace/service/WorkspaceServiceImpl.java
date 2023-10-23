@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import wbms.com.sg.workspace.repository.WorkspaceRepository;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -38,5 +38,9 @@ public class WorkspaceServiceImpl implements WorkspaceService{
 
   public List<Workspace> findAll() {
     return workspaceRepository.findAll();
+  }
+
+  public Optional<Workspace> findById(Long id) {
+    return workspaceRepository.findById(id);
   }
 }
