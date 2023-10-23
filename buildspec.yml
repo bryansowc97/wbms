@@ -4,7 +4,7 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
-      java: corretto21
+      java: corretto17
     commands:
       - npm install -g @angular/cli
       - curl -L -o apache-maven-3.9.5-bin.tar.gz https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
