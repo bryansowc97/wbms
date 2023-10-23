@@ -4,10 +4,10 @@ phases:
   install:
     runtime-versions:
       nodejs: 18
-      java: corretto21
+      java: corretto17
     commands:
       - npm install -g @angular/cli
-      - yum install -y maven-3.9.5
+      - yum install -y apache-maven
       - java -version
       - mvn -version 
   build:
