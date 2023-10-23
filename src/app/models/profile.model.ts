@@ -1,7 +1,9 @@
 export interface UserProfile {
-    empID: string;
-    fullname : string;
+    // empID: string;
+    userName: string ;
+    // fullname : string;
     email : string;
+    name : string;
     password?: string;
     showPassword?: boolean;
     confirmPassword?: string;

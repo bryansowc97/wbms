@@ -15,185 +15,36 @@ export class AuthenticationService {
   constructor(
     private requestService: RequestService
   ) {
-    // Amplify.configure({
-    //   Auth: environment.cognito
-    // })
-  }
-  /*
-  // signUp(user: UserProfile):Promise<any>{
-  //   return Auth.signUp({
-  //     username: user.email,
-  //     password: user.password,
-  //     attributes:{
-  //       'custom:role':user.role,
-  //       'custom:fullname':user.fullname
-  //     }
-  //   })
-  // }
-
-  // confirmSignUp(user: UserProfile):Promise<any>{
-  //   return Auth.confirmSignUp(user.email, user.code);
-  // }
-
-  signIn(user: UserProfile):Promise<any>{
-    return Auth.signIn(user.email,user.password);
   }
 
-  getUser():Promise<any>{
-    return Auth.currentUserInfo();
+  public validatePassword(pass1: string, pass2: string): boolean {
+    if (pass1 !== pass2) {
+      return false;
+    }
+    return true;
   }
 
-  updateUser(user: UserProfile): Promise<any>{
-    return Auth.currentUserPoolUser().then((cognitoUser: any)=>{
-      return Auth.updateUserAttributes(cognitoUser, user);
-    })
+  public validatePhoneNum(phoneNumber: string): string {
+    // Remove all non-digit characters from the input
+    const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
+  
+    // Check if the cleaned phone number contains only digits and has a valid length
+    if (/^\d{10,15}$/.test(cleanedPhoneNumber)) {
+      // Format the phone number into E.164 format (+1234567890)
+      const formattedPhoneNumber = `+${cleanedPhoneNumber}`;
+      return formattedPhoneNumber;
+    } else {
+      // Return false for an invalid phone number
+      return '';
+    }
   }
 
-  signOut():Promise<any>{
-    return Auth.signOut();
+  public validateEmail(email: string): boolean {
+    // Regular expression for a basic email address format
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  
+    return emailRegex.test(email);
   }
-
-  changeNewPassword(value: any, password: string):Promise<any>{
-    return Auth.completeNewPassword(value, password, []);
-  }
-
-  getUserDetails(): Promise<UserProfile> {
-    return this.getUser().then((user)=>{
-      return {
-          fullname: user.attributes['custom:fullname'] ?? "",
-          role: user.attributes['custom:role'] ?? "",
-          email: user.attributes['email'] ?? ""
-      } as UserProfile;
-    })
-  }
-
-  getRole(): Promise<any>{
-    return this.getUser().then((user)=>{
-      return user && user.attributes?user.attributes['custom:role']:'';
-    })
-  }
-
-  getFullName(): Promise<any>{
-    return this.getUser().then((user)=>{
-      return user && user.attributes?user.attributes['custom:fullname']:'';
-    })
-  }
-
-  // getListUser():Promise<any>{
-  //   var AWS = require('aws-sdk');
-  //   var params = {
-  //     UserPoolId: environment.cognito.userPoolId,
-  //     AttributesToGet: [
-  //       'email',
-  //       'custom:fullname',
-  //       'custom:role'
-  //     ],
-  //   };
-  //   return new Promise((resolve, reject) => {
-  //     AWS.config.update({ region: 'us-east-1', 'accessKeyId': environment.cognito.accessKey, 'secretAccessKey': environment.cognito.secretAccessKey});
-  //     var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-  //     cognitoidentityserviceprovider.listUsers(params, (err: any, data: any) => {
-  //       if (err) {
-  //         //alert(err);
-  //         reject(err)
-  //       }
-  //       else {
-  //         // console.log("data", data);
-  //         resolve(data)
-  //       }
-  //     })
-  //   });
-  // }
-
-  disableUser(User: any):Promise<any>{
-    var AWS = require('aws-sdk');
-    var params = {
-      UserPoolId: environment.cognito.userPoolId,
-      Username: User.Username
-    };
-
-    return new Promise((resolve, reject) => {
-      AWS.config.update({ region: 'us-east-1', 'accessKeyId': environment.cognito.accessKey, 'secretAccessKey': environment.cognito.secretAccessKey});
-      var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-      cognitoidentityserviceprovider.adminDisableUser(params, (err: any, data: any) => {
-        if (err) {
-          //alert(err);
-          reject(err)
-        }
-        else {
-          //alert("data"+ data);
-          resolve(data)
-        }
-      })
-    });
-  }
-
-  enableUser(User: any):Promise<any>{
-    var AWS = require('aws-sdk');
-    var params = {
-      UserPoolId: environment.cognito.userPoolId,
-      Username: User.Username
-    };
-
-    return new Promise((resolve, reject) => {
-      AWS.config.update({ region: 'us-east-1', 'accessKeyId': environment.cognito.accessKey, 'secretAccessKey': environment.cognito.secretAccessKey});
-      var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-      cognitoidentityserviceprovider.adminEnableUser(params, (err: any, data: any) => {
-        if (err) {
-          //alert(err);
-          reject(err)
-        }
-        else {
-          //alert("data"+ data);
-          resolve(data)
-        }
-      })
-    });
-  }
-
-  createUser(User: UserProfile):Promise<any>{
-    var AWS = require('aws-sdk');
-    var params = {
-      UserPoolId: environment.cognito.userPoolId,
-      Username: User.email,
-      DesiredDeliveryMediums: ["EMAIL"],
-      UserAttributes:  [
-        {
-           Name: 'custom:fullname',
-           Value: User.fullname 
-       },
-       {
-        Name: 'custom:role',
-        Value: User.role
-      },
-        {
-           Name: 'email',
-           Value: User.email
-       },
-        {
-           Name: 'email_verified',
-           Value: 'true'
-       },
-   ]
-    };
-
-    return new Promise((resolve, reject) => {
-      AWS.config.update({ region: 'us-east-1', 'accessKeyId': environment.cognito.accessKey, 'secretAccessKey': environment.cognito.secretAccessKey});
-      var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
-      cognitoidentityserviceprovider.adminCreateUser(params, (err: any, data: any) => {
-        if (err) {
-          //alert(err);
-          reject(err)
-        }
-        else {
-          //alert("data"+ data);
-          resolve(data)
-        }
-      })
-    });
-  }
-  */
-
 
   // For local only, not aws
   public testDb(): any {

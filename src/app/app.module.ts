@@ -55,6 +55,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { EditBookingComponent } from './booking/edit-booking/view-booking.component';
 import { BookingDashboardComponent } from './booking/booking.component';
+import { BookingService } from './services/booking.service';
+import { WorkspaceService } from './services/workspace.service';
 
 // import { SafePipe } from "./services/pipe/safe.pipe";
 
@@ -134,6 +136,8 @@ import { BookingDashboardComponent } from './booking/booking.component';
     AuthenticationService,
     MessageService,
     CognitoService,
+    BookingService,
+    WorkspaceService,
     ConfirmationService
   ],
   bootstrap: [AppComponent]

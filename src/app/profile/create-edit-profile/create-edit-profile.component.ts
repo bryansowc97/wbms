@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfile } from 'src/app/models/profile.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CognitoService, IUser } from 'src/app/cognito.service';
-   
+import { Auth } from 'aws-amplify';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+
 @Component({
   selector: 'app-profile',
   templateUrl: 'create-edit-profile.component.html',
@@ -12,8 +14,9 @@ import { CognitoService, IUser } from 'src/app/cognito.service';
 export class ProfileComponent {
   mode: string = "";
   empDtls: UserProfile = {
-    empID: "",
-    fullname: "",
+    // empID: "",
+    userName: "",
+    name: "",
     email: "",
     showPassword: false,
     contact: "",
@@ -22,7 +25,10 @@ export class ProfileComponent {
   };
   loading: boolean;
   user: IUser;
+  selectedUsername: any;
   userGroup: any[];
+  isConfirm: boolean;
+  isLoading: boolean = true;
 
   roles:any[] =[
     { value:'admin', label: 'Admin'},
@@ -32,51 +38,43 @@ export class ProfileComponent {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private confirmationService: ConfirmationService, 
+    private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private cognitoService: CognitoService,
+    private authService: AuthenticationService
   ){
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
-      this.empDtls.empID = details['empID'];
-      this.empDtls.fullname = details['fullname'];
+      // this.empDtls.empID = details['empID'];
+      this.empDtls.userName = details['userName'];
+      this.empDtls.name = details['name'];
       this.empDtls.email = details['email'];
       this.empDtls.contact = details['contact'];
       this.empDtls.role = details['role'];
     }
-    this.loading = false;
     this.user = {} as IUser;
   }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+  async ngOnInit(): Promise<void> {
+    this.route.queryParams.subscribe(async params => {
       if (params) {
         this.mode = params['mode'];
+        this.selectedUsername = params['userName']
         if (this.mode === 'self') {
-          // api to get profile details
-          // dummy data
-          this.empDtls = {
-            empID: 'P1234456',
-            fullname : "Alvin Tans",
-            email : "alvin.tan@wbms.com.sg",
-            showPassword: false,
-            contact: "98765432",
-            role: "staff",
-            status: "",
-          }
-        } else if (this.mode !== 'create') {
-          // check admin rights
-          // enable admin features
-          if (this.mode == 'view') {
-            this.empDtls.password = '1234567890'
-          }
-        } else {
-          // check admin rights to create profile
+          await this.loadOwnProfile();
+        } else if (this.mode === 'edit' || this.mode == 'view') {
+          await this.loadOtherProfile();
+        } else if (this.mode === 'create') {
+          this.isLoading = false;
+        }
+        else {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Semething went wrong' });
+          this.router.navigate(['/booking']);
         }
       }
       else {
         // for testing with aws (if no router params)
-        this.cognitoService.getUser()
+        this.cognitoService.getCurrentUser()
         .then((user: any) => {
           this.user = user.attributes;
           this.cognitoService.getUserGroups()
@@ -87,12 +85,12 @@ export class ProfileComponent {
               summary: "user info",
               detail: userGrp,
               sticky: false,
-            }); 
+            });
             console.log("user, usergrp", user, this.userGroup);
-          });      
+          });
         });
       }
-    })         
+    })
   }
 
   saveBtn() {
@@ -107,19 +105,92 @@ export class ProfileComponent {
   }
 
   createBtn() {
-    
+    this.loading = true;
+    this.cognitoService.signUp(this.user)
+      .then(() => {
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Account created. Please Login.' });
+        this.router.navigate(['/profileDashboard']);
+      }).catch(() => {
+      this.loading = false;
+      this.messageService.add({ severity: 'error', summary: 'Unknown', detail: 'Please try again later.' });
+    });
   }
 
-  public update(): void {
-    this.loading = true;
+  // refreshPage(delay: number) {
+  //   setTimeout(() => {
+  //     location.reload();
+  //   }, delay);
+  // }
 
+  public update(): void {
+    this.user.contact = this.authService.validatePhoneNum(this.user.contact);
+    if (this.user.contact == '') {
+      this.messageService.add({ severity: 'error', summary: 'Wrong contact format', detail: 'Try again' });
+      return;
+    }
+    if (!this.authService.validateEmail(this.user.email)) {
+      this.messageService.add({ severity: 'error', summary: 'Wrong email format', detail: 'Try again' });
+      return;
+    }
+    
+    this.loading = true;
     this.cognitoService.updateUser(this.user)
     .then(() => {
       this.loading = false;
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Changes have been saved.' });
+      // this.refreshPage(3000);
     }).catch(() => {
       this.loading = false;
       this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Idk why ask aws.' });
     });
   }
+
+
+  public loadOwnProfile() {
+    Auth.currentAuthenticatedUser()
+      .then(user => {
+        // // Access user attributes in the 'attributes' property
+        // this.user = user.attributes;
+        // this.user.contact = user.attributes.phone_number;
+        // this.user.userName = user.username;
+        // this.cognitoService.getUserGroups()
+        //   .then((userGrp: any) => {
+        //     this.user.role = userGrp[0];
+        //     console.log("user, usergrp", user, this.userGroup);
+        //     this.isLoading = false;
+        //   });
+        this.selectedUsername = user.username;
+        this.loadOtherProfile();
+      })
+      .catch(error => {
+        console.error('Error fetching user profile:', error);
+        this.isLoading = false;
+      });
+  }
+
+  public loadOtherProfile() {
+    this.cognitoService.findUserAndAttributesByUsername(this.selectedUsername)
+      .then(userData => {
+        // Access user attributes in the 'attributes' property
+        this.user = {} as IUser;
+        userData.UserAttributes.forEach(attribute => {
+          this.user[attribute.Name] = attribute.Value;
+        });
+        this.user.contact = this.user.phone_number;
+        this.user.userName = userData.Username;
+        this.cognitoService.getUserGroups()
+          .then((userGrp: any) => {
+            if (userGrp && userGrp.length > 0) {
+              this.user.role = userGrp[0];
+            }
+            console.log("user, usergrp", userData, this.userGroup);
+            this.isLoading = false;
+          });
+      })
+      .catch(error => {
+        console.error('Error fetching user profile:', error);
+        this.isLoading = false;
+      });
+  }
+
 }
