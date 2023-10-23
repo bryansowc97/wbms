@@ -7,7 +7,7 @@ phases:
       java: corretto17
     commands:
       - npm install -g @angular/cli
-      - yum install -y apache-maven
+      - yum install -y maven
       - java -version
       - mvn -version 
   build:
