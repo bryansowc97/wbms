@@ -28,9 +28,9 @@ phases:
       - cd ../workspace
       - mvn clean install -DskipTests
 
-      - mvn package -f service-discovery/pom.xml
-      - mvn package -f workspace/pom.xml
-      - mvn package -f booking/pom.xml
+      #- mvn package -f service-discovery/pom.xml
+      #- mvn package -f workspace/pom.xml
+      #- mvn package -f booking/pom.xml
   post_build:
     commands:
       - echo "Build and deployment completed."
