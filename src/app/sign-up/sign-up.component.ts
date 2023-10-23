@@ -52,14 +52,16 @@ export class SignUpComponent {
     .then(() => {
       this.loading = false;
       this.isConfirm = true;
+      this.cognitoService.getCurrentUser().then((data) => {
+        if (this.cognitoService.isAuthenticated && data !== null && data) {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Account created.' });
+          this.router.navigate(['/profileDashboard']);
+        }
+        else {this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Account created. Please Login.' });
+          this.router.navigate(['/login']);
+        }
+      })
       
-      if (this.cognitoService.isAuthenticated) {
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Account created.' });
-        this.router.navigate(['/profileDashboard']);
-      }
-      else {this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Account created. Please Login.' });
-        this.router.navigate(['/login']);
-      }
     }).catch(() => {
       this.loading = false;
       this.messageService.add({ severity: 'error', summary: 'Unknown', detail: 'Please try again later.' });

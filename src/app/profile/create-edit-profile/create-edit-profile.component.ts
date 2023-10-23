@@ -15,7 +15,7 @@ export class ProfileComponent {
   mode: string = "";
   empDtls: UserProfile = {
     // empID: "",
-    userName: "",
+    username: "",
     name: "",
     email: "",
     showPassword: false,
@@ -46,7 +46,7 @@ export class ProfileComponent {
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
       // this.empDtls.empID = details['empID'];
-      this.empDtls.userName = details['userName'];
+      this.empDtls.username = details['username'];
       this.empDtls.name = details['name'];
       this.empDtls.email = details['email'];
       this.empDtls.contact = details['contact'];
@@ -59,7 +59,7 @@ export class ProfileComponent {
     this.route.queryParams.subscribe(async params => {
       if (params) {
         this.mode = params['mode'];
-        this.selectedUsername = params['userName']
+        this.selectedUsername = params['username']
         if (this.mode === 'self') {
           await this.loadOwnProfile();
         } else if (this.mode === 'edit' || this.mode == 'view') {
@@ -77,7 +77,7 @@ export class ProfileComponent {
         this.cognitoService.getCurrentUser()
         .then((user: any) => {
           this.user = user.attributes;
-          this.cognitoService.getUserGroups()
+          this.cognitoService.getCurrentUserGroups()
           .then((userGrp: any) => {
             this.userGroup = userGrp;
             this.messageService.add({
@@ -152,7 +152,7 @@ export class ProfileComponent {
         // // Access user attributes in the 'attributes' property
         // this.user = user.attributes;
         // this.user.contact = user.attributes.phone_number;
-        // this.user.userName = user.username;
+        // this.user.username = user.username;
         // this.cognitoService.getUserGroups()
         //   .then((userGrp: any) => {
         //     this.user.role = userGrp[0];
@@ -177,15 +177,20 @@ export class ProfileComponent {
           this.user[attribute.Name] = attribute.Value;
         });
         this.user.contact = this.user.phone_number;
-        this.user.userName = userData.Username;
-        this.cognitoService.getUserGroups()
-          .then((userGrp: any) => {
-            if (userGrp && userGrp.length > 0) {
-              this.user.role = userGrp[0];
-            }
-            console.log("user, usergrp", userData, this.userGroup);
-            this.isLoading = false;
-          });
+        this.user.username = userData.Username;
+        if (userData.UserGroups && userData.UserGroups.length > 0) {
+          this.user.role = userData.userGroups[0];
+        }
+        console.log("user, usergrp", userData);
+        this.isLoading = false;
+        // this.cognitoService.getCurrentUserGroups()
+        //   .then((userGrp: any) => {
+        //     if (userGrp && userGrp.length > 0) {
+        //       this.user.role = userGrp[0];
+        //     }
+        //     console.log("user, usergrp", userData, this.userGroup);
+        //     this.isLoading = false;
+        //   });
       })
       .catch(error => {
         console.error('Error fetching user profile:', error);

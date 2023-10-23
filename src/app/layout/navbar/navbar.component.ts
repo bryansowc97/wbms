@@ -40,7 +40,7 @@ export class NavbarComponent {
   
     async ngOnInit(): Promise<void>{
       try {
-        let userGrp = await this.cognitoService.getUserGroups(); 
+        let userGrp = await this.cognitoService.getCurrentUserGroups(); 
         this.items.push(
           {
               label: 'Home',

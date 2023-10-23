@@ -11,12 +11,12 @@
                 <div class="flex-container">
                     <label>Employee ID</label>
 <!--                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.empID" [disabled]="mode!='create'"/>-->
-                  <input pInputText type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.userName" class="input-field" [disabled]="true"/>
+                  <input pInputText type="username" id="username" name="username" #username="ngModel" [(ngModel)]="user.username" class="input-field" [disabled]="true"/>
                 </div>
                 <div class="flex-container" *ngIf = "user.role == 'admin'">
                     <label>Employee Role</label>
                     <!-- <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.role" [disabled]="mode!='create'"/> -->
-                    <input pInputText type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.role" class="input-field" [disabled]="true"/>
+                    <input pInputText type="username" id="username" name="username" #username="ngModel" [(ngModel)]="user.role" class="input-field" [disabled]="true"/>
                 </div>
             </div>
             <div class ="dtls-container">
