@@ -34,11 +34,12 @@ phases:
       #build frontend
       - echo Building docker images...
       - echo Building frontend...
+      -cd ..
       - docker build -t wbms-frontend:wbms-frontend-docker ./docker
       - echo Frontend build completed...
       #build services
       - echo Building backend...
-      - cd service-discovery
+      - cd ../service-discovery
       - docker build -t wbms-service-discovery-docker:service-discovery-docker ./docker
       - cd../workspace
       - docker build -t wbms-workspace-docker:workspace-docker ./docker
@@ -53,10 +54,14 @@ phases:
   post_build:
     commands:
       - echo Pushing docker images...d
-      - docker push wbms-frontend:wbms-frontend-docker ./web
-      - docker push wbms-service-discovery-docker:service-discovery-docker ./service-discovery
-      - docker push wbms-workspace-docker:workspace-docker ./workspace-service
-      - docker push wbms-booking-docker:booking-docker ./booking-service
+      - cd ..
+      - docker push wbms-frontend:wbms-frontend-docker ./docker
+      - cd ../service-discovery
+      - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
+      - cd ../workspace
+      - docker push wbms-workspace-docker:workspace-docker ./docker
+      - cd ../booking
+      - docker push wbms-booking-docker:booking-docker ./docker
       - echo "Docker images push completed."
 
 artifacts:
