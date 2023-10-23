@@ -39,9 +39,9 @@ phases:
       - echo Frontend build completed...
       #build services
       - echo Building backend...
-      - docker build -t wbms-service-discovery-docker:service-discovery-docker service-discovery/docker
-      - docker build -t wbms-workspace-docker:workspace-docker workspace/docker
-      - docker build -t wbms-booking-docker:booking-docker booking/docker
+      - docker build -t wbms-service-discovery-docker:service-discovery-docker ./service-discovery/src/main/docker
+      - docker build -t wbms-workspace-docker:workspace-docker workspace/docker ./workspace/src/main/docker
+      - docker build -t wbms-booking-docker:booking-docker ./booking/docker booking/src/main/docker
       - echo Backend services build completed...
       - echo Docker images build completed...
 
@@ -52,9 +52,9 @@ phases:
     commands:
       - echo Pushing docker images...d
       - docker push wbms-frontend:wbms-frontend-docker .
-      - docker push wbms-service-discovery-docker:service-discovery-docker service-discovery/docker
-      - docker push wbms-workspace-docker:workspace-docker workspace/docker
-      - docker push wbms-booking-docker:booking-docker booking/docker
+      - docker push wbms-service-discovery-docker:service-discovery-docker ./service-discovery/src/main/docker
+      - docker push wbms-workspace-docker:workspace-docker ./workspace/src/main/docker
+      - docker push wbms-booking-docker:booking-docker ./booking/src/main/docker
       - echo "Docker images push completed."
 
 artifacts:
