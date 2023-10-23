@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       nodejs: 18
       java: corretto17
-      docker: 24
+      docker: 20
     commands:
       - echo Installing Maven-3.9.5...
       - npm install -g @angular/cli
