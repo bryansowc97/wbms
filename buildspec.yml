@@ -1,0 +1,52 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+      java: corretto17
+    commands:
+      - npm install -g @angular/cli
+      - curl -L -o apache-maven-3.9.5-bin.tar.gz https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
+      - tar xzf apache-maven-3.9.5-bin.tar.gz
+      - export M2_HOME=$PWD/apache-maven-3.9.5
+      - export M2=$PWD/apache-maven-3.9.5/bin
+      - export PATH=$M2:$PATH
+      - java -version
+      - mvn -version
+  build:
+    commands:
+      #build frontend
+      - npm install
+      - ng build
+
+      #build services
+      - cd service-discovery
+      - mvn clean install -DskipTests
+      - cd ../booking
+      - mvn clean install -DskipTests
+      - cd ../workspace
+      - mvn clean install -DskipTests
+
+      #- mvn package -f service-discovery/pom.xml
+      #- mvn package -f workspace/pom.xml
+      #- mvn package -f booking/pom.xml
+  post_build:
+    commands:
+      - echo "Build and deployment completed."
+
+artifacts:
+  files:
+    - ./dist/**/*  # Angular frontend build artifacts
+    - ./service-discovery/target/*.jar
+    - ./workspace/target/*.jar
+    - ./booking/target/*.jar
+  name: wbms-artifacts
+
+#cache dependencies
+cache:
+  paths:
+    - node_modules/**/*
+    - service-discovery/.m2/repository/**/*
+    - workspace/.m2/repository/**/*
+    - booking/.m2/repository/**/*
