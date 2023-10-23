@@ -1,0 +1,8 @@
+wbms\com\sg\accounts\AccountService.class
+wbms\com\sg\accounts\AccountServiceImpl.class
+wbms\com\sg\accounts\ComUserRepository.class
+wbms\com\sg\accounts\AccountsController.class
+wbms\com\sg\accounts\ComUser.class
+wbms\com\sg\accounts\CorsConfig$1.class
+wbms\com\sg\accounts\CorsConfig.class
+wbms\com\sg\accounts\AccountsApplication.class

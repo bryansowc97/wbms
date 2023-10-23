@@ -13,3 +13,20 @@ export interface FacilitySeat{
     name : any;
     status: any;
 }
+
+
+export interface NFacilityBooking extends FacilitySeat{
+    emp_id:any;
+    date: any;
+    timeSlot : any;
+}
+
+export interface NFacilitySeat{
+    id : any
+    gp : any;
+    subGp : any;
+    posGrid: any;
+    posRotation: any;
+    name : any;
+    status: any;
+}
