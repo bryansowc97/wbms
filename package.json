@@ -26,6 +26,7 @@
     "angular-fusioncharts": "^4.0.3",
     "aws-amplify": "^5.3.11",
     "aws-sdk": "^2.1473.0",
+    "bootstrap-icons": "^1.11.1",
     "fusioncharts": "^3.21.1",
     "ngx-bootstrap": "^11.0.2",
     "primeicons": "^6.0.1",

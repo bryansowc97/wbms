@@ -3,6 +3,7 @@ import { UserProfile } from 'src/app/models/profile.model';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { CognitoService, IUser } from 'src/app/cognito.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,51 +11,41 @@ import { Table } from 'primeng/table';
   styleUrls: ['./profile-dashboard.component.scss']
 })
 export class ProfileDashboardComponent {
-  profiles: UserProfile[]=[
-    {
-      empID : 'P1234456',
-      fullname : 'Alvin Tan',
-      email : 'alvin.tan@wbms.com.sg',
-      contact: '98765432',
-      role: 'admin',
-      status: '',
-    },
-    {
-      empID : 'P1234677',
-      fullname : 'Alvin Lee',
-      email : 'alvin.lee@wbms.com.sg',
-      contact: '98765432',
-      role: 'staff',
-      status: '',
-    },
-    {
-      empID : 'P1234452',
-      fullname : 'Alvin Chew',
-      email : 'alvin.chew@wbms.com.sg',
-      contact: '98765432',
-      role: 'staff',
-      status: '',
-    },
-    {
-      empID : 'P1234829',
-      fullname : 'Alvin Lim',
-      email : 'alvin.lim@wbms.com.sg',
-      contact: '98765432',
-      role: 'admin',
-      status: '',
-    }
-  ];
+  profiles: UserProfile[];
+  isLoading: boolean = true;
 
   constructor(
     private router: Router,
-    private confirmationService: ConfirmationService, 
-    private messageService: MessageService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private cognitoService: CognitoService
   ){
-    
+
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.initData();
+  }
 
+  initData() {
+    this.cognitoService.listUsers()
+      .then((data) => {
+        console.log(data);
+        this.profiles = data.Users.map(userData => {
+          const user: UserProfile = {} as UserProfile;
+          userData.Attributes.forEach(attribute => {
+            user[attribute.Name] = attribute.Value;
+          });
+          user.userName = userData.Username;
+          return user;
+        });
+        console.log('this profiles',this.profiles);
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        console.error('Error listing users:', error);
+        this.isLoading = false;
+      });
   }
 
   clear(table: Table) {
@@ -66,14 +57,28 @@ export class ProfileDashboardComponent {
   }
 
   onClickProfile(mode: string, empDtls: UserProfile) {
-    this.router.navigateByUrl(`/profile?mode=${mode}`, {state: empDtls});
+    const queryParams = {
+      mode: mode,
+      userName: empDtls.userName
+    }
+    this.router.navigate(['/profile'], { queryParams });
   }
 
-  deleteProfile() {
-    this.confirmationService.confirm({
-        accept: () => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Profile has been deleted.' });
+  async deleteProfile(profile: UserProfile) {
+    if (profile.userName) {
+      try {
+        const currUser = await this.cognitoService.getCurrentUser();
+        if (currUser && currUser.username === profile.userName) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Cannot delete own account' });
+          return;
         }
-    });
+        const data = await this.cognitoService.deleteUser(profile.userName);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User Deleted' });
+        this.initData();
+      } catch (error) {
+        this.messageService.add({ severity: 'error', summary: 'Unknown', detail: 'Please try again later.' });
+      }
+    }    
+    
   }
 }
