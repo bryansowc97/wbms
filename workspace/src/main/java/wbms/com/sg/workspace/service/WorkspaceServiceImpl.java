@@ -24,16 +24,8 @@ public class WorkspaceServiceImpl implements WorkspaceService{
   @Autowired
   private WorkspaceRepository workspaceRepository;
 
-  public List<BookingDTO> testBookingService() {
-
-    ResponseEntity<List<BookingDTO>> response = restTemplate.exchange(
-      IConstants.bookingGetAllApi,
-      HttpMethod.GET,
-      null,
-      new ParameterizedTypeReference<List<BookingDTO>>() {}
-    );
-
-      return response.getBody();
+  public List<Workspace> findByGp(String gp) {
+    return workspaceRepository.findByGp(gp);
   }
 
   public List<Workspace> findAll() {
@@ -42,5 +34,17 @@ public class WorkspaceServiceImpl implements WorkspaceService{
 
   public Optional<Workspace> findById(Long id) {
     return workspaceRepository.findById(id);
+  }
+
+  public List<Workspace> createUpdateWorkspace(List<Workspace> workspaceList) {
+    return workspaceRepository.saveAll(workspaceList);
+  }
+
+  public void deleteWorkspaceById(List<Long> id) {
+      workspaceRepository.deleteAllById(id);
+  }
+
+  public List<Workspace> findByGpAndSubGp(String gp, String subgp) {
+    return workspaceRepository.findByGpAndSubGp(gp, subgp);
   }
 }

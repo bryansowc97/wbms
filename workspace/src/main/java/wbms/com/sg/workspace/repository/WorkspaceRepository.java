@@ -14,4 +14,10 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
   public List<Workspace> findAll();
 
   Optional<Workspace> findById(Long Id);
+
+  @Query(value = "select w from Workspace w where gp = :gp and subGp = :subGp")
+  public List<Workspace> findByGpAndSubGp(String gp, String subGp);
+
+  @Query(value = "select w from Workspace w where gp = :gp")
+  public List<Workspace> findByGp(String gp);
 }

@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import wbms.com.sg.workspace.entity.Workspace;
 import wbms.com.sg.workspace.service.WorkspaceService;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -21,18 +25,36 @@ public class WorkspaceResource {
   @Autowired
   WorkspaceService workspaceService;
 
-  @GetMapping("/testWorkspaceDb")
-  public ResponseEntity<?> testWorkspaceDb() {
+  @GetMapping("/findAllWorkspace")
+  public ResponseEntity<?> findAllWorkspace() {
     return new ResponseEntity<>(workspaceService.findAll(), HttpStatus.OK);
   }
 
-  @GetMapping("/testBookingService")
-  public ResponseEntity<?> testBookingService() {
-    return new ResponseEntity<>(workspaceService.testBookingService(), HttpStatus.OK);
+  @GetMapping("/findByGp/{gp}")
+  public ResponseEntity<?> findByGp(@PathVariable String gp) {
+    return new ResponseEntity<>(workspaceService.findByGp(gp), HttpStatus.OK);
   }
 
-  @GetMapping("/getWorkspaceById/{id}")
+  @GetMapping("/getWorkspaceByGpAndSubGp/{id}")
   public ResponseEntity<?> getWorkspaceById(@PathVariable Long id) {
     return new ResponseEntity<>(workspaceService.findById(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/getWorkspaceByGpAndSubGp/{gp}/{subgp}")
+  public ResponseEntity<?> getWorkspaceById(@PathVariable String gp, @PathVariable String subgp) {
+    return new ResponseEntity<>(workspaceService.findByGpAndSubGp(gp, subgp), HttpStatus.OK);
+  }
+
+  @PostMapping("/createUpdateWorkspace")
+  public ResponseEntity<?> createUpdateWorkspace(
+    @RequestBody List<Workspace> workspaceList
+  ) {
+    return new ResponseEntity<>(workspaceService.createUpdateWorkspace(workspaceList), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/deleteWorkspaceById")
+  public ResponseEntity<?> deleteWorkspaceById(@RequestBody List<Long> id) {
+    workspaceService.deleteWorkspaceById(id);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
