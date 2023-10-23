@@ -1,15 +1,9 @@
 package wbms.com.sg.workspace.service;
 
-import wbms.com.sg.workspace.common.IConstants;
-import wbms.com.sg.workspace.dto.BookingDTO;
 import wbms.com.sg.workspace.entity.Workspace;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import wbms.com.sg.workspace.repository.WorkspaceRepository;
 
 import java.util.*;
@@ -17,9 +11,6 @@ import java.util.*;
 @Service
 @Transactional
 public class WorkspaceServiceImpl implements WorkspaceService{
-
-  @Autowired
-  private RestTemplate restTemplate;
 
   @Autowired
   private WorkspaceRepository workspaceRepository;
@@ -36,12 +27,18 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     return workspaceRepository.findById(id);
   }
 
-  public List<Workspace> createUpdateWorkspace(List<Workspace> workspaceList) {
+  public List<Workspace> createWorkspace(List<Workspace> workspaceList) {
+    return workspaceRepository.saveAll(workspaceList);
+  }
+
+  public List<Workspace> updateWorkspace(List<Workspace> workspaceList) {
+    // check if got booking
     return workspaceRepository.saveAll(workspaceList);
   }
 
   public void deleteWorkspaceById(List<Long> id) {
-      workspaceRepository.deleteAllById(id);
+    // check if got booking
+    workspaceRepository.deleteAllById(id);
   }
 
   public List<Workspace> findByGpAndSubGp(String gp, String subgp) {
