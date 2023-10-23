@@ -14,6 +14,7 @@ export class NavbarComponent {
     visible: boolean = true;
     user?: UserProfile;
     items: MenuItem[] = [];
+    isLoading: boolean = true;
     userMenuItems: MenuItem[] = [
       {
         label: 'My Profile',
@@ -37,101 +38,50 @@ export class NavbarComponent {
       private cognitoService: CognitoService
     ) {}
   
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void>{
+      try {
+        let userGrp = await this.cognitoService.getUserGroups(); 
         this.items.push(
-            {
-                label: 'Home',
-                icon: 'pi pi-home',
-                routerLink: '/home'
-            },
-            {
-                label: 'Workspace',
-                icon: 'pi pi-briefcase',
-                items:[
-                  {
-                    label: 'Dashboard',
-                    routerLink: '/workspaceDashboard'
-                  },
-                  {
-                    label: 'Create Workspace',
-                    routerLink: '/createWorkspace'
-                  }
-                ]
-            },            
-            {
-                label: 'Booking',
-                icon: 'pi pi-calendar-plus',
-                routerLink: '/bookingDashboard'
-            },
-            {
-                label: 'Manage User',
-                icon: 'pi pi-users',
-                routerLink: '/profileDashboard'
-            }
+          {
+              label: 'Home',
+              icon: 'pi pi-home',
+              routerLink: '/home'
+          },
+          {
+              label: 'Workspace',
+              icon: 'pi pi-briefcase',
+              items:[
+                {
+                  label: 'Dashboard',
+                  routerLink: '/workspaceDashboard'
+                },
+                {
+                  label: 'Create Workspace',
+                  routerLink: '/createWorkspace'
+                }
+              ]
+          },            
+          {
+              label: 'Booking',
+              icon: 'pi pi-calendar-plus',
+              routerLink: '/bookingDashboard'
+          },
         );
-        /*
-      this.authenticationService.getUserDetails().then((res:IUser) => {
-        let actions: MenuItem[] = [];
-        let homelink: string = '';
-  
-        this.user = res;
-        if (res) {
-          if (res.role === 'Admin') {
-            homelink = '/admin/home';
-            actions = [
-              {
-                label: 'Manage Schools',
-                icon: 'pi pi-building',
-                routerLink: '/admin/manage-school'
-              },
-              {
-                label: 'Manage Users',
-                icon: 'pi pi-users',
-                routerLink: '/admin/manage-user'
-              },
-            ];
+        if (userGrp && userGrp.length > 0 && userGrp[0] == 'admin') {
+          this.items.push(
+            {
+              label: 'Manage User',
+              icon: 'pi pi-users',
+              routerLink: '/profileDashboard'
           }
-          else if (res.role === 'Student or Parent') {
-            homelink = '/studentparent/home';
-            actions = [
-              {
-                label: 'School Recommendations',
-                icon: 'pi pi-thumbs-up',
-                routerLink: '/studentparent/upload-results'
-              },
-              {
-                label: 'View Schools',
-                icon: 'pi pi-database',
-                routerLink: '/studentparent/view-school-dashboard'
-              }
-            ];
-          }
-          else if (res.role === 'School Admin') {
-            homelink = '/schooladmin/home';
-            actions = [
-              {
-                label: 'Manage My Schools',
-                icon: 'pi pi-building',
-                routerLink: '/schooladmin/manage-school-dashboard'
-              }
-            ];
-          }
-  
-          // Add common navigations
-          this.items.push({
-            label: 'Home',
-            icon: 'pi pi-home',
-            routerLink: homelink
-          });
-          this.items.push(...actions);
-  
-          // Refreshes the available buttons
-          this.visible = false;
-          setTimeout(() => this.visible = true, 0);
+          )
         }
-      });
-      */
-  
+        this.isLoading = false;
+      } catch (error) {
+        console.error('Error fetching user data', error);
+        this.isLoading = false;
+      }
+      
     }
   
     signOut(): void {

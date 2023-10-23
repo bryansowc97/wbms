@@ -2,7 +2,7 @@
   <div class="flex-display">
     <div class="dtls-display">
       <p-card class="card">
-        <h3>Sign Up Page</h3>
+        <h3>Create New User</h3>
           <div class ="dtls-container">
             <div class="flex-container">
               <label>Employee ID</label>
@@ -14,22 +14,7 @@
                      [(ngModel)]="user.userName"
                      class="input-field"/>
             </div>
-            <div class="flex-container">
-              <label>Employee Role</label>
-              <p-dropdown
-                appendTo="body"
-                class="input-field"
-                [options]="roles"
-                optionLabel="label"
-                optionValue="value"
-                [(ngModel)]="user.role"
-                placeholder="Select Role"
-                [style]="{'width':'100%'}"
-              >
-              </p-dropdown>
-            </div>
           </div>
-
           <div class ="dtls-container">
             <div class="flex-container">
               <label>Full Name</label>

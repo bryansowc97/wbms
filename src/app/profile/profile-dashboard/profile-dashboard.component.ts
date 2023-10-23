@@ -11,48 +11,8 @@ import { CognitoService, IUser } from 'src/app/cognito.service';
   styleUrls: ['./profile-dashboard.component.scss']
 })
 export class ProfileDashboardComponent {
-  // profiles: UserProfile[]=[
-  //
-  // ];
-
-  profiles: UserProfile[]=[
-    {
-      // empID : 'P1234456',
-      userName : 'P1234456',
-      name : 'Alvin Tan',
-      email : 'alvin.tan@wbms.com.sg',
-      contact: '98765432',
-      role: 'admin',
-      status: '',
-    },
-    {
-      // empID : 'P1234677',
-      userName : 'P1234677',
-      name : 'Alvin Lee',
-      email : 'alvin.lee@wbms.com.sg',
-      contact: '98765432',
-      role: 'staff',
-      status: '',
-    },
-    {
-      // empID : 'P1234452',
-      userName : 'P1234452',
-      name : 'Alvin Chew',
-      email : 'alvin.chew@wbms.com.sg',
-      contact: '98765432',
-      role: 'staff',
-      status: '',
-    },
-    {
-      // empID : 'P1234829',
-      userName : 'P1234829',
-      name : 'Alvin Lim',
-      email : 'alvin.lim@wbms.com.sg',
-      contact: '98765432',
-      role: 'admin',
-      status: '',
-    }
-  ];
+  profiles: UserProfile[];
+  isLoading: boolean = true;
 
   constructor(
     private router: Router,
@@ -63,22 +23,30 @@ export class ProfileDashboardComponent {
 
   }
 
-  ngOnInit(): void {
-    // this.getUserList();
+  async ngOnInit(): Promise<void> {
+    this.initData();
   }
 
-  // public getUserList(){
-  //   const response = this.cognitoService.listUsers();
-  //   const users = response.__zone_symbol__value.Users;
-  //   console.log(users);
-  //   this.profiles = users.map((user: any) => {
-  //     return {
-  //       userName: user.Attributes.find(attr => attr.Name === 'userName').Value,
-  //       email: user.Attributes.find(attr => attr.Name === 'email').Value,
-  //       name: user.Attributes.find(attr => attr.Name === 'name').Value,
-  //     };
-  //   });
-  // }
+  initData() {
+    this.cognitoService.listUsers()
+      .then((data) => {
+        console.log(data);
+        this.profiles = data.Users.map(userData => {
+          const user: UserProfile = {} as UserProfile;
+          userData.Attributes.forEach(attribute => {
+            user[attribute.Name] = attribute.Value;
+          });
+          user.userName = userData.Username;
+          return user;
+        });
+        console.log('this profiles',this.profiles);
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        console.error('Error listing users:', error);
+        this.isLoading = false;
+      });
+  }
 
   clear(table: Table) {
     table.clear();
@@ -89,14 +57,28 @@ export class ProfileDashboardComponent {
   }
 
   onClickProfile(mode: string, empDtls: UserProfile) {
-    this.router.navigateByUrl(`/profile?mode=${mode}`, {state: empDtls});
+    const queryParams = {
+      mode: mode,
+      userName: empDtls.userName
+    }
+    this.router.navigate(['/profile'], { queryParams });
   }
 
-  deleteProfile() {
-    this.confirmationService.confirm({
-        accept: () => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Profile has been deleted.' });
+  async deleteProfile(profile: UserProfile) {
+    if (profile.userName) {
+      try {
+        const currUser = await this.cognitoService.getCurrentUser();
+        if (currUser && currUser.username === profile.userName) {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Cannot delete own account' });
+          return;
         }
-    });
+        const data = await this.cognitoService.deleteUser(profile.userName);
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User Deleted' });
+        this.initData();
+      } catch (error) {
+        this.messageService.add({ severity: 'error', summary: 'Unknown', detail: 'Please try again later.' });
+      }
+    }    
+    
   }
 }

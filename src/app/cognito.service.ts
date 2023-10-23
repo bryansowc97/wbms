@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, zip } from 'rxjs';
+import { BehaviorSubject, Observable, from, zip } from 'rxjs';
 import { Auth } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
 import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
 import { environment } from 'src/environment';
 import * as AWS from 'aws-sdk';
+import { env } from 'process';
 
 export interface IUser {
   email: string;
@@ -16,7 +17,8 @@ export interface IUser {
   newPassword?: string;
   code: string;
   name: string;
-  contact: Number;
+  contact: string;
+  phone_number?: string;
   role: string;
 }
 
@@ -43,7 +45,7 @@ export class CognitoService {
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
       IdentityPoolId: environment.awsConfig.identitiyPoolId
     })
-    this.cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+    this.cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider({ region: environment.awsConfig.region });
 
   }
 
@@ -53,7 +55,8 @@ export class CognitoService {
       password: user.password,
       attributes: {
         email: user.email,
-        name: user.name
+        name: user.name,
+        phone_number: user.contact
       }
     });
   }
@@ -80,7 +83,7 @@ export class CognitoService {
     if (this.authenticationSubject.value) {
       return Promise.resolve(true);
     } else {
-      return this.getUser()
+      return this.getCurrentUser()
       .then((user: any) => {
         if (user) {
           return true;
@@ -93,9 +96,21 @@ export class CognitoService {
     }
   }
 
-  public getUser(): Promise<any> {
+  public getCurrentUser(): Promise<any> {
     console.log(Auth.currentUserInfo());
     return Auth.currentUserInfo();
+  }
+
+  async findUserAndAttributesByUsername(username: string): Promise<any> {
+    try {
+      const cognitoParamsWithUserName = {
+        UserPoolId: environment.cognito.userPoolId, // Replace with your Cognito user pool ID
+        Username: username
+      };
+      return await this.cognitoIdentityServiceProvider.adminGetUser(cognitoParamsWithUserName).promise();
+    } catch (error) {
+      console.error('Error finding user or retrieving attributes:', error);
+    }
   }
 
   async getUserGroups() {
@@ -108,11 +123,42 @@ export class CognitoService {
     }
   }
 
-  public updateUser(user: IUser): Promise<any> {
-    return Auth.currentUserPoolUser()
-    .then((cognitoUser: any) => {
-      return Auth.updateUserAttributes(cognitoUser, user);
-    });
+  public async updateUser(user: IUser): Promise<any> {
+    let attri: any[] = [
+      {email: user.email},
+      {name: user.name},
+      {phone_number: user.contact},
+    ];
+    const params = {
+      UserPoolId: environment.cognito.userPoolId,
+      Username: user.userName,
+      UserAttributes: attri.map(attribute => ({
+        Name: Object.keys(attribute)[0],
+        Value: attribute[Object.keys(attribute)[0]]
+      })),
+    };
+    
+    try {
+      await this.cognitoIdentityServiceProvider.adminUpdateUserAttributes(params).promise();
+      console.log('User attributes updated successfully');
+    } catch (error) {
+      console.error('Error updating user attributes:', error);
+    }
+  }
+  
+
+  public async deleteUser(username: string): Promise<any> {
+    return this.cognitoIdentityServiceProvider.adminDeleteUser({
+      UserPoolId: environment.cognito.userPoolId, 
+      Username: username
+    })
+      .promise()
+      .then(data => {
+        return data; 
+      })
+      .catch(error => {
+        throw error; 
+      });
   }
 
 

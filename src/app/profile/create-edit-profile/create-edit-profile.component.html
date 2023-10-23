@@ -1,31 +1,22 @@
 <ic-navbar></ic-navbar>
-<div class="container-fluid">
+<div *ngIf="isLoading">Loading ...</div>
+<div class="container-fluid" *ngIf= "!isLoading">
     <div class="flex-display">
         <div class="dtls-display">
         <p-card class="card">
             <h3 *ngIf="mode == 'self'">My Profile</h3>
+            <h3 *ngIf="mode == 'view' || mode == 'edit'">{{ user.name }}'s Profile</h3>
             <h3 *ngIf="mode == 'create'">Create Profile</h3>
             <div class ="dtls-container">
                 <div class="flex-container">
                     <label>Employee ID</label>
 <!--                    <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.empID" [disabled]="mode!='create'"/>-->
-                  <input pInputText type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.userName" class="input-field" [disabled]="mode!='create'"/>
+                  <input pInputText type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.userName" class="input-field" [disabled]="true"/>
                 </div>
-                <div class="flex-container">
+                <div class="flex-container" *ngIf = "user.role == 'admin'">
                     <label>Employee Role</label>
                     <!-- <input pInputText class="input-field" type="text" [(ngModel)]="empDtls.role" [disabled]="mode!='create'"/> -->
-                    <p-dropdown
-                        appendTo="body"
-                        class="input-field"
-                        [options]="roles"
-                        optionLabel="label"
-                        optionValue="value"
-                        [(ngModel)]="empDtls.role"
-                        placeholder="Select Role"
-                        [style]="{'width':'100%'}"
-                        [disabled]="mode=='view' || mode == 'self'"
-                        >
-                    </p-dropdown>
+                    <input pInputText type="userName" id="userName" name="userName" #userName="ngModel" [(ngModel)]="user.role" class="input-field" [disabled]="true"/>
                 </div>
             </div>
             <div class ="dtls-container">
@@ -43,22 +34,6 @@
                 <div class="flex-container">
                     <label>Contact Number</label>
                   <input pInputText class="input-field" type="text" [(ngModel)]="user.contact" [disabled]="mode=='view'" />
-                </div>
-            </div>
-            <div class ="dtls-container">
-                <div class="flex-container">
-                    <label>Password</label>
-                    <input pInputText class="input-field" type="password" [(ngModel)]="user.password" [disabled]="mode=='view'" />
-                </div>
-                <div class="flex-container">
-                    <label>Confirm Password</label>
-                    <input pInputText class="input-field" type="password" [(ngModel)]="user.confirmPassword" [disabled]="mode=='view'" />
-                </div>
-            </div>
-            <div class ="dtls-container">
-                <div class="flex-container">
-                    <label>New Password</label>
-                    <input pInputText class="input-field" type="password" [(ngModel)]="user.newPassword" [disabled]="mode=='view' || mode=='create'" />
                 </div>
             </div>
             <div class = "btn-container" *ngIf="mode!='view'">
