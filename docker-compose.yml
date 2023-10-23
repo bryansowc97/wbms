@@ -1,0 +1,27 @@
+version: "3.0"
+services:
+  frontend:
+    build: 
+      dockerfile: Dockerfile
+      context: ./web
+    ports:
+      -"4200"
+  service-discovery:
+    build:
+      dockerfile: Dockerfile
+      context: ./service-discovery
+    #ports:
+    #  -"8761"
+  booking-service:
+    build: 
+      dockerfile: Dockerfile
+      context: ./booking-service
+    #ports:
+    #  -"8081"
+  workspace-service:
+    build: 
+      dockerfile: Dockerfile
+      context: ./workspace-service
+    #ports:
+    #  -"8082"
+

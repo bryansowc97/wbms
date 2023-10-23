@@ -1,4 +1,4 @@
-FROM openjdk:21
+FROM openjdk:17
 WORKDIR /app
 COPY target/wbms-booking.jar /app/wbms-booking.jar
 EXPOSE 8081
