@@ -34,16 +34,16 @@ phases:
       #build frontend
       - echo Building docker images...
       - echo Building frontend...
-      - docker build -t wbms-frontend:wbms-frontend-docker ./web
+      - docker build -t wbms-frontend:wbms-frontend-docker ./docker
       - echo Frontend build completed...
       #build services
       - echo Building backend...
       - cd service-discovery
-      - docker build -t wbms-service-discovery-docker:service-discovery-docker ./service-discovery
+      - docker build -t wbms-service-discovery-docker:service-discovery-docker ./docker
       - cd../workspace
-      - docker build -t wbms-workspace-docker:workspace-docker ./workspace-service
+      - docker build -t wbms-workspace-docker:workspace-docker ./docker
       - cd../booking
-      - docker build -t wbms-booking-docker:booking-docker ./booking-service
+      - docker build -t wbms-booking-docker:booking-docker ./docker
       - echo Backend services build completed...
       - echo Docker images build completed...
 
