@@ -36,7 +36,7 @@ export class ProfileDashboardComponent {
           userData.Attributes.forEach(attribute => {
             user[attribute.Name] = attribute.Value;
           });
-          user.userName = userData.Username;
+          user.username = userData.Username;
           return user;
         });
         console.log('this profiles',this.profiles);
@@ -59,20 +59,20 @@ export class ProfileDashboardComponent {
   onClickProfile(mode: string, empDtls: UserProfile) {
     const queryParams = {
       mode: mode,
-      userName: empDtls.userName
+      username: empDtls.username
     }
     this.router.navigate(['/profile'], { queryParams });
   }
 
   async deleteProfile(profile: UserProfile) {
-    if (profile.userName) {
+    if (profile.username) {
       try {
         const currUser = await this.cognitoService.getCurrentUser();
-        if (currUser && currUser.username === profile.userName) {
+        if (currUser && currUser.username === profile.username) {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Cannot delete own account' });
           return;
         }
-        const data = await this.cognitoService.deleteUser(profile.userName);
+        const data = await this.cognitoService.deleteUser(profile.username);
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User Deleted' });
         this.initData();
       } catch (error) {
