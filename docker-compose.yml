@@ -3,25 +3,25 @@ services:
   frontend:
     build: 
       dockerfile: Dockerfile
-      context: ./web
+      context: ./
     ports:
       -"4200"
   service-discovery:
     build:
       dockerfile: Dockerfile
-      context: ./service-discovery
+      context: ./service-discovery/docker
     #ports:
     #  -"8761"
   booking-service:
     build: 
       dockerfile: Dockerfile
-      context: ./booking-service
+      context: ./booking-service/docker
     #ports:
     #  -"8081"
   workspace-service:
     build: 
       dockerfile: Dockerfile
-      context: ./workspace-service
+      context: ./workspace-service/docker
     #ports:
     #  -"8082"
 

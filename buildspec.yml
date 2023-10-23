@@ -35,7 +35,7 @@ phases:
       - echo Building docker images...
       - echo Building frontend...
       - cd ..
-      - docker build -t wbms-frontend:wbms-frontend-docker ./docker
+      - docker build -t wbms-frontend:wbms-frontend-docker .
       - echo Frontend build completed...
       #build services
       - echo Building backend...
@@ -55,7 +55,7 @@ phases:
     commands:
       - echo Pushing docker images...d
       - cd ..
-      - docker push wbms-frontend:wbms-frontend-docker ./docker
+      - docker push wbms-frontend:wbms-frontend-docker .
       - cd ../service-discovery
       - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
       - cd ../workspace
