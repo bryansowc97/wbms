@@ -11,7 +11,6 @@ phases:
   build:
     commands:
       #build frontend
-      - cd wbms
       - npm install
       - ng build
     
