@@ -25,13 +25,10 @@ phases:
       - echo Compile and build backend services..
       - cd service-discovery
       - mvn clean install -DskipTests
-      - $PWD
       - cd ../booking
       - mvn clean install -DskipTests
-      - $PWD
       - cd ../workspace
       - mvn clean install -DskipTests
-      - $PWD
       - echo Compile and build backend services completed..
   build:
     commands:
