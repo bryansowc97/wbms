@@ -9,8 +9,8 @@ import { HttpRequest } from 'aws-sdk';
 
 export class WorkspaceService {
 
-    apiUrl = 'http://localhost:8083/api/workspace';
-    
+    apiUrl = 'http://localhost:8082/api/workspace';
+
     constructor(
         private http: HttpClient
     ) { }
