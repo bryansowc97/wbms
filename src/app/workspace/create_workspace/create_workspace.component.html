@@ -36,15 +36,14 @@
                     <small class="errorMsg" *ngIf="(createWorkspace.get('sub_gp')?.touched || createWorkspace.get('sub_gp')?.dirty) && createWorkspace.get('sub_gp')?.value.length == 0"><br/>*Please enter facility name</small>
                     <br>
                     <br>
-                    <p-button label="SAVE" styleClass="p-button-primary p-button-success right-margin" (onClick)="createFacility()"></p-button>
-                    <p-button label="RESET" styleClass="p-button-outlined p-button-danger right-margin" (onClick)="cancel()"></p-button>
+                    <p-button label="SAVE" styleClass="p-button-success right-margin" (onClick)="createFacility()"></p-button>
+                    <p-button label="RESET" styleClass="p-button-secondary right-margin" (onClick)="cancel()"></p-button>
                 </p-card>
 
             </form>
         </div>
     </div>
 </div>
-<p-toast></p-toast>
 </form>
 
 
