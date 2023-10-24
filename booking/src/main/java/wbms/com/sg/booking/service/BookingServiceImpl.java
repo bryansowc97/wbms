@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import wbms.com.sg.booking.dto.BookingDTO;
 import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.entity.Booking;
 import wbms.com.sg.booking.repository.BookingRepository;
@@ -32,5 +33,11 @@ public class BookingServiceImpl implements BookingService{
 
   public List<Booking> getBookingsByUser(String employeeId) {
     return bookingRepository.findByEmployeeId(employeeId);
+  }
+
+  @Override
+  public Booking updateBookingByUser(BookingDTO bookingDTO) {
+    String help = "help me";
+    return new Booking();
   }
 }

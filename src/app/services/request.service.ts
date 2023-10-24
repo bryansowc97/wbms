@@ -26,19 +26,19 @@ export class RequestService {
     }
 
     // Query (http.get with params)
-    query<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
+    getWithParams<T>(url: string, service: string, param?: any): Observable<any> {
         const options = this.createRequestOption(param);
-        return this.http.get<T>(`${this.apiUrl[service] + url}}`, { params: options, observe: 'response' });
+        return this.http.get(`${this.apiUrl[service] + url}`, { params: options });
     }
 
     // Create (http.post)
-    create<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.post<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
+    create<T>(url: string, service: string, param?: any): Observable<any> {
+        return this.http.post<T>(`${this.apiUrl[service] + url}`, param);
     }
 
-    // Update (http.put)
-    update<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.put<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
+    // Put (http.put)
+    put<T>(url: string, service: string, param?: any): Observable<any> {
+        return this.http.put<T>(`${this.apiUrl[service] + url}`, param);
     }
 
     createRequestOption(req?: any): HttpParams {

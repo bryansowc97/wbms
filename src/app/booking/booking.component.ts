@@ -106,4 +106,20 @@ export class BookingDashboardComponent implements OnInit {
     });
   }
 
+  updateBooking(): void{
+    let booking: Booking = {
+      id: 10,
+      employeeId: 'P1111111',
+      rescId: 1,
+      dteStart: Date,
+      dteEnd : Date,
+      status: 'B',
+    }
+    this.bookingService.updateBooking(booking).subscribe((res:any) => {
+      let a = res;
+      console.log(a);
+    })
+
+  }
+
 }
