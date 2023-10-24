@@ -1,85 +1,87 @@
 <ic-navbar></ic-navbar>
-<div class="container-fluid">
-    <div class="row flex-display">
-        <div class="col chart-display">
-            <p-card class="card">
-                <a>chart</a>
-            </p-card>
-        </div>
-        <div class="col chart-display">
-            <p-card class="card">
-                <a>chart2</a>
-                <!-- <fusioncharts
-                type="world"
-                width="800"
-                height="500"
-                dataSource="source">
-            </fusioncharts> -->
-            </p-card>
-        </div>
-    </div>
-
-    <!-- <ng-template pTemplate="header">
-        <b>today and upcoming booking </b>
-        <b>passed booking might need to use search / filter by date function to get</b>
-    </ng-template> -->
-    <p-button class="buttonSet" label="Test POST update booking" icon="pi pi-trash" (onClick)="updateBooking()"></p-button>
-    <p-table 
-        #tbl
-        [value]="bookingDtlDTOList" 
-        [paginator]="true"
-        [rows]="5"
-        [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '60rem' }"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['empID', 'fullname']"
-        (sortFunction)="customSort($event)" 
-        [customSort]="true" 
-        [tableStyle]="{'min-width': '60rem'}"
-    >
-        
-        <ng-template pTemplate="caption" >
-            <div class="flex">
-                <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
-                    <i class="pi pi-search"></i>
-                    <input pInputText class="input-field" type="text" [(ngModel)]="search_key" (input)="search_key.filterGlobal($event, 'contains')" placeholder="Search keyword" />
-                    <!-- (input)="search_key.filterGlobal($event.target.value, 'contains')" -->
-                </span>
-                <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
-                    <p-calendar appendTo="body" [(ngModel)]="date" [showIcon]="true" placeholder="Filter Date"></p-calendar>
-                </span>
-                <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(search_key)"></button>
+<div *ngIf = "isLoading"> Loading... </div>
+<div *ngIf = "!isLoading">
+    <div class="container-fluid">
+        <div class="row flex-display">
+            <div class="col chart-display">
+                <p-card class="card">
+                    <a>chart</a>
+                </p-card>
             </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="Ws_code" style="width:20%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="Emp_name" style="width:15%">Employee Id <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="Emp_name" style="width:20%">Employee Names <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="time" style="width:20%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
-                <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="code"></p-sortIcon></th>
-                <th style="width:10%">Action </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-booking>
-            <tr>
-                <td>{{ booking.facilityDTO.name }}</td>
-                <td>{{ booking.employeeId }}</td>
-                <td>placeholder</td>
-                <td>{{ booking.dteStart | slice:0:10 }}</td>
-                <td>{{ booking.dteStart | slice:11:16 }} - {{ booking.dteEnd | slice:11:16 }}</td>
-                <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.bookedStatus]" [severity]="getSeverity(bookingStatusEnum[booking.bookedStatus])"></p-tag></td>
-                <td>
-                    <span class="flex-display p-buttonset">
-                        <!-- <p-button class="buttonSet" icon="pi pi-pencil" [routerLink]="['/booking']" [queryParams]="{mode:'edit'}"></p-button> -->
-                        <p-button class="buttonSet" icon="pi pi-eye" [routerLink]="['/booking']" [queryParams]="{mode:'view'}"></p-button>
-                        <p-button class="buttonSet" icon="pi pi-trash" (onClick)="deleteBooking(booking.emp_id)"></p-button>
+            <div class="col chart-display">
+                <p-card class="card">
+                    <a>chart2</a>
+                    <!-- <fusioncharts
+                    type="world"
+                    width="800"
+                    height="500"
+                    dataSource="source">
+                </fusioncharts> -->
+                </p-card>
+            </div>
+        </div>
+
+        <!-- <ng-template pTemplate="header">
+            <b>today and upcoming booking </b>
+            <b>passed booking might need to use search / filter by date function to get</b>
+        </ng-template> -->
+        <p-button class="buttonSet" label="Test POST update booking" icon="pi pi-trash" (onClick)="updateBooking()"></p-button>
+        <p-table 
+            #tbl
+            [value]="bookingDtlDTOList" 
+            [paginator]="true"
+            [rows]="15"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '60rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [globalFilterFields]="['employeeId', 'facilityDTO.name']"
+            (sortFunction)="customSort($event)" 
+            [customSort]="true" 
+            [tableStyle]="{'min-width': '60rem'}"
+        >
+            
+            <ng-template pTemplate="caption" >
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
+                        <i class="pi pi-search"></i>
+                        <input pInputText class="input-field" [(ngModel)]="search_key" type="text" (input)="applyFilterGlobal(tbl, $event, 'contains')" placeholder="Search Facility or Id" />
                     </span>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+                    <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
+                        <p-calendar appendTo="body" [(ngModel)]="date" (onSelect)="onSelectCalendarDate($event, tbl)" [showIcon]="true" placeholder="Filter Date"></p-calendar>
+                    </span>
+                    <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(tbl)"></button>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="Ws_code" style="width:20%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="Emp_name" style="width:15%">Employee Id <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="Emp_name" style="width:20%">Employee Names <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="time" style="width:20%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="code"></p-sortIcon></th>
+                    <th style="width:10%">Action </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-booking>
+                <tr>
+                    <td>{{ booking.facilityDTO.name }}</td>
+                    <td>{{ booking.employeeId }}</td>
+                    <td>placeholder</td>
+                    <td>{{ booking.dteStart | slice:0:10 }}</td>
+                    <td>{{ booking.dteStart | slice:11:16 }} - {{ booking.dteEnd | slice:11:16 }}</td>
+                    <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.bookedStatus]" [severity]="getSeverity(bookingStatusEnum[booking.bookedStatus])"></p-tag></td>
+                    <td>
+                        <span class="flex-display p-buttonset">
+                            <!-- <p-button class="buttonSet" icon="pi pi-pencil" [routerLink]="['/booking']" [queryParams]="{mode:'edit'}"></p-button> -->
+                            <p-button class="buttonSet" icon="pi pi-eye" [routerLink]="['/booking']" [queryParams]="{mode:'view'}"></p-button>
+                            <p-button class="buttonSet" icon="pi pi-trash" (onClick)="deleteBooking(booking.emp_id)"></p-button>
+                        </span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
 
 

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environment';
 
 @Injectable()
 
 export class WorkspaceService {
 
-    apiUrl = 'http://localhost:8082/api/workspace';
+    apiUrl = environment.api.workspace;
     
   constructor(
         private http: HttpClient
