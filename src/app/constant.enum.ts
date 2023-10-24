@@ -1,6 +1,6 @@
 export enum BookingStatusEnum {
     B = "BOOKED",
-    D = "CANCEL"
+    C = "CANCEL"
 }
 
 export enum FacilityStatusEnum {

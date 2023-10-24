@@ -34,4 +34,9 @@ public class BookingResource {
   public ResponseEntity<?> getBookingsByUser(@PathVariable String employeeId) {
     return new ResponseEntity<>(bookingService.getBookingsByUser(employeeId), HttpStatus.OK);
   }
+
+  @GetMapping("/findById/{id}")
+  public ResponseEntity<?> findById(@PathVariable Long id) {
+    return new ResponseEntity<>(bookingService.findById(id), HttpStatus.OK);
+  }
 }

@@ -3,7 +3,7 @@ package wbms.com.sg.booking.service;
 import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.entity.Booking;
 
-import java.util.List;
+import java.util.*;
 
 public interface BookingService {
 
@@ -12,4 +12,6 @@ public interface BookingService {
   List<Booking> findAll();
 
   List<Booking> getBookingsByUser(String employeeId);
+
+  Booking findById(Long id);
 }

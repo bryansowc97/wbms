@@ -8,7 +8,7 @@ import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.entity.Booking;
 import wbms.com.sg.booking.repository.BookingRepository;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -33,4 +33,8 @@ public class BookingServiceImpl implements BookingService{
   public List<Booking> getBookingsByUser(String employeeId) {
     return bookingRepository.findByEmployeeId(employeeId);
   }
+
+  public Booking findById(Long id){
+    return bookingRepository.findById(id).stream().findFirst().orElse(null);
+  };
 }

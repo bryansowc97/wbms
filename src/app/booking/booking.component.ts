@@ -7,6 +7,7 @@ import { CognitoService, IUser } from '../cognito.service';
 import { BookingService } from '../services/booking.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-booking',
@@ -27,12 +28,15 @@ export class BookingDashboardComponent implements OnInit {
   user: IUser;
   userGroup: any[];
   bookingStatusEnum: { [key: string]: string } = BookingStatusEnum;
+  stlBookingDTL: BookingDtlDTO;
+  stlMode: string;
+  displayView: boolean = false;
 
   search_key: any ;
   date: any;
   source: any;
-  booking: Booking[];
-  bookingDtlDTOList: BookingDtlDTO[];
+  // booking: Booking[];
+  bookingDtlDTOList = [];
   bookingDtlDTO: BookingDtlDTO;
   // =[
   //   { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
@@ -46,41 +50,67 @@ export class BookingDashboardComponent implements OnInit {
   // ];
 
   ngOnInit(): void {
-    //if admin / user access lvl view 
-    this.bookingService.findAll().subscribe(resv => {
-      resv.forEach(res => {
-        this.bookingDtlDTO = res;
-        this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
-          this.bookingDtlDTO.facilityDTO = r;
-          // this.bookingDtlDTOList.push(this.bookingDtlDTO);
-        })
-        
+    this.cognitoService.getCurrentUser().then((user: any) => {
+          this.user = user.attributes;
+
+          this.cognitoService.getUserGroups().then((userGrp: any) => {
+            this.userGroup = userGrp;
+            this.messageService.add({
+              severity: "warn",
+              summary: "user info",
+              detail: userGrp,
+              sticky: false,
+            });
+            if(this.userGroup!== undefined && this.userGroup[0] === 'admin'){
+              this.bookingService.findAll().subscribe(resv => {
+                resv.forEach(res => {
+                  this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
+                    this.cognitoService.findUserAndAttributesByUsername(res.employeeId).then(userData => {
+                      this.bookingDtlDTO = res;
+                      this.bookingDtlDTO.facilityDTO = r;
+                      this.bookingDtlDTO.date = formatDate(this.bookingDtlDTO.dteStart,'dd-MM-yyyy','en-US');
+                      this.bookingDtlDTO.timeslot = formatDate(this.bookingDtlDTO.dteStart,'HH:mm','en-US') + ' - '+ formatDate(this.bookingDtlDTO.dteEnd,'HH:mm','en-US') ;
+                      if(userData){
+                        userData.UserAttributes.forEach(attribute => {
+                          if(attribute.Name === 'name'){
+                            this.bookingDtlDTO.employeeName = attribute.Value;
+                          }
+                        });
+                      }else{
+                        this.bookingDtlDTO.employeeName = 'UNKNOWN';
+                      }
+                      this.bookingDtlDTOList.push(this.bookingDtlDTO);
+                      console.log(this.bookingDtlDTOList);
+                    });
+                  });
+                });
+              })
+            }else{
+              console.log('out',user.username); 
+              this.bookingService.getBookingsByUser(user.username).subscribe(resv => {
+                resv.forEach(res => {
+                  this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
+                    this.bookingDtlDTO = res;
+                    this.bookingDtlDTO.facilityDTO = r;
+                    this.bookingDtlDTO.date = formatDate(this.bookingDtlDTO.dteStart,'dd-MM-yyyy','en-US');
+                    this.bookingDtlDTO.timeslot = formatDate(this.bookingDtlDTO.dteStart,'HH:mm','en-US') + ' - '+ formatDate(this.bookingDtlDTO.dteEnd,'HH:mm','en-US') ;
+                    this.bookingDtlDTOList.push(this.bookingDtlDTO);
+                    this.bookingDtlDTO.employeeName = this.user.name;
+                  });
+                });
+              });
+            }
+
+          });
       });
-      
-      console.log('bookingDtlDTOList', this.bookingDtlDTOList);
-    })
-    
-    // this.bookingService.getBookingsByUser(res.employeeId).subscribe(resv => {
-    //   console.log('booking user ',resv);
-    // })
-    
-    // this.cognitoService.getUser()
-    // .then((user: any) => {
-    //   console.log('user cognito', user);
-    //   this.user = user.attributes;
-    //   console.log('user', this.user);
-    //   this.cognitoService.getUserGroups()
-    //   .then((userGrp: any) => {
-    //     this.userGroup = userGrp;
-    //     this.messageService.add({
-    //       severity: "warn",
-    //       summary: "user info",
-    //       detail: userGrp,
-    //       sticky: false,
-    //     }); 
-    //     console.log("user, usergrp", user, this.userGroup);
-    //   });      
-    // });
+  }
+
+  onClickBooking(mode: string, id: any) {
+    const queryParams = {
+      mode: mode,
+      id: id
+    }
+    this.router.navigate(['/booking'], { queryParams });
   }
 
   customSort(event:any):void{}

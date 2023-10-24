@@ -40,7 +40,7 @@ public class WorkspaceServiceImpl implements WorkspaceService{
     return workspaceRepository.findAll();
   }
 
-  public Optional<Workspace> findById(Long id) {
-    return workspaceRepository.findById(id);
+  public Workspace findById(Long id) {
+    return workspaceRepository.findById(id).stream().findFirst().orElse(null);
   }
 }

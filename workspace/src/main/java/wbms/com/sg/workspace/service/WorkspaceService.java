@@ -12,5 +12,5 @@ public interface WorkspaceService {
 
   public List<Workspace> findAll();
 
-  public Optional<Workspace> findById(Long id);
+  public Workspace findById(Long id);
 }

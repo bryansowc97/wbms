@@ -20,4 +20,8 @@ export class BookingService {
     getBookingsByUser(empId:string): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/getBookingsByUser/${empId}`);
     }
+
+    findById(Id:any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/findById/${Id}`);
+    }
 }

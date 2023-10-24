@@ -17,7 +17,7 @@ export class WorkspaceService {
         return this.http.get<any[]>(`${this.apiUrl}/testWorkspaceDb`);
     }
 
-    getWorkspaceById(id:any): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/getWorkspaceById/${id}`);
+    getWorkspaceById(id:any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/getWorkspaceById/${id}`);
     }
 }
