@@ -56,9 +56,7 @@ export class WorkspaceDashboardComponent {
   cols: number = 15;
   colsArr: any[] = [];
 
-  bookingRecord : NFacilityBooking[]=[
-    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', subGp:'Meeting Room', gp:'B4-MR01', posGrid:17, posRotation:'U', name: 'B4-MR01-17', status:'A'},
-  ]
+  bookingRecords : NFacilityBooking[]=[]
 
   openDeleteWorkspaceDialog: boolean = false;
   openCreateBookgDialog: boolean = false;
@@ -109,6 +107,7 @@ export class WorkspaceDashboardComponent {
 
   getSelectedResType(event:any) {
     this.colsArr = [];
+    this.bookingRecords = [];
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {
         this.colsArr.push(0)
@@ -133,6 +132,7 @@ export class WorkspaceDashboardComponent {
 
   getSelectedResName(event:any) {
     this.colsArr = [];
+    this.bookingRecords = [];
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {
         this.colsArr.push(0)
@@ -144,9 +144,39 @@ export class WorkspaceDashboardComponent {
       this.selectedSeating = res.body;
       this.displaySltSeating(res.body);
       this.showHover = true;
+
+      // get bookings
+      let seatIds = this.selectedSeating.map((seat: NFacilitySeat) => seat.id)
+      this.bookingService.getBookingsByIds(seatIds).subscribe((res:any) => {
+        res.forEach((booking: any) => {
+          let record: NFacilityBooking = {} as NFacilityBooking;
+          let newDateStart = new Date(Date.parse(booking.dteStart));
+          let newDateEnd = new Date(Date.parse(booking.dteEnd));
+          
+          record.date = this.getFormattedDate(newDateStart)
+          record.timeSlot = `${newDateStart.getHours()}:00 - ${newDateEnd.getHours()}:00`
+          record.emp_id = booking.employeeId
+
+          let seatPointer = this.selectedSeating.filter((seat: NFacilitySeat) => seat.id === booking.rescId)
+          record.name = seatPointer[0].name
+          record.id = seatPointer[0].id
+          record.gp = seatPointer[0].gp
+          record.subGp = seatPointer[0].subGp
+          record.status = seatPointer[0].status
+          record.posGrid = seatPointer[0].posGrid
+          record.posRotation = seatPointer[0].posRotation
+
+          this.bookingRecords.push(record);
+        })
+      })
     })
     // this.clearForm();
   } 
+
+  getFormattedDate(date: Date) {
+    let newDate = date.toLocaleDateString('en-GB').replaceAll('/','-');
+    return newDate.slice(0,6) + newDate.slice(8,10)
+  }
 
   displaySltSeating(seatMap:any){
     if(seatMap.length > 0){
@@ -287,7 +317,7 @@ export class WorkspaceDashboardComponent {
       // console.log('index',index);
 
       let bookDTL : NFacilityBooking[] ;
-      bookDTL = this.bookingRecord.filter((book:NFacilityBooking) => book.posGrid===(index));
+      bookDTL = this.bookingRecords.filter((book:NFacilityBooking) => book.posGrid===(index));
       
       let seatDTL : NFacilitySeat[] ;
       seatDTL = this.selectedSeating.filter((seat:NFacilitySeat) => seat.posGrid===(index));
@@ -323,6 +353,10 @@ export class WorkspaceDashboardComponent {
   }
 
   deleteWorkspace() {
+    if (this.bookingRecords.length>0) {
+      this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: 'Workspace cannot be deleted because there are existing bookings.' });  
+      return;
+    }
     this.openCreateBookgDialog = false;
     this.openDeleteWorkspaceDialog = true;
     this.confirmationService.confirm({
@@ -343,7 +377,7 @@ export class WorkspaceDashboardComponent {
   }
 
   editWorkspace() {
-    this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {seating: this.selectedSeating, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.subGp? this.selectedResourceDTL.subGp: ''}});
+    this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {bookingRecords: this.bookingRecords, seating: this.selectedSeating, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.subGp? this.selectedResourceDTL.subGp: ''}});
   }
 
   checkOpacity(index: number): string {

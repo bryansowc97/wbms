@@ -15,4 +15,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
   List<Booking> findByEmployeeId(String employeeId);
 
   Optional<Booking> findById(Long id);
+
+  @Query(value = "select b from Booking b where rescId in :rescIdList and dteStart > sysDate and status = :status order by dteStart asc")
+  public List<Booking> findAllByRescIdAndStatus(List<Long> rescIdList, String status);
 }

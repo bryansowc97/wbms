@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
-import { NFacilitySeat } from '../workspace.model';
+import { NFacilitySeat, NFacilityBooking } from '../workspace.model';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { catchError, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -28,6 +28,7 @@ export class CreateWorkspaceComponent implements OnInit {
     if (details) {
       this.seating = [...details['seating']]
       this.seatingCopy = [...details['seating']]
+      this.bookingRecords = [...details['bookingRecords']];
     } else {       
       this.seating = [
         {gp : undefined, subGp : undefined, status: 'A', posGrid:17, posRotation:'D', name: undefined},
@@ -60,6 +61,7 @@ export class CreateWorkspaceComponent implements OnInit {
   
   seating: NFacilitySeat[] =[];
   seatingCopy: NFacilitySeat[] =[];
+  bookingRecords : NFacilityBooking[]=[];
   mode: string = "";
   idListToDelete: number[]=[];
 
@@ -196,7 +198,14 @@ export class CreateWorkspaceComponent implements OnInit {
     let seatIndex = this.seating.findIndex(s =>s.posGrid === (index));
 
     if (seatDTL.length > 0) {
-      if (seatDTL[0].posRotation == 'D') {
+      let bookDTL : NFacilityBooking[] ;
+      bookDTL = this.bookingRecords.filter((book:NFacilityBooking) => book.posGrid===(index));
+      if (bookDTL.length > 0) {
+        this.items = [
+          { label: 'This seat cannot be edited because there are existing bookings', command: (e) => {
+          } }
+        ];
+      } else if (seatDTL[0].posRotation == 'D') {
         this.items = [
           { label: 'Rotate', icon: 'pi pi-replay', command: (e) => {
             // seatDTL[0].rotation = 'U';

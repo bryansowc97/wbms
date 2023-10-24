@@ -49,8 +49,8 @@ public class BookingServiceImpl implements BookingService{
       Booking toSave = new Booking();
       toSave.setEmployeeId(bookingDTO.getEmployeeId());
       toSave.setRescId(bookingDTO.getRescId());
-      toSave.setDteStart(bookingDTO.getDteStart(ZoneOffset.UTC));
-      toSave.setDteEnd(bookingDTO.getDteEnd(ZoneOffset.UTC));
+      toSave.setDteStart(bookingDTO.getDteStart());
+      toSave.setDteEnd(bookingDTO.getDteEnd());
       toSave.setStatus("B");
       bookingRepository.save(toSave);
     }
@@ -68,6 +68,9 @@ public class BookingServiceImpl implements BookingService{
     }
   }
 
+  public List<Booking> getBookingsByIds(List<Long> idList) {
+    return bookingRepository.findAllByRescIdAndStatus(idList, "B");
+  }
 
   public Booking dtoToEntity( BookingDTO dto) {
     Booking entity = new Booking();

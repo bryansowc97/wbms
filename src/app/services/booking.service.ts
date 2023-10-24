@@ -32,4 +32,8 @@ export class BookingService {
     updateBooking(booking: Booking): Observable<any[]> {
         return this.requestService.create(`/updateBooking/`, this.bookingApi, booking);
     }  
+
+    getBookingsByIds(idList: number[]): Observable<any[]> {
+        return this.http.post<any[]>(`${this.apiUrl}/getBookingsByIds`, idList);
+    }
 }

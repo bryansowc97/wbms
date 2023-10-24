@@ -15,5 +15,8 @@ public interface BookingService {
   List<Booking> getBookingsByUser(String employeeId);
 
   Booking findById(Long id);
+  // Booking updateBookingByUser(BookingDTO bookingDTO);
+
+  List<Booking> getBookingsByIds(List<Long> idList);
   void updateBooking(BookingDTO bookingDTO);
 }
