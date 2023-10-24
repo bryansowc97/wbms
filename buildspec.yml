@@ -37,16 +37,19 @@ phases:
       - echo Building frontend...
       - cd ..
       - docker build -t wbms-frontend:wbms-frontend-docker .
+      - pwd
       - echo Frontend build completed...
       #build services
       - echo Building backend...
-      - pwd # print current directory
       - ls -l # list all contents in the directory
-      - cd service-discovery/docker
+      - cd ./service-discovery/docker
+      - pwd
       - docker build -t wbms-service-discovery-docker:service-discovery-docker .
-      - cd ../workspace
+      - cd ../../workspace/docker
+      - pwd
       - docker build -t wbms-workspace-docker:workspace-docker ./docker
-      - cd ../booking
+      - cd ../../booking/docker
+      - pwd
       - docker build -t wbms-booking-docker:booking-docker ./docker
       - echo Backend services build completed...
       - echo Docker images build completed...
@@ -56,15 +59,15 @@ phases:
       #- mvn package -f booking/pom.xml
   post_build:
     commands:
-      - echo Pushing docker images...d
-      - docker push wbms-frontend:wbms-frontend-docker .
-      - cd service-discovery
-      - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
-      - cd ../workspace
-      - docker push wbms-workspace-docker:workspace-docker ./docker
-      - cd ../booking
-      - docker push wbms-booking-docker:booking-docker ./docker
-      - echo "Docker images push completed."
+      # - echo Pushing docker images...d
+      # - docker push wbms-frontend:wbms-frontend-docker .
+      # - cd service-discovery
+      # - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
+      # - cd ../workspace
+      # - docker push wbms-workspace-docker:workspace-docker ./docker
+      # - cd ../booking
+      # - docker push wbms-booking-docker:booking-docker ./docker
+      # - echo "Docker images push completed."
 
 artifacts:
   files:
