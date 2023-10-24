@@ -48,4 +48,8 @@ public class BookingServiceImpl implements BookingService{
     bookingRepository.save(toSave);
     return new Booking();
   }
+
+  public List<Booking> getBookingsByIds(List<Long> idList) {
+    return bookingRepository.findAllByRescIdAndStatus(idList, "B");
+  }
 }

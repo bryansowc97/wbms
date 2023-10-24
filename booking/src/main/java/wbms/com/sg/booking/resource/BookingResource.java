@@ -8,6 +8,8 @@ import wbms.com.sg.booking.dto.BookingDTO;
 import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.service.BookingService;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/booking")
@@ -34,5 +36,10 @@ public class BookingResource {
   @PostMapping("/updateBooking/")
   public ResponseEntity<?> getBookingsByUser(@RequestBody BookingDTO bookingDTO) {
     return new ResponseEntity<>(bookingService.updateBookingByUser(bookingDTO), HttpStatus.OK);
+  }
+
+  @PostMapping("/getBookingsByIds")
+  public ResponseEntity<?> getBookingsByIds(@RequestBody List<Long> idList) {
+    return new ResponseEntity<>(bookingService.getBookingsByIds(idList), HttpStatus.OK);
   }
 }

@@ -13,4 +13,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
   List<Booking> findAll();
 
   List<Booking> findByEmployeeId(String employeeId);
+
+  @Query(value = "select b from Booking b where rescId in :rescIdList and dteStart > sysDate and status = :status order by dteStart asc")
+  public List<Booking> findAllByRescIdAndStatus(List<Long> rescIdList, String status);
 }
