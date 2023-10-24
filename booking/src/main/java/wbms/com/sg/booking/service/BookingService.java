@@ -1,5 +1,6 @@
 package wbms.com.sg.booking.service;
 
+import wbms.com.sg.booking.dto.BookingDTO;
 import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.entity.Booking;
 
@@ -14,4 +15,5 @@ public interface BookingService {
   List<Booking> getBookingsByUser(String employeeId);
 
   Booking findById(Long id);
+  Booking updateBookingByUser(BookingDTO bookingDTO);
 }

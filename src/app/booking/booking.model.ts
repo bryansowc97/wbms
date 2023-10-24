@@ -12,7 +12,7 @@ export interface Booking{
     id:any;
     employeeId: any; //username
     rescId: any;
-    dteStart: string;
-    dteEnd : string;
+    dteStart: any;
+    dteEnd : any;
     status: any;
 }

@@ -3,13 +3,9 @@ package wbms.com.sg.booking.resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import wbms.com.sg.booking.dto.BookingDTO;
+import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.service.BookingService;
 
 @RestController
@@ -38,5 +34,10 @@ public class BookingResource {
   @GetMapping("/findById/{id}")
   public ResponseEntity<?> findById(@PathVariable Long id) {
     return new ResponseEntity<>(bookingService.findById(id), HttpStatus.OK);
+  }
+
+  @PostMapping("/updateBooking/")
+  public ResponseEntity<?> getBookingsByUser(@RequestBody BookingDTO bookingDTO) {
+    return new ResponseEntity<>(bookingService.updateBookingByUser(bookingDTO), HttpStatus.OK);
   }
 }

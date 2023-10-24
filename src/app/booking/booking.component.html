@@ -14,14 +14,14 @@
         </div>
         <div class="col chart-display">
             <p-card class="card chart">
-                <fusioncharts
+                <!-- <fusioncharts
                     width = "600"
                     height = "300"
                     [type]="type"
                     [dataFormat]="dataFormat"
                     [dataSource]="dataSource"
                 >
-                </fusioncharts>
+                </fusioncharts> -->
             </p-card>
         </div>
     </div>
@@ -30,6 +30,7 @@
         <b>today and upcoming booking </b>
         <b>passed booking might need to use search / filter by date function to get</b>
     </ng-template> -->
+    <!-- <p-button class="buttonSet" label="Test POST update booking" icon="pi pi-trash" (onClick)="updateBooking()"></p-button> -->
     <p-table 
         #tbl
         [value]="bookingDtlDTOList" 

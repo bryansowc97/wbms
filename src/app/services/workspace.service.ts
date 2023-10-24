@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 export class WorkspaceService {
 
-    apiUrl = 'http://localhost:8082/api/workspace';
+    apiUrl = 'http://localhost:8083/api/workspace';
     
   constructor(
         private http: HttpClient
