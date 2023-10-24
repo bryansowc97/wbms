@@ -70,7 +70,7 @@
     <ng-template pTemplate="message">
         <div class="flex-container" *ngIf="openCreateBookgDialog">
             <label>Employee ID</label>
-            <input pInputText class="input-field" type="text" placeholder="{{newSelectBookingDTL.employeeId}}" disabled />
+            <input pInputText class="input-field" type="text" [(ngModel)]="newSelectBookingDTL.employeeId" placeholder="{{newSelectBookingDTL.employeeId}}" [disabled]="!isAdmin" />
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Facility Type</label> 

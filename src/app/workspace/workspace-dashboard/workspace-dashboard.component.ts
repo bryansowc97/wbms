@@ -4,10 +4,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { CognitoService } from 'src/app/cognito.service';
+import { CognitoService, IUser } from 'src/app/cognito.service';
 import { Booking } from 'src/app/booking/booking.model';
 import { BookingService } from 'src/app/services/booking.service';
 import { DateTime } from 'aws-sdk/clients/devicefarm';
+import { Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -44,6 +45,9 @@ export class WorkspaceDashboardComponent {
     '18:00 - 19:00'
   ];
 
+  user: IUser;
+  userGroup: any[];
+  isAdmin: boolean = false;
   curUser: string ;
   newSelectBookingDTL: Booking;
   showBook: boolean = false;
@@ -244,12 +248,21 @@ export class WorkspaceDashboardComponent {
     // });
   }
 
-  ngOnInit(): void {
-    this.cognitoService.getCurrentUser().then((user: any) => {
-      console.log('user', user);
-      this.curUser = user.username;
-    });
-
+  async ngOnInit(): Promise<void> {
+    //if admin / user access lvl view 
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.user = user;
+        this.curUser = user.username;
+        this.cognitoService.getCurrentUserGroups()
+        .then((userGrp: any) => {
+          this.userGroup = userGrp;
+          if(this.userGroup && this.userGroup.find(o => o === 'admin')) {
+            this.isAdmin = true;
+          }
+        });
+      });
+    
     console.log('currdate', this.currdate)
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {
