@@ -1,8 +1,7 @@
 export const environment = {
   api: {
     booking: 'http://localhost:8081/api/booking', // Base URL for local development
-    workspace: 'http://localhost:8082/api/workspace',
-    // workspace: 'http://localhost:8083/api/workspace', // Base URL for local development
+    workspace: 'http://localhost:8082/api/workspace', // Base URL for local development
   },
   cognito: {
     userPoolId: 'ap-southeast-1_Djqfxom8g',

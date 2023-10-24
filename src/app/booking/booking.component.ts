@@ -7,34 +7,96 @@ import { CognitoService, IUser } from '../cognito.service';
 import { BookingService } from '../services/booking.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
+import { formatDate } from '@angular/common';
 import { Auth } from 'aws-amplify';
 import { Table } from 'primeng/table';
+import * as FusionCharts from 'fusioncharts';
+
+// const data = {
+//   chart: {
+//     caption: "Workspace Availability",
+//     plottooltext: "<b>$percentValue</b> of web servers run on $label servers",
+//     showlegend: "1",
+//     showpercentvalues: "1",
+//     legendposition: "right",
+//     theme: "fusion"
+//   },
+//   data: [
+//     {
+//       label: "Available",
+//       value: "32647479"
+//     },
+//     {
+//       label: "Fully Booked",
+//       value: "22100932"
+//     },
+//     {
+//       label: "out of service",
+//       value: "18674221"
+//     }
+//   ]
+// };
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
+
 export class BookingDashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
-    private cognitoService: CognitoService,
     private bookingService: BookingService,
     private workspaceService: WorkspaceService,
+    private cognitoService: CognitoService,
     private messageService: MessageService
   ){
+    // this.dataSource1 = {
+    //   chart: {},
+    //   caption: {
+    //     text: "Daily Booking Analysis"
+    //   },
+    //   subcaption: {
+    //     // text: "Grocery"
+    //   },
+    //   yaxis: [
+    //     {
+    //       plot: {
+    //         value: "Booking Record by Time"
+    //       },
+    //       format: {
+    //         // prefix: "$"
+    //       },
+    //       title: "Booking Count"
+    //     }
+    //   ]
+    // };
+  
+    // this.fetchData();
   }
 
+  
+  // type = "pie2d";
+  // dataFormat = "json";
+  // dataSource = data;
+
+  // dataSource1: any;
+
+  currdate = new Date();
   user: IUser;
   userGroup: any[];
   isAdmin: boolean = false;
   bookingStatusEnum: { [key: string]: string } = BookingStatusEnum;
   isLoading: boolean = true;
+  stlBookingDTL: BookingDtlDTO;
+  stlMode: string;
+  displayView: boolean = false;
 
   search_key: any ;
   date: any;
   source: any;
+
   booking: Booking[];
   workspaceList: any[];
   bookingDtlDTOList: BookingDtlDTO[] = [];
@@ -49,6 +111,61 @@ export class BookingDashboardComponent implements OnInit {
   //   { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
 
   // ];
+  
+
+  // fetchData() {
+  //   // this.bookingService.findAll().subscribe(res => {
+  //   //   var jsonify = res => res.json();
+      
+  //   //   console.log('jsonify',dataFetch);
+  //   // });
+
+    
+  //   // var dataFetch = fetch(
+  //   //   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
+  //   // ).then(jsonify);
+  //   // var schemaFetch = fetch(
+  //   //   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/schema/line-chart-with-time-axis-schema.json"
+  //   // ).then(jsonify);
+  //   var schemaFetch =  [
+  //     {
+  //       "name": "Time",
+  //       "type": "date",
+  //       "format": "%d-%b-%y"
+  //     },
+  //     {
+  //       "name": "Grocery Sales Value",
+  //       "type": "number"
+  //     }
+  //   ];
+
+  //   var dataFetch = [
+  //       [
+  //         "01-Feb-11",
+  //         8866
+  //       ],
+  //       [
+  //         "02-Feb-11",
+  //         2174
+  //       ],
+  //       [
+  //         "03-Feb-11",
+  //         2084
+  //       ]
+  //     ];
+  //   // Promise.all([dataFetch, schemaFetch]).then(res => {
+  //     const [data, schema] = [dataFetch, schemaFetch];
+  //     // First we are creating a DataStore
+  //     const fusionDataStore = new FusionCharts.DataStore();
+  //     // After that we are creating a DataTable by passing our data and schema as arguments
+  //     const fusionTable = fusionDataStore.createDataTable(data, schema);
+  //     // Afet that we simply mutated our timeseries datasource by attaching the above
+  //     // DataTable into its data property.
+  //     this.dataSource1.data = fusionTable;
+  //     console.log('data', this.dataSource1.data);
+  //   // });
+  // }
+
 
   async ngOnInit(): Promise<void> {
     //if admin / user access lvl view 
@@ -66,6 +183,7 @@ export class BookingDashboardComponent implements OnInit {
             if (this.isAdmin) {
               this.bookingService.findAll().subscribe(resv => {
                 this.bookingDtlDTOList = resv;
+                
                 this.setupBookingDtlDtoList();                
                 this.isLoading = false;
               });
@@ -88,6 +206,16 @@ export class BookingDashboardComponent implements OnInit {
 
   public setupBookingDtlDtoList(): void {
     this.bookingDtlDTOList.forEach(res => {
+      
+      this.cognitoService.findUserAndAttributesByUsername(res.employeeId).then(
+        usr => {
+          usr.UserAttributes.forEach(user => {
+            if(user.Name === 'name'){
+              res.employeeName = user.Value;
+            }
+          });
+        }
+      );
       let workspace = this.workspaceList.find(wkspace => wkspace.id = res.rescId);
       if (workspace) {
         res.facilityDTO = workspace;
@@ -121,28 +249,50 @@ export class BookingDashboardComponent implements OnInit {
     return event === this.bookingStatusEnum['B'] ? 'success':'danger';
   }
 
-  deleteBooking(event: any) {
+  viewBooking(mode:string, event: any){
+    const queryParams = {
+      mode: mode,
+      id: event
+    }
+    this.router.navigate(['/booking'], { queryParams });
+  }
+
+  deleteBooking(event: Booking) {
     this.confirmationService.confirm({
         accept: () => {
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });
+          let delBook : Booking = {
+            id : event.id,
+            rescId : event.rescId,
+            employeeId : event.employeeId,
+            dteStart : event.dteStart,
+            dteEnd : event.dteEnd,
+            status : 'C'
+          };
+
+          this.bookingService.updateBooking(delBook).subscribe((res:any) => {
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });  
+          },
+          (err: any) => {
+            this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: err.title() });
+          })
+          window.location.reload();
         }
     });
   }
 
-  updateBooking(): void{
-    let booking: Booking = {
-      id: 10,
-      employeeId: 'P1111111',
-      rescId: 1,
-      dteStart: Date,
-      dteEnd : Date,
-      status: 'B',
-    }
-    this.bookingService.updateBooking(booking).subscribe((res:any) => {
-      let a = res;
-      console.log(a);
-    })
+  // updateBooking(): void{
+  //   let booking: Booking = {
+  //     id: 1,
+  //     employeeId: 'P1313131',
+  //     rescId: 1,
+  //     dteStart: Date,
+  //     dteEnd : Date,
+  //     status: 'C',
+  //   }
+  //   this.bookingService.updateBooking(booking).subscribe((res:any) => {
+  //     let a = res;
+  //     console.log(a);
+  //   })
 
-  }
-
+  // }
 }

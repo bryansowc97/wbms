@@ -4,8 +4,11 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { BookingService } from 'src/app/services/booking.service';
+import { CognitoService, IUser } from 'src/app/cognito.service';
 import { Booking } from 'src/app/booking/booking.model';
+import { BookingService } from 'src/app/services/booking.service';
+import { DateTime } from 'aws-sdk/clients/devicefarm';
+import { Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -19,8 +22,9 @@ export class WorkspaceDashboardComponent {
     private requestService: RequestService,
     private messageService: MessageService,
     private router: Router,
-    private workspaceService: WorkspaceService,
-    private bookingService: BookingService
+    private cognitoService: CognitoService,
+    private bookingService: BookingService,
+    private workspaceService: WorkspaceService
   ){}
 
   // formGroup: any;
@@ -41,9 +45,13 @@ export class WorkspaceDashboardComponent {
     '18:00 - 19:00'
   ];
 
+  user: IUser;
+  userGroup: any[];
+  isAdmin: boolean = false;
+  curUser: string ;
+  newSelectBookingDTL: Booking;
   showBook: boolean = false;
-  bookingDTL : NFacilityBooking = {} as NFacilityBooking;
-  selectedResourceDTL:NFacilitySeat = {} as NFacilitySeat;
+  selectedResourceDTL:NFacilityBooking = {} as NFacilityBooking;
   rows: number = 4;
   cols: number = 15;
   colsArr: any[] = [];
@@ -115,7 +123,11 @@ export class WorkspaceDashboardComponent {
   } 
 
   getSelectedTimeSlot(event:any){
-    this.bookingDTL.timeSlot = event.value;
+    this.selectedResourceDTL.timeSlot = event.value;
+    let startDte = new Date(this.selectedResourceDTL.date.toISOString().slice(0, 10) +"T"+ this.selectedResourceDTL.timeSlot.slice(0,5));
+    let endDte = new Date(this.selectedResourceDTL.date.toISOString().slice(0, 10) +"T"+ this.selectedResourceDTL.timeSlot.slice(8,13));
+    this.newSelectBookingDTL.dteStart = startDte;
+    this.newSelectBookingDTL.dteEnd = endDte;
   }
 
   getSelectedResName(event:any) {
@@ -191,9 +203,9 @@ export class WorkspaceDashboardComponent {
   selectSeat(seatIndex: any){
     let seatDTL : NFacilitySeat[] ;
     seatDTL = this.selectedSeating.filter((seat:NFacilitySeat) => seat.posGrid===(seatIndex));
-    this.selectedResourceDTL!.posGrid = seatIndex;
-    this.selectedResourceDTL!.name = seatDTL[0].posRotation;
     this.selectedResourceDTL!.name = seatDTL[0].name;
+    this.selectedResourceDTL!.id = seatDTL[0].id;
+    
     if(this.selectedResourceDTL.name !== undefined){
       this.showBook=true;
     }else{
@@ -205,9 +217,20 @@ export class WorkspaceDashboardComponent {
   createBooking(){
     this.openCreateBookgDialog = true;
     this.openDeleteWorkspaceDialog = false;
+    
+    this.newSelectBookingDTL = {
+      id: undefined,
+      employeeId: this.curUser,
+      rescId: this.selectedResourceDTL.id,
+      dteStart: undefined,
+      dteEnd:  undefined,
+      status: "B"
+    };
+    
+    
     this.confirmationService.confirm({
         accept: () => {
-          this.submitBooking();
+          this.submitBooking(this.newSelectBookingDTL);
         },
         reject: () =>{
           this.clearForm();
@@ -225,20 +248,21 @@ export class WorkspaceDashboardComponent {
     this.showBook = false
   }
 
-  submitBooking(){
+  submitBooking(event: Booking){
     
-    console.log('selectedResourceDTL',this.selectedResourceDTL);
-    this.bookingDTL.gp = this.selectedResourceDTL.gp;
-    this.bookingDTL.subGp = this.selectedResourceDTL.subGp;
-    this.bookingDTL.name = this.selectedResourceDTL.name;
-    
-    
-    this.bookingDTL.posGrid = this.selectedResourceDTL.posGrid;
-    this.bookingDTL.posRotation = this.selectedResourceDTL.posRotation;
-    this.bookingDTL.status = this.selectedResourceDTL.status;
+    console.log('newSelectBookingDTL',this.newSelectBookingDTL);
 
-    console.log('bookingDTL',this.bookingDTL);
-    this.requestService.createBooking(this.bookingDTL);
+    this.bookingService.updateBooking(this.newSelectBookingDTL).subscribe((res:any) => {
+      let a = res;
+      console.log(a);
+      
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });  
+      },
+      (err: any) => {
+        this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: err.title() });
+      });
+    
+    
     this.clearForm();
     // .then((res: any)=>{
     //   this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been created.' });
@@ -254,7 +278,21 @@ export class WorkspaceDashboardComponent {
     // });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    //if admin / user access lvl view 
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.user = user;
+        this.curUser = user.username;
+        this.cognitoService.getCurrentUserGroups()
+        .then((userGrp: any) => {
+          this.userGroup = userGrp;
+          if(this.userGroup && this.userGroup.find(o => o === 'admin')) {
+            this.isAdmin = true;
+          }
+        });
+      });
+    
     console.log('currdate', this.currdate)
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {

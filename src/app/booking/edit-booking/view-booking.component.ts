@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Booking } from '../booking.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BookingService } from 'src/app/services/booking.service';
+import { WorkspaceService } from 'src/app/services/workspace.service';
+import { formatDate } from '@angular/common';
+import { Booking, BookingDtlDTO } from '../booking.model';
+import { NFacilitySeat } from 'src/app/workspace/workspace.model';
 
 @Component({
   selector: 'ic-create-booking',
@@ -11,24 +15,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 export class EditBookingComponent {
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
+    private bookingService: BookingService,
+    private workspaceService: WorkspaceService,
     private router: Router
   ){
-    this.booking = this.formBuilder.group({
-      gp : ['', Validators.required],
-      sub_gp : ['', [Validators.required]],
-      status: ['', [Validators.required]],
-      pos: ['', [Validators.required]],
-      rotation: ['', [Validators.required]],
-      name : ['', [Validators.required]],
-      emp_id : ['', [Validators.required]],
-      employee_name : ['', [Validators.required]],
-      date : ['', [Validators.required]],
-      timeSlot : ['', [Validators.required]],
-      bookedStatus : ['', [Validators.required]]
-    });
+    // this.booking = this.formBuilder.group({
+    //   gp : ['', Validators.required],
+    //   sub_gp : ['', [Validators.required]],
+    //   status: ['', [Validators.required]],
+    //   pos: ['', [Validators.required]],
+    //   rotation: ['', [Validators.required]],
+    //   name : ['', [Validators.required]],
+    //   emp_id : ['', [Validators.required]],
+    //   employee_name : ['', [Validators.required]],
+    //   date : ['', [Validators.required]],
+    //   timeSlot : ['', [Validators.required]],
+    //   bookedStatus : ['', [Validators.required]]
+    // });
 
     // let details = this.router.getCurrentNavigation()?.extras.state;
     // if (details) {
@@ -46,33 +53,34 @@ export class EditBookingComponent {
     // }
   }
 
-  booking: FormGroup;
-  bookingDTL?: Booking;
-  currdate = new Date();
+  
+  bookingDTL: BookingDtlDTO;
   mode: string = "";
-  timeSlot:any[] = [
-    '08:00 - 09:00',
-    '09:00 - 10:00',
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '12:00 - 13:00',
-    '13:00 - 14:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-    '16:00 - 17:00',
-    '17:00 - 18:00',
-    '18:00 - 19:00'
-  ];
-    
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.mode = params['mode'];
-      if (this.mode === 'view') {
-        console.log('booking',this.booking);
+  id: any;
 
-      } else{
+  async ngOnInit(): Promise<void> {
+    this.route.queryParams.subscribe(async params => {
+      if (params) {
+        this.mode = params['mode'];
+        this.id = params['id'];
         
+        
+        this.bookingService.findById(this.id).subscribe( booked => {
+          console.log('bookingDTL',booked);  
+          this.bookingDTL = booked;
+          this.workspaceService.getWorkspaceById(booked.rescId).subscribe(r => {
+            this.bookingDTL.facilityDTO = r;
+            console.log('bookingDTL',this.bookingDTL);  
+          });
+        })
+        
+
+        
+        if (this.mode === 'view') {
+          
+        }else{}
       }
+      
     })
   }
 

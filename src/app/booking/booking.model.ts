@@ -2,14 +2,15 @@ import { IUser } from "../cognito.service";
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
 
 export interface BookingDtlDTO extends Booking{
-    facilityDTO: NFacilitySeat[];
+    facilityDTO: NFacilitySeat;
     userDTO: IUser;
+    employeeName: any;
 }
 
 
 export interface Booking{
     id:any;
-    employeeId: any;
+    employeeId: any; //username
     rescId: any;
     dteStart: any;
     dteEnd : any;

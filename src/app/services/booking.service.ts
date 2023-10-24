@@ -25,6 +25,10 @@ export class BookingService {
         return this.http.get<any[]>(`${this.apiUrl}/getBookingsByUser/${empId}`);
     }
 
+    findById(Id:any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/findById/${Id}`);
+    }
+    
     updateBooking(booking: Booking): Observable<any[]> {
         return this.requestService.create(`/updateBooking/`, this.bookingApi, booking);
     }  

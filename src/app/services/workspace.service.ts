@@ -9,8 +9,8 @@ import { HttpRequest } from 'aws-sdk';
 
 export class WorkspaceService {
 
-    apiUrl = environment.api.workspace;
-    
+    apiUrl = 'http://localhost:8082/api/workspace';
+
     constructor(
         private http: HttpClient
     ) { }
@@ -19,8 +19,8 @@ export class WorkspaceService {
         return this.http.get<any[]>(`${this.apiUrl}/findAllWorkspace`);
     }
 
-    getWorkspaceById(id:any): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/getWorkspaceById/${id}`);
+    getWorkspaceById(id:any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/getWorkspaceById/${id}`);
     }
 
     // Query (http.get with params)

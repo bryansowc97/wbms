@@ -4,7 +4,7 @@ import wbms.com.sg.booking.dto.BookingDTO;
 import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.entity.Booking;
 
-import java.util.List;
+import java.util.*;
 
 public interface BookingService {
 
@@ -14,7 +14,8 @@ public interface BookingService {
 
   List<Booking> getBookingsByUser(String employeeId);
 
-  Booking updateBookingByUser(BookingDTO bookingDTO);
+  Booking findById(Long id);
+  // Booking updateBookingByUser(BookingDTO bookingDTO);
 
   List<Booking> getBookingsByIds(List<Long> idList);
   void updateBooking(BookingDTO bookingDTO);

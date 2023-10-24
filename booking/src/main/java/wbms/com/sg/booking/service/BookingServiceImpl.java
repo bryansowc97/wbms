@@ -38,21 +38,19 @@ public class BookingServiceImpl implements BookingService{
     return bookingRepository.findByEmployeeId(employeeId);
   }
 
-  // To be updated. Added to bypass error only
-  @Override
-  public Booking updateBookingByUser(BookingDTO bookingDTO) {
-    return null;
-  }
+  public Booking findById(Long id){
+    return bookingRepository.findById(id).stream().findFirst().orElse(null);
+  };
 
   @Override
   public void updateBooking(BookingDTO bookingDTO) {
     if (null == bookingDTO.getId()) {
       // test create new and save
       Booking toSave = new Booking();
-      toSave.setEmployeeId("P1111111");
-      toSave.setRescId(1L);
-      toSave.setDteStart(LocalDateTime.of(2023, 10, 20, 12, 00, 00));
-      toSave.setDteEnd(LocalDateTime.of(2023, 10, 20, 19, 00, 00));
+      toSave.setEmployeeId(bookingDTO.getEmployeeId());
+      toSave.setRescId(bookingDTO.getRescId());
+      toSave.setDteStart(bookingDTO.getDteStart());
+      toSave.setDteEnd(bookingDTO.getDteEnd());
       toSave.setStatus("B");
       bookingRepository.save(toSave);
     }

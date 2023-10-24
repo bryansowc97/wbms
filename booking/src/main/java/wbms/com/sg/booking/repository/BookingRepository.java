@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import wbms.com.sg.booking.entity.Booking;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
@@ -13,6 +13,8 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
   List<Booking> findAll();
 
   List<Booking> findByEmployeeId(String employeeId);
+
+  Optional<Booking> findById(Long id);
 
   @Query(value = "select b from Booking b where rescId in :rescIdList and dteStart > sysDate and status = :status order by dteStart asc")
   public List<Booking> findAllByRescIdAndStatus(List<Long> rescIdList, String status);

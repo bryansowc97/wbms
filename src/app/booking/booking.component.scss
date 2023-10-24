@@ -59,3 +59,15 @@
     width: 50%;
     margin-bottom: 3%;
 }
+
+.chart{
+    text-align: center;
+}
+
+:host ::ng-deep .chart .p-card .p-card-content {
+    padding: unset;
+}
+
+:host ::ng-deep .chart .p-card .p-card-body {
+    padding: unset;
+}
