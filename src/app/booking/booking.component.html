@@ -2,19 +2,26 @@
 <div class="container-fluid">
     <div class="row flex-display">
         <div class="col chart-display">
-            <p-card class="card">
-                <a>chart</a>
+            <p-card class="card chart">
+                <!-- <fusioncharts
+                    width="100%"
+                    height="300"
+                    type= "timeseries";
+                    [dataSource]="dataSource1"
+                >
+                </fusioncharts> -->
             </p-card>
         </div>
         <div class="col chart-display">
-            <p-card class="card">
-                <a>chart2</a>
-                <!-- <fusioncharts
-                type="world"
-                width="800"
-                height="500"
-                dataSource="source">
-            </fusioncharts> -->
+            <p-card class="card chart">
+                <fusioncharts
+                    width = "600"
+                    height = "300"
+                    [type]="type"
+                    [dataFormat]="dataFormat"
+                    [dataSource]="dataSource"
+                >
+                </fusioncharts>
             </p-card>
         </div>
     </div>

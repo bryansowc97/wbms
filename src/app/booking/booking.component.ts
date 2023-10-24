@@ -9,12 +9,39 @@ import { WorkspaceService } from '../services/workspace.service';
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
 import { formatDate } from '@angular/common';
 import { Auth } from 'aws-amplify';
+import * as FusionCharts from 'fusioncharts';
+
+const data = {
+  chart: {
+    caption: "Workspace Availability",
+    plottooltext: "<b>$percentValue</b> of web servers run on $label servers",
+    showlegend: "1",
+    showpercentvalues: "1",
+    legendposition: "right",
+    theme: "fusion"
+  },
+  data: [
+    {
+      label: "Available",
+      value: "32647479"
+    },
+    {
+      label: "Fully Booked",
+      value: "22100932"
+    },
+    {
+      label: "out of service",
+      value: "18674221"
+    }
+  ]
+};
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss']
 })
+
 export class BookingDashboardComponent implements OnInit {
   constructor(
     private router: Router,
@@ -24,7 +51,36 @@ export class BookingDashboardComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private messageService: MessageService
   ){
+    this.dataSource1 = {
+      chart: {},
+      caption: {
+        text: "Daily Booking Analysis"
+      },
+      subcaption: {
+        // text: "Grocery"
+      },
+      yaxis: [
+        {
+          plot: {
+            value: "Booking Record by Time"
+          },
+          format: {
+            // prefix: "$"
+          },
+          title: "Booking Count"
+        }
+      ]
+    };
+  
+    this.fetchData();
   }
+
+  
+  type = "pie2d";
+  dataFormat = "json";
+  dataSource = data;
+
+  dataSource1: any;
 
   user: IUser;
   userGroup: any[];
@@ -51,9 +107,64 @@ export class BookingDashboardComponent implements OnInit {
   //   { emp_id: 'P123456', employee_name: 'Alvin Tan', date : '10/06/2023', timeSlot : '10:00am - 12:00pm', bookedStatus: 'B', sub_gp: 'B6-A1', gp: 'Meeting Room', name : 'B6-A1-09', pos: '23', rotation:'D', status:'A'},
 
   // ];
+  
+
+  fetchData() {
+    // this.bookingService.findAll().subscribe(res => {
+    //   var jsonify = res => res.json();
+      
+    //   console.log('jsonify',dataFetch);
+    // });
+
+    
+    // var dataFetch = fetch(
+    //   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json"
+    // ).then(jsonify);
+    // var schemaFetch = fetch(
+    //   "https://s3.eu-central-1.amazonaws.com/fusion.store/ft/schema/line-chart-with-time-axis-schema.json"
+    // ).then(jsonify);
+    var schemaFetch =  [
+      {
+        "name": "Time",
+        "type": "date",
+        "format": "%d-%b-%y"
+      },
+      {
+        "name": "Grocery Sales Value",
+        "type": "number"
+      }
+    ];
+
+    var dataFetch = [
+        [
+          "01-Feb-11",
+          8866
+        ],
+        [
+          "02-Feb-11",
+          2174
+        ],
+        [
+          "03-Feb-11",
+          2084
+        ]
+      ];
+    // Promise.all([dataFetch, schemaFetch]).then(res => {
+      const [data, schema] = [dataFetch, schemaFetch];
+      // First we are creating a DataStore
+      const fusionDataStore = new FusionCharts.DataStore();
+      // After that we are creating a DataTable by passing our data and schema as arguments
+      const fusionTable = fusionDataStore.createDataTable(data, schema);
+      // Afet that we simply mutated our timeseries datasource by attaching the above
+      // DataTable into its data property.
+      this.dataSource1.data = fusionTable;
+      console.log('data', this.dataSource1.data);
+    // });
+  }
 
 
   ngOnInit(): void {
+    this.fetchData();
     this.cognitoService.getCurrentUser().then((user: any) => {
           this.user = user.attributes;
 

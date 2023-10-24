@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FacilityBooking, FacilitySeat } from '../workspace.model';
+import { FacilityBooking, FacilitySeat, NFacilityBooking } from '../workspace.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
+import { Booking } from 'src/app/booking/booking.model';
+import { CognitoService } from 'src/app/cognito.service';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -15,6 +17,7 @@ export class WorkspaceDashboardComponent {
     private confirmationService: ConfirmationService,
     private requestService: RequestService,
     private messageService: MessageService,
+    private cognitoService: CognitoService,
     private router: Router
   ){}
 
@@ -36,7 +39,9 @@ export class WorkspaceDashboardComponent {
     '18:00 - 19:00'
   ];
 
+  curUser: string ;
   showBook: boolean = false;
+  newSelectBookingDTL? : Booking;
   bookingDTL : FacilityBooking = {} as FacilityBooking;
   selectedResourceDTL:FacilitySeat = {} as FacilitySeat;
   selectedResource:any;
@@ -174,6 +179,9 @@ export class WorkspaceDashboardComponent {
   createBooking(){
     this.openCreateBookgDialog = true;
     this.openDeleteWorkspaceDialog = false;
+    this.newSelectBookingDTL.employeeId = this.curUser;//username
+    this.newSelectBookingDTL.rescId = this.selectedResourceDTL.name;
+    
     this.confirmationService.confirm({
         accept: () => {
           this.submitBooking();
@@ -195,8 +203,11 @@ export class WorkspaceDashboardComponent {
   }
 
   submitBooking(){
-    
-    console.log('selectedResourceDTL',this.selectedResourceDTL);
+    this.newSelectBookingDTL.dteStart = this.bookingDTL.date + this.bookingDTL.timeSlot.slice(0,5);
+    this.newSelectBookingDTL.dteEnd = this.bookingDTL.date + this.bookingDTL.timeSlot.slice(-5,-0);
+    // this.newSelectBookingDTL.status = 
+
+    console.log('selectedResourceDTL',this.newSelectBookingDTL);
     this.bookingDTL.gp = this.selectedResourceDTL.gp;
     this.bookingDTL.sub_gp = this.selectedResourceDTL.sub_gp;
     this.bookingDTL.name = this.selectedResourceDTL.name;
@@ -224,6 +235,11 @@ export class WorkspaceDashboardComponent {
   }
 
   ngOnInit(): void {
+    this.cognitoService.getCurrentUser().then((user: any) => {
+      console.log('user', user);
+      this.curUser = user.username;
+    });
+
     console.log('currdate', this.currdate)
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {

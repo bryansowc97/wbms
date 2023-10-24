@@ -72,7 +72,7 @@
     <ng-template pTemplate="message">
         <div class="flex-container" *ngIf="openCreateBookgDialog">
             <label>Employee ID</label>
-            <input pInputText class="input-field" type="text" placeholder="P123456" disabled />
+            <input pInputText class="input-field" type="text" placeholder="{{selectedResourceDTL.name}}" disabled />
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Facility Type</label> 

@@ -10,7 +10,7 @@ export interface BookingDtlDTO extends Booking{
 
 export interface Booking{
     id:any;
-    employeeId: any;
+    employeeId: any; //username
     rescId: any;
     dteStart: string;
     dteEnd : string;
