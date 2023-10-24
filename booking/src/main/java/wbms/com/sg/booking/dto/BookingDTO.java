@@ -1,31 +1,20 @@
-package wbms.com.sg.booking.entity;
+package wbms.com.sg.booking.dto;
 
-import jakarta.persistence.*;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
-@Entity
-@Table(name = "booking")
-public class Booking implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookingDTO {
+
   private Long id;
 
-  @Column(name = "employee_id")
   private String employeeId;
 
-  @Column(name ="resc_id")
   private Long rescId;
 
-  @Column(name = "dte_start")
   private LocalDateTime dteStart;
 
-  @Column(name = "dte_end")
   private LocalDateTime dteEnd;
 
-  @Column(name = "status")
-  private String status;
+  private Character status;
 
   public Long getId() {
     return id;
@@ -67,11 +56,11 @@ public class Booking implements Serializable {
     this.dteEnd = dteEnd;
   }
 
-  public String getStatus() {
+  public Character getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Character status) {
     this.status = status;
   }
 }

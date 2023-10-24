@@ -9,7 +9,7 @@ import { HttpRequest } from 'aws-sdk';
 
 export class WorkspaceService {
 
-    apiUrl: any = environment.api['workspace'];
+    apiUrl = environment.api.workspace;
     
     constructor(
         private http: HttpClient

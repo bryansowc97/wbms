@@ -13,6 +13,7 @@ import { CognitoService, IUser } from 'src/app/cognito.service';
 export class ProfileDashboardComponent {
   profiles: UserProfile[];
   isLoading: boolean = true;
+  searchKey: string;
 
   constructor(
     private router: Router,
@@ -49,6 +50,7 @@ export class ProfileDashboardComponent {
   }
 
   clear(table: Table) {
+    this.searchKey = "";
     table.clear();
   }
 

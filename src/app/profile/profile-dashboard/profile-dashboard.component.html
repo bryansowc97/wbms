@@ -21,7 +21,7 @@
                 <div class="flex">
                     <span class="p-input-icon-left ml-auto" style="margin-right: 5px;">
                         <i class="pi pi-search"></i>
-                        <input pInputText class="input-field" type="text" (input)="applyFilterGlobal(tbl, $event, 'contains')" placeholder="Search ID or Name" />
+                        <input pInputText class="input-field" [(ngModel)]="searchKey" type="text" (input)="applyFilterGlobal(tbl, $event, 'contains')" placeholder="Search ID or Name" />
                     </span>
                     <button pButton class="p-button-outlined" style="padding-block: 0.3%; padding-left: 0.2%; padding-right: 0.2%;" icon="pi pi-filter-slash" (click)="clear(tbl)"></button>
                 </div>

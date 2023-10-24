@@ -8,6 +8,7 @@ import { BookingService } from '../services/booking.service';
 import { WorkspaceService } from '../services/workspace.service';
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
 import { Auth } from 'aws-amplify';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-booking',
@@ -29,11 +30,13 @@ export class BookingDashboardComponent implements OnInit {
   userGroup: any[];
   isAdmin: boolean = false;
   bookingStatusEnum: { [key: string]: string } = BookingStatusEnum;
+  isLoading: boolean = true;
 
   search_key: any ;
   date: any;
   source: any;
   booking: Booking[];
+  workspaceList: any[];
   bookingDtlDTOList: BookingDtlDTO[] = [];
   bookingDtlDTO: BookingDtlDTO;
   // =[
@@ -58,40 +61,60 @@ export class BookingDashboardComponent implements OnInit {
           if(this.userGroup && this.userGroup.find(o => o === 'admin')) {
             this.isAdmin = true;
           }
-          if (this.isAdmin) {
-            this.bookingService.findAll().subscribe(resv => {
-              resv.forEach(res => {
-                this.bookingDtlDTO = res;
-                this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
-                  this.bookingDtlDTO.facilityDTO = r;
-                  this.bookingDtlDTOList.push(this.bookingDtlDTO);
-                })          
+          this.workspaceService.findAll().subscribe(workspaceList => {
+            this.workspaceList = workspaceList;
+            if (this.isAdmin) {
+              this.bookingService.findAll().subscribe(resv => {
+                this.bookingDtlDTOList = resv;
+                this.setupBookingDtlDtoList();                
+                this.isLoading = false;
               });
-            })
-          }
-          else {
-            this.bookingService.getBookingsByUser(this.user.username).subscribe(resv => {
-              resv.forEach(res => {
-                this.bookingDtlDTO = res;
-                this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
-                  this.bookingDtlDTO.facilityDTO = r;
-                  this.bookingDtlDTOList.push(this.bookingDtlDTO);
-                })          
+            }
+            else {
+              this.bookingService.getBookingsByUser(this.user.username).subscribe(resv => {
+                this.bookingDtlDTOList = resv;
+                this.setupBookingDtlDtoList();                
+                this.isLoading = false;
               });
-            })
-          } 
+            }
+          })
         });
       })
       .catch(error => {
         console.error('Error fetching user profile:', error);
+        this.isLoading = false;    
       });
+  }
+
+  public setupBookingDtlDtoList(): void {
+    this.bookingDtlDTOList.forEach(res => {
+      let workspace = this.workspaceList.find(wkspace => wkspace.id = res.rescId);
+      if (workspace) {
+        res.facilityDTO = workspace;
+      }
+    });
   }
 
   customSort(event:any):void{}
   
-  clear(event:any):void{
+  clear(table: Table):void{
     this.search_key = "";
     this.date = "";
+    table.clear();
+  }
+
+  applyFilterGlobal(table: Table, $event: Event, stringVal: string) {
+    table.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+
+  onSelectCalendarDate(event: any, table: Table) {
+    const eventDate = new Date(event);
+    let year = eventDate.getFullYear();
+    let month = eventDate.getMonth() + 1;
+    let day = eventDate.getDate();
+    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+    table.filter(formattedDate, 'dteStart', 'contains');
   }
 
   getSeverity(event:string):string{
@@ -104,6 +127,22 @@ export class BookingDashboardComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });
         }
     });
+  }
+
+  updateBooking(): void{
+    let booking: Booking = {
+      id: 10,
+      employeeId: 'P1111111',
+      rescId: 1,
+      dteStart: Date,
+      dteEnd : Date,
+      status: 'B',
+    }
+    this.bookingService.updateBooking(booking).subscribe((res:any) => {
+      let a = res;
+      console.log(a);
+    })
+
   }
 
 }
