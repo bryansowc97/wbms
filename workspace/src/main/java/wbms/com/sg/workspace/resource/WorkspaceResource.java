@@ -29,12 +29,12 @@ public class WorkspaceResource {
     return new ResponseEntity<>(workspaceService.findAll(), HttpStatus.OK);
   }
 
-  @GetMapping("/findByGp/{gp}")
-  public ResponseEntity<?> findByGp(@PathVariable String gp) {
-    return new ResponseEntity<>(workspaceService.findByGp(gp), HttpStatus.OK);
+  @GetMapping("/findSubGpsByGp/{gp}")
+  public ResponseEntity<?> findSubGpsByGp(@PathVariable String gp) {
+    return new ResponseEntity<>(workspaceService.findSubGpsByGp(gp), HttpStatus.OK);
   }
 
-  @GetMapping("/getWorkspaceByGpAndSubGp/{id}")
+  @GetMapping("/getWorkspaceById/{id}")
   public ResponseEntity<?> getWorkspaceById(@PathVariable Long id) {
     return new ResponseEntity<>(workspaceService.findById(id), HttpStatus.OK);
   }

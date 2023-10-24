@@ -15,8 +15,8 @@ public class WorkspaceServiceImpl implements WorkspaceService{
   @Autowired
   private WorkspaceRepository workspaceRepository;
 
-  public List<Workspace> findByGp(String gp) {
-    return workspaceRepository.findByGp(gp);
+  public List<String> findSubGpsByGp(String gp) {
+    return workspaceRepository.findSubGpsByGp(gp);
   }
 
   public List<Workspace> findAll() {

@@ -13,5 +13,5 @@ public interface WorkspaceService {
   public List<Workspace> updateWorkspace(List<Workspace> workspaceList);
   public void deleteWorkspaceById(List<Long> id);
   public List<Workspace> findByGpAndSubGp(String gp, String subgp);
-  public List<Workspace> findByGp(String gp);
+  public List<String> findSubGpsByGp(String gp);
 }
