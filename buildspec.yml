@@ -83,6 +83,7 @@ artifacts:
     - ./service-discovery/target/*.jar
     - ./workspace/target/*.jar
     - ./booking/target/*.jar
+    - docker-compose.yml
   name: wbms-artifacts
 
 #cache dependencies
