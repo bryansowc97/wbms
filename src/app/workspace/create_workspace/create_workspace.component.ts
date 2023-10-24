@@ -212,7 +212,7 @@ export class CreateWorkspaceComponent implements OnInit {
             if (this.seating[seatIndex].id) {
               this.idListToDelete.push(this.seating[seatIndex].id)
             }
-            this.seating.splice(seatIndex);
+            this.seating.splice(seatIndex, 1);
             this.colsArr[index] = 0;
           } },
           { label: 'Cancel', command: (e) => {
@@ -232,7 +232,7 @@ export class CreateWorkspaceComponent implements OnInit {
             if (this.seating[seatIndex].id) {
               this.idListToDelete.push(this.seating[seatIndex].id)
             }
-            this.seating.splice(seatIndex);
+            this.seating.splice(seatIndex, 1);
             this.colsArr[index] = 0;
           } },
           { label: 'Cancel', command: (e) => {
