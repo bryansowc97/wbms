@@ -11,8 +11,7 @@
                         <label>Type: </label>
                         <p-dropdown 
                             appendTo="body"
-                            [options]="resource" 
-                            optionLabel="label"
+                            [options]="resOptions"
                             (onChange)="getSelectedResType($event)"
                             placeholder="Select Type"
                         ></p-dropdown>
@@ -21,8 +20,7 @@
                         <label>Facility: </label>
                         <p-dropdown 
                             appendTo="body"
-                            [options]="selectedResource" 
-                            optionLabel="name"
+                            [options]="subGpOptions"
                             (onChange)="getSelectedResName($event)"
                             placeholder="Select Facility"
                         ></p-dropdown>
@@ -44,11 +42,11 @@
                 <ng-template pTemplate="body" >
                     <span class="card">
                         <label>Facility Type</label> 
-                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.gp == 'MR' ? 'Meeting Room' : selectedResourceDTL.gp == 'WD' ? 'Work Desk' : '' }}" disabled />
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.gp }}" disabled />
                     </span>
                     <span class="card">
                         <label>Facility Name</label> 
-                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.sub_gp }}" disabled />
+                        <input pInputText class="input-field" type="text" placeholder="{{ selectedResourceDTL.subGp }}" disabled />
                     </span>
                     <br>
                     <span class="card">
@@ -76,7 +74,7 @@
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Facility Type</label> 
-                    <input pInputText class="input-field" type="text" placeholder="{{selectedResourceDTL.gp == 'MR' ? 'Meeting Room' : selectedResourceDTL.gp == 'WD' ? 'Work Desk' : ''}}" disabled />
+                    <input pInputText class="input-field" type="text" placeholder="{{selectedResourceDTL.gp }}" disabled />
                 </div>
                 <div class="flex-half-container">
                     <label>Facility Seat</label> 

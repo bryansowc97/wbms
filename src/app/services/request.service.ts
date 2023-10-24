@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environment";
-import { FacilityBooking, FacilitySeat } from "../workspace/workspace.model";
+import { NFacilityBooking, NFacilitySeat } from "../workspace/workspace.model";
 
 
 @Injectable({
@@ -54,7 +54,7 @@ export class RequestService {
         return options;
     }
 
-    createBooking(selectedResourceDTL: FacilityBooking): void{
+    createBooking(selectedResourceDTL: NFacilityBooking): void{
         console.log('selectedResourceDTL', selectedResourceDTL);
     // Promise<any> {
         // return ;

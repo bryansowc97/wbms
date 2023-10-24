@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FacilityBooking, FacilitySeat } from '../workspace.model';
+import { NFacilityBooking, NFacilitySeat } from '../workspace.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { RequestService } from 'src/app/services/request.service';
 import { Router } from '@angular/router';
+import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
   selector: 'app-workspace-dashboard',
@@ -15,7 +16,8 @@ export class WorkspaceDashboardComponent {
     private confirmationService: ConfirmationService,
     private requestService: RequestService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private workspaceService: WorkspaceService
   ){}
 
   // formGroup: any;
@@ -37,97 +39,76 @@ export class WorkspaceDashboardComponent {
   ];
 
   showBook: boolean = false;
-  bookingDTL : FacilityBooking = {} as FacilityBooking;
-  selectedResourceDTL:FacilitySeat = {} as FacilitySeat;
-  selectedResource:any;
+  bookingDTL : NFacilityBooking = {} as NFacilityBooking;
+  selectedResourceDTL:NFacilitySeat = {} as NFacilitySeat;
   rows: number = 4;
   cols: number = 15;
   colsArr: any[] = [];
 
-  bookingRecord : FacilityBooking[]=[
-    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', sub_gp:'MR', gp:'B4-MR01', pos:17, rotation:'U', name: 'B4-MR01-17', status:'A'},
+  bookingRecord : NFacilityBooking[]=[
+    {emp_id:'P123456', date: '10-10-23', timeSlot : '09:00 - 10:00', subGp:'Meeting Room', gp:'B4-MR01', posGrid:17, posRotation:'U', name: 'B4-MR01-17', status:'A'},
   ]
 
   openDeleteWorkspaceDialog: boolean = false;
   openCreateBookgDialog: boolean = false;
 
-  seating: FacilitySeat[] = [
-    {gp:'MR', sub_gp:'B4-MR01',pos:17, rotation:'D', name: 'B4-MR01-17', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:32, rotation:'U', name: 'B4-MR01-32', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:18, rotation:'D', name: 'B4-MR01-18', status:'U'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:33, rotation:'U', name: 'B4-MR01-33', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:19, rotation:'D', name: 'B4-MR01-19', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:34, rotation:'U', name: 'B4-MR01-34', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:23, rotation:'D', name: 'B4-MR01-23', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:38, rotation:'U', name: 'B4-MR01-38', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:24, rotation:'D', name: 'B4-MR01-24', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:39, rotation:'U', name: 'B4-MR01-39', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:22, rotation:'D', name: 'B4-MR01-22', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:37, rotation:'U', name: 'B4-MR01-37', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:27, rotation:'D', name: 'B4-MR01-27', status:'A'},
-    {gp:'MR', sub_gp:'B4-MR01',pos:42, rotation:'U', name: 'B4-MR01-42', status:'A'},
-  ]
+  selectedSeating: NFacilitySeat[] = []
 
-  seating2: any[] = [
-    {pos:17, rotation:'D', status:'A'},
-    {pos:32, rotation:'U', status:'A'},
-    {pos:18, rotation:'D', status:'A'},
-    {pos:33, rotation:'U', status:'A'},
-    {pos:19, rotation:'D', status:'A'},
-    {pos:34, rotation:'U', status:'A'},
-    {pos:23, rotation:'D', status:'A'},
-    {pos:38, rotation:'U', status:'A'},
-    {pos:24, rotation:'D', status:'A'},
-    {pos:39, rotation:'U', status:'A'},
-    {pos:22, rotation:'D', status:'A'},
-    {pos:37, rotation:'U', status:'A'},
-    {pos:27, rotation:'D', status:'A'},
-    {pos:3, rotation:'D', status:'A'},
-    {pos:42, rotation:'U', status:'U'},
-  ]
+  // seatingposGrid: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
+  // seatingposRotation: string[] = ['A','A','A','B','B','B','A','A','A','B','B','B', 'A', 'B'];
 
-  // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
-  // seatingRotation: string[] = ['A','A','A','B','B','B','A','A','A','B','B','B', 'A', 'B'];
+  resOptions: string[] = ['Meeting Room', 'Work Desk']
+  subGpOptions: string[] = [];
 
-  resource:any[] =[
-    { 
-      type:"MR",
-      label:"Meeting Room",
-      facility: [
-        {
-          name:"B4-MR01",
-          map: this.seating
-        },
-        {
-          name: "B4-MR02",
-          map: this.seating2
-        }
-      ]
-    },
-    {
-      type:"WD",
-      label:"Work Desk",
-      facility: [
-        {
-          name:"B4-WD01",
-          map: this.seating
-        },
-        {
-          name: "B4-WD02",
-          map: this.seating
-        },
-        {
-          name: "B4-WD03",
-          map: this.seating
-        }
-      ]
-    }
-  ];
+  // resource:any[] =[
+  //   { 
+  //     type:"MR",
+  //     label:"Meeting Room",
+  //     facility: [
+  //       {
+  //         name:"B4-MR01",
+  //         map: this.seating
+  //       },
+  //       {
+  //         name: "B4-MR02",
+  //         map: this.seating2
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     type:"WD",
+  //     label:"Work Desk",
+  //     facility: [
+  //       {
+  //         name:"B4-WD01",
+  //         map: this.seating
+  //       },
+  //       {
+  //         name: "B4-WD02",
+  //         map: this.seating
+  //       },
+  //       {
+  //         name: "B4-WD03",
+  //         map: this.seating
+  //       }
+  //     ]
+  //   }
+  // ];
 
 
   getSelectedResType(event:any) {
-    this.selectedResource = event.value.facility;
-    this.selectedResourceDTL!.gp = event.value.type;
+    this.colsArr = [];
+    for (let i=0;i<this.cols;i++) { 
+      for (let i=0;i<this.rows;i++) {
+        this.colsArr.push(0)
+      }
+    }
+    this.clearForm();
+    this.selectedResourceDTL!.subGp = undefined;
+    this.selectedResourceDTL!.gp = event.value;
+    this.workspaceService.findSubGpsByGp(event.value).subscribe((res: any) => {
+      this.subGpOptions = res.body
+    })
     // this.clearForm();
   } 
 
@@ -136,32 +117,49 @@ export class WorkspaceDashboardComponent {
   }
 
   getSelectedResName(event:any) {
-    this.selectedResourceDTL!.sub_gp = event.value.name;
-    this.displaySltSeating(event.value.map);
-    this.showHover = true;
+    this.colsArr = [];
+    for (let i=0;i<this.cols;i++) { 
+      for (let i=0;i<this.rows;i++) {
+        this.colsArr.push(0)
+      }
+    }
+    this.clearForm();
+    this.selectedResourceDTL!.subGp = event.value;
+    this.workspaceService.getWorkspaceByGpAndSubGp(this.selectedResourceDTL!.gp, event.value).subscribe((res: any) => {
+      this.selectedSeating = res.body;
+      this.displaySltSeating(res.body);
+      this.showHover = true;
+    })
     // this.clearForm();
   } 
 
   displaySltSeating(seatMap:any){
     if(seatMap.length > 0){
       for (let temp = 0; temp < seatMap.length; temp++){
-        let seatIndex = seatMap[temp].pos;
+        let seatIndex = seatMap[temp].posGrid;
         if (seatIndex < (this.colsArr.length)) {
-          if (seatMap[temp].rotation == 'D') {
+          if (seatMap[temp].posRotation == 'D') {
             this.colsArr[seatIndex] = 1;
           } else {
             this.colsArr[seatIndex] = 2;
           }
         } 
       }
+    } else {
+      this.colsArr = [];
+      for (let i=0;i<this.cols;i++) { 
+        for (let i=0;i<this.rows;i++) {
+          this.colsArr.push(0)
+        }
+      }
     }
   }
 
   selectSeat(seatIndex: any){
-    let seatDTL : FacilitySeat[] ;
-    seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(seatIndex));
-    this.selectedResourceDTL!.pos = seatIndex;
-    this.selectedResourceDTL!.name = seatDTL[0].rotation;
+    let seatDTL : NFacilitySeat[] ;
+    seatDTL = this.selectedSeating.filter((seat:NFacilitySeat) => seat.posGrid===(seatIndex));
+    this.selectedResourceDTL!.posGrid = seatIndex;
+    this.selectedResourceDTL!.name = seatDTL[0].posRotation;
     this.selectedResourceDTL!.name = seatDTL[0].name;
     if(this.selectedResourceDTL.name !== undefined){
       this.showBook=true;
@@ -188,8 +186,8 @@ export class WorkspaceDashboardComponent {
     // this.selectedResourceDTL.fName = undefined;
     // this.selectedResourceDTL.fType = undefined;
     this.selectedResourceDTL.name = undefined;
-    this.selectedResourceDTL.pos = undefined;
-    this.selectedResourceDTL.rotation = undefined;
+    this.selectedResourceDTL.posGrid = undefined;
+    this.selectedResourceDTL.posRotation = undefined;
     this.selectedResourceDTL.status = undefined;
     this.showBook = false
   }
@@ -198,12 +196,12 @@ export class WorkspaceDashboardComponent {
     
     console.log('selectedResourceDTL',this.selectedResourceDTL);
     this.bookingDTL.gp = this.selectedResourceDTL.gp;
-    this.bookingDTL.sub_gp = this.selectedResourceDTL.sub_gp;
+    this.bookingDTL.subGp = this.selectedResourceDTL.subGp;
     this.bookingDTL.name = this.selectedResourceDTL.name;
     
     
-    this.bookingDTL.pos = this.selectedResourceDTL.pos;
-    this.bookingDTL.rotation = this.selectedResourceDTL.rotation;
+    this.bookingDTL.posGrid = this.selectedResourceDTL.posGrid;
+    this.bookingDTL.posRotation = this.selectedResourceDTL.posRotation;
     this.bookingDTL.status = this.selectedResourceDTL.status;
 
     console.log('bookingDTL',this.bookingDTL);
@@ -247,11 +245,11 @@ export class WorkspaceDashboardComponent {
     if(this.showHover){
       // console.log('index',index);
 
-      let bookDTL : FacilityBooking[] ;
-      bookDTL = this.bookingRecord.filter((book:FacilityBooking) => book.pos===(index));
+      let bookDTL : NFacilityBooking[] ;
+      bookDTL = this.bookingRecord.filter((book:NFacilityBooking) => book.posGrid===(index));
       
-      let seatDTL : FacilitySeat[] ;
-      seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(index));
+      let seatDTL : NFacilitySeat[] ;
+      seatDTL = this.selectedSeating.filter((seat:NFacilitySeat) => seat.posGrid===(index));
       
       if(bookDTL.length > 0 && seatDTL.length>0){
         let result = 'name: ' + seatDTL[0].name + 
@@ -295,14 +293,14 @@ export class WorkspaceDashboardComponent {
   }
 
   editWorkspace() {
-    this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {seating: this.seating2, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.sub_gp? this.selectedResourceDTL.sub_gp: ''}});
+    this.router.navigateByUrl(`/createWorkspace?mode=edit`, {state: {seating: this.selectedSeating, gp:this.selectedResourceDTL.gp? this.selectedResourceDTL.gp : '', sub_gp:this.selectedResourceDTL.subGp? this.selectedResourceDTL.subGp: ''}});
   }
 
   checkOpacity(index: number): string {
-    let seatIndex = this.seating.findIndex(s =>s.pos === (index));
+    let seatIndex = this.selectedSeating.findIndex(s =>s.posGrid === (index));
 
     if (seatIndex != -1) {
-      if (this.seating[seatIndex].status == 'A') {
+      if (this.selectedSeating[seatIndex].status == 'A') {
         return '100%'
       } else {
         return '50%'
