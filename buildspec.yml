@@ -44,6 +44,7 @@ phases:
       - ls -l # list all contents in the directory
       - cd ./service-discovery/docker
       - pwd
+      - mvn package -f service-discovery/pom.xml
       - docker build -t wbms-service-discovery-docker:service-discovery-docker .
       - cd ../../workspace/docker
       - pwd
