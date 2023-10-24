@@ -1,0 +1,5 @@
+FROM openjdk:17
+WORKDIR /app
+COPY target/wbms-workspace-service.jar /app/wbms-workspace-service.jar
+EXPOSE 8082
+ENTRYPOINT ["java", "-jar", "wbms-workspace-service.jar"]
