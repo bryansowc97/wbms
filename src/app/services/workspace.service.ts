@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from "src/environment";
 import { NFacilitySeat } from '../workspace/workspace.model';
+import { HttpRequest } from 'aws-sdk';
 
 @Injectable()
 
@@ -40,5 +41,24 @@ export class WorkspaceService {
     // Update (http.put)
     update<T>(updateList: NFacilitySeat[], idListToDelete: number[]): Observable<HttpResponse<T>> {
         return this.http.post<T>(`${this.apiUrl}/updateWorkspace`, {updateList: updateList, idListToDelete: idListToDelete}, { observe: 'response' });
+    }
+
+    // delete
+    delete<T>(idListToDelete: number[]): Observable<Object> {
+        // const options = {
+        //     headers: new HttpHeaders({
+        //       'Content-Type': 'application/json',
+        //     }),
+        //     body: {
+        //         idListToDelete: idListToDelete
+        //     },
+        //   };
+        // this.http.delete(`${this.apiUrl}/deleteWorkspaceById`, options)
+        return this.http.request('DELETE', `${this.apiUrl}/deleteWorkspaceById`, {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+            }),
+            body: idListToDelete
+        });
     }
 }

@@ -286,9 +286,18 @@ export class WorkspaceDashboardComponent {
     this.openDeleteWorkspaceDialog = true;
     this.confirmationService.confirm({
       accept: () => {
-        this.openDeleteWorkspaceDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });
-      }
+        let idListToDelete = this.selectedSeating.map((seat:NFacilitySeat) => seat.id);
+        this.workspaceService.delete(idListToDelete).subscribe((res:any) => {
+          this.openDeleteWorkspaceDialog = false;
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });  
+          this.getSelectedResType({value: this.selectedResourceDTL.gp})
+        },
+        (err: any) => {
+          
+          this.openDeleteWorkspaceDialog = false;
+          this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: 'Unexpected error occurred.' });
+        
+        })}
     });
   }
 
