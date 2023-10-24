@@ -61,11 +61,11 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="Ws_code" style="width:20%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="Emp_name" style="width:15%">Employee Id <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="Ws_code" style="width:15%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="Emp_id" style="width:15%">Employee Id <p-sortIcon field="code"></p-sortIcon></th>
                     <th pSortableColumn="Emp_name" style="width:20%">Employee Names <p-sortIcon field="code"></p-sortIcon></th>
                     <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="time" style="width:20%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="time" style="width:15%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
                     <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="code"></p-sortIcon></th>
                     <th style="width:10%">Action </th>
                 </tr>
@@ -74,10 +74,10 @@
                 <tr>
                     <td>{{ booking.facilityDTO.name }}</td>
                     <td>{{ booking.employeeId }}</td>
-                    <td>placeholder</td>
+                    <td>{{ booking.employeeName }}</td>
                     <td>{{ booking.dteStart | slice:0:10 }}</td>
                     <td>{{ booking.dteStart | slice:11:16 }} - {{ booking.dteEnd | slice:11:16 }}</td>
-                    <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.bookedStatus]" [severity]="getSeverity(bookingStatusEnum[booking.bookedStatus])"></p-tag></td>
+                    <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.status]" [severity]="getSeverity(bookingStatusEnum[booking.status])"></p-tag></td>
                     <td>
                         <span class="flex-display p-buttonset">
                             <!-- <p-button class="buttonSet" icon="pi pi-pencil" [routerLink]="['/booking']" [queryParams]="{mode:'edit'}"></p-button> -->

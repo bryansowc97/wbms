@@ -47,9 +47,9 @@ export class BookingDashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private confirmationService: ConfirmationService,
-    private cognitoService: CognitoService,
     private bookingService: BookingService,
     private workspaceService: WorkspaceService,
+    private cognitoService: CognitoService,
     private messageService: MessageService
   ){
     // this.dataSource1 = {
@@ -204,6 +204,16 @@ export class BookingDashboardComponent implements OnInit {
 
   public setupBookingDtlDtoList(): void {
     this.bookingDtlDTOList.forEach(res => {
+      
+      this.cognitoService.findUserAndAttributesByUsername(res.employeeId).then(
+        usr => {
+          usr.UserAttributes.forEach(user => {
+            if(user.Name === 'name'){
+              res.employeeName = user.Value;
+            }
+          });
+        }
+      );
       let workspace = this.workspaceList.find(wkspace => wkspace.id = res.rescId);
       if (workspace) {
         res.facilityDTO = workspace;
