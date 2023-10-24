@@ -15,14 +15,14 @@ export interface FacilitySeat{
 }
 
 
-export interface NFacilityBooking extends FacilitySeat{
+export interface NFacilityBooking extends NFacilitySeat{
     emp_id:any;
     date: any;
     timeSlot : any;
 }
 
 export interface NFacilitySeat{
-    id : any
+    id? : any
     gp : any;
     subGp : any;
     posGrid: any;

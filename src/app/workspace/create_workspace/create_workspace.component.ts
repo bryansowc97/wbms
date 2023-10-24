@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ContextMenu } from 'primeng/contextmenu';
-import { FacilitySeat } from '../workspace.model';
+import { NFacilitySeat } from '../workspace.model';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { catchError, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
   selector: 'app-workspace',
@@ -21,32 +21,31 @@ export class CreateWorkspaceComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private workspaceService: WorkspaceService
   ){
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
-      this.seating = details['seating']
+      this.seating = [...details['seating']]
+      this.seatingCopy = [...details['seating']]
     } else {       
       this.seating = [
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:17, rotation:'D', name: undefined},
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:32, rotation:'U', name: undefined},
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:18, rotation:'D', name: undefined},
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:33, rotation:'U', name: undefined},
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:19, rotation:'D', name: undefined},
-        {gp : undefined, sub_gp : undefined, status: 'A', pos:34, rotation:'U', name: undefined}
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:17, posRotation:'D', name: undefined},
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:32, posRotation:'U', name: undefined},
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:18, posRotation:'D', name: undefined},
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:33, posRotation:'U', name: undefined},
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:19, posRotation:'D', name: undefined},
+        {gp : undefined, subGp : undefined, status: 'A', posGrid:34, posRotation:'U', name: undefined}
       ];
     }
     
     this.createWorkspace = this.formBuilder.group({
-      gp : [details? details['gp'] ? details['gp'] : '' : '', Validators.required], // workspace or meeting room
-      sub_gp : [details? details['sub_gp']? details['sub_gp'] : '' : '', [Validators.required]], //eg B4-WS01
+      gp : [{value: details? details['gp'] ? details['gp'] : '' : '', disabled: details? true : false}, Validators.required], // workspace or meeting room
+      sub_gp : [details? details['sub_gp']? details['sub_gp'] : '' : '', Validators.required], //eg B4-WS01
     });
   }
 
-  gpOptions:any[] =[
-    { value:'WD', label: 'Work Desk'},
-    { value:'MR', label: 'Meeting Room'}
-  ];
+  gpOptions:any[] =[ 'Meeting Room', 'Work Desk'];
   statusOptions:any[] =[
     { value:'A', label: 'Available'},
     { value:'U', label: 'Unavailable (Maintenance)'}
@@ -59,8 +58,10 @@ export class CreateWorkspaceComponent implements OnInit {
   colsArr: any[] = [];
   items: MenuItem[] | undefined;
   
-  seating: FacilitySeat[] =[];
+  seating: NFacilitySeat[] =[];
+  seatingCopy: NFacilitySeat[] =[];
   mode: string = "";
+  idListToDelete: number[]=[];
 
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
   // seatingRotation: string[] = ['D','D','D','U','U','U','D','D','D','U','U','U', 'D', 'U'];
@@ -99,14 +100,21 @@ export class CreateWorkspaceComponent implements OnInit {
   displaySltSeating(seatMap:any){
     if(seatMap.length > 0){
       for (let temp = 0; temp < seatMap.length; temp++){
-        let seatIndex = seatMap[temp].pos;
+        let seatIndex = seatMap[temp].posGrid;
         if (seatIndex < (this.colsArr.length)) {
-          if (seatMap[temp].rotation == 'D') {
+          if (seatMap[temp].posRotation == 'D') {
             this.colsArr[seatIndex] = 1;
           } else {
             this.colsArr[seatIndex] = 2;
           }
         } 
+      }
+    } else {
+      this.colsArr = [];
+      for (let i=0;i<this.cols;i++) { 
+        for (let i=0;i<this.rows;i++) {
+          this.colsArr.push(0)
+        }
       }
     }
   }
@@ -123,15 +131,30 @@ export class CreateWorkspaceComponent implements OnInit {
 
   createFacility(){
     //save to db
-    console.log('valid: ', this.createWorkspace.valid);
+    // console.log('valid: ', this.createWorkspace.valid);
     if(this.createWorkspace.valid){
-      this.seating.forEach((seating: FacilitySeat) => {
+      this.seating.forEach((seating: NFacilitySeat) => {
         seating.gp = this.createWorkspace.get('gp')?.value
-        seating.sub_gp = this.createWorkspace.get('sub_gp')?.value
-        seating.name = this.createWorkspace.get('sub_gp')?.value + '-' + seating.pos
+        seating.subGp = this.createWorkspace.get('sub_gp')?.value
+        seating.name = this.createWorkspace.get('sub_gp')?.value + '-' + seating.posGrid
       })
 
-      console.log(this.seating)
+      if (this.seatingCopy.length>0) {
+        // update
+        this.workspaceService.update(this.seating, this.idListToDelete).subscribe((res:any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace updated successfully.' });
+          this.seating = [...res.body]
+          this.seatingCopy = [...res.body]
+          this.idListToDelete = []
+        })
+      } else {
+        // create
+        this.workspaceService.create(this.seating).subscribe((res:any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace created successfully.' });
+          this.seating = [...res.body]
+          this.seatingCopy = [...res.body]
+        })
+      }
     } else {
       this.createWorkspace.markAllAsTouched();
     }
@@ -142,14 +165,25 @@ export class CreateWorkspaceComponent implements OnInit {
   }
 
   cancel(){
-    this.seating = [];
-    this.colsArr = [];
-    for (let i=0;i<this.cols;i++) { 
-      for (let i=0;i<this.rows;i++) {
-        this.colsArr.push(0)
+    if (this.seatingCopy.length > 0) {
+      this.seating = [...this.seatingCopy];
+      this.colsArr = [];
+      for (let i=0;i<this.cols;i++) { 
+        for (let i=0;i<this.rows;i++) {
+          this.colsArr.push(0)
+        }
       }
+      this.displaySltSeating(this.seating);
+    } else {
+      this.seating = [];
+      this.colsArr = [];
+      for (let i=0;i<this.cols;i++) { 
+        for (let i=0;i<this.rows;i++) {
+          this.colsArr.push(0)
+        }
+      }
+      this.clear(); 
     }
-    this.clear(); 
   }
 
   openContextMenu(event:MouseEvent ,contextMenu: ContextMenu, index: number): void {
@@ -158,16 +192,16 @@ export class CreateWorkspaceComponent implements OnInit {
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    let seatDTL = this.seating.filter((seat:FacilitySeat) => seat.pos===(index));
-    let seatIndex = this.seating.findIndex(s =>s.pos === (index));
+    let seatDTL = this.seating.filter((seat:NFacilitySeat) => seat.posGrid===(index));
+    let seatIndex = this.seating.findIndex(s =>s.posGrid === (index));
 
     if (seatDTL.length > 0) {
-      if (seatDTL[0].rotation == 'D') {
+      if (seatDTL[0].posRotation == 'D') {
         this.items = [
           { label: 'Rotate', icon: 'pi pi-replay', command: (e) => {
             // seatDTL[0].rotation = 'U';
             // console.log(this.seating[seatIndex].rotation);
-            this.seating[seatIndex].rotation = 'U';
+            this.seating[seatIndex].posRotation = 'U';
             this.colsArr[index] = 2;
             // console.log(this.seating[seatIndex].rotation);
           } },
@@ -175,6 +209,9 @@ export class CreateWorkspaceComponent implements OnInit {
             this.seating[seatIndex].status = this.seating[seatIndex].status == 'A' ? 'U' : 'A'
           } },
           { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            if (this.seating[seatIndex].id) {
+              this.idListToDelete.push(this.seating[seatIndex].id)
+            }
             this.seating.splice(seatIndex);
             this.colsArr[index] = 0;
           } },
@@ -185,13 +222,16 @@ export class CreateWorkspaceComponent implements OnInit {
         this.items = [
           { label: 'Rotate', icon: 'pi pi-replay', command: (e) => {
             // seatDTL[0].rotation = 'D'
-            this.seating[seatIndex].rotation = 'D';
+            this.seating[seatIndex].posRotation = 'D';
             this.colsArr[index] = 1;
           } },
           { label: 'Mark Available/ Unavailable', icon: 'pi pi-pencil', command: (e) => {
             this.seating[seatIndex].status = this.seating[seatIndex].status == 'A' ? 'U' : 'A'
           } },
           { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            if (this.seating[seatIndex].id) {
+              this.idListToDelete.push(this.seating[seatIndex].id)
+            }
             this.seating.splice(seatIndex);
             this.colsArr[index] = 0;
           } },
@@ -204,11 +244,11 @@ export class CreateWorkspaceComponent implements OnInit {
         { label: 'Add', icon: 'pi pi-plus', 
           command: (e) => {
             
-            let newFacility: FacilitySeat = {
+            let newFacility: NFacilitySeat = {
               gp: undefined, // will only set when saving
-              sub_gp: undefined,
-              pos: index,
-              rotation:'D',
+              subGp: undefined,
+              posGrid: index,
+              posRotation:'D',
               name: undefined,
               status: 'A'
             };
@@ -227,7 +267,7 @@ export class CreateWorkspaceComponent implements OnInit {
   }
 
   checkOpacity(index: number): string {
-    let seatIndex = this.seating.findIndex(s =>s.pos === (index));
+    let seatIndex = this.seating.findIndex(s =>s.posGrid === (index));
 
     if (seatIndex != -1) {
       if (this.seating[seatIndex].status == 'A') {

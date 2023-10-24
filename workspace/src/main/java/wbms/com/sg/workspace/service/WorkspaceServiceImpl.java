@@ -1,15 +1,9 @@
 package wbms.com.sg.workspace.service;
 
-import wbms.com.sg.workspace.common.IConstants;
-import wbms.com.sg.workspace.dto.BookingDTO;
 import wbms.com.sg.workspace.entity.Workspace;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import wbms.com.sg.workspace.repository.WorkspaceRepository;
 
 import java.util.*;
@@ -19,21 +13,10 @@ import java.util.*;
 public class WorkspaceServiceImpl implements WorkspaceService{
 
   @Autowired
-  private RestTemplate restTemplate;
-
-  @Autowired
   private WorkspaceRepository workspaceRepository;
 
-  public List<BookingDTO> testBookingService() {
-
-    ResponseEntity<List<BookingDTO>> response = restTemplate.exchange(
-      IConstants.bookingGetAllApi,
-      HttpMethod.GET,
-      null,
-      new ParameterizedTypeReference<List<BookingDTO>>() {}
-    );
-
-      return response.getBody();
+  public List<String> findSubGpsByGp(String gp) {
+    return workspaceRepository.findSubGpsByGp(gp);
   }
 
   public List<Workspace> findAll() {
@@ -42,5 +25,23 @@ public class WorkspaceServiceImpl implements WorkspaceService{
 
   public Optional<Workspace> findById(Long id) {
     return workspaceRepository.findById(id);
+  }
+
+  public List<Workspace> createWorkspace(List<Workspace> workspaceList) {
+    return workspaceRepository.saveAll(workspaceList);
+  }
+
+  public List<Workspace> updateWorkspace(List<Workspace> workspaceList) {
+    // check if got booking
+    return workspaceRepository.saveAll(workspaceList);
+  }
+
+  public void deleteWorkspaceById(List<Long> id) {
+    // check if got booking
+    workspaceRepository.deleteAllById(id);
+  }
+
+  public List<Workspace> findByGpAndSubGp(String gp, String subgp) {
+    return workspaceRepository.findByGpAndSubGp(gp, subgp);
   }
 }
