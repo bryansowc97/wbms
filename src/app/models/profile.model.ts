@@ -1,6 +1,6 @@
 export interface UserProfile {
     // empID: string;
-    userName: string ;
+    username: string ;
     // fullname : string;
     email : string;
     name : string;

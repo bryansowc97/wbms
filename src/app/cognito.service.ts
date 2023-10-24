@@ -10,7 +10,7 @@ import { env } from 'process';
 
 export interface IUser {
   email: string;
-  userName: string;
+  username: string;
   password: string;
   showPassword: boolean;
   confirmPassword?: string;
@@ -51,7 +51,7 @@ export class CognitoService {
 
   public signUp(user: IUser): Promise<any> {
     return Auth.signUp({
-      username: user.userName,
+      username: user.username,
       password: user.password,
       attributes: {
         email: user.email,
@@ -66,7 +66,7 @@ export class CognitoService {
   }
 
   public signIn(user: IUser): Promise<any> {
-    return Auth.signIn(user.userName, user.password)
+    return Auth.signIn(user.username, user.password)
     .then(() => {
       this.authenticationSubject.next(true);
     });
@@ -101,19 +101,26 @@ export class CognitoService {
     return Auth.currentUserInfo();
   }
 
-  async findUserAndAttributesByUsername(username: string): Promise<any> {
+  public async findUserAndAttributesByUsername(username: string): Promise<any> {
     try {
       const cognitoParamsWithUserName = {
         UserPoolId: environment.cognito.userPoolId, // Replace with your Cognito user pool ID
         Username: username
       };
-      return await this.cognitoIdentityServiceProvider.adminGetUser(cognitoParamsWithUserName).promise();
+      const userData = await this.cognitoIdentityServiceProvider.adminGetUser(cognitoParamsWithUserName).promise();
+      const userGroups = await this.cognitoIdentityServiceProvider.adminListGroupsForUser(cognitoParamsWithUserName).promise();
+      // concat the usergorup into userdata
+      const userDataWithGroups = {
+        ...userData,
+        userGroups: userGroups.Groups.map(grp => grp.GroupName)
+      };
+      return userDataWithGroups;
     } catch (error) {
       console.error('Error finding user or retrieving attributes:', error);
     }
   }
 
-  async getUserGroups() {
+  public async getCurrentUserGroups() {
     try {
       const user = await Auth.currentAuthenticatedUser();
       return user.signInUserSession.accessToken.payload['cognito:groups'];
@@ -131,7 +138,7 @@ export class CognitoService {
     ];
     const params = {
       UserPoolId: environment.cognito.userPoolId,
-      Username: user.userName,
+      Username: user.username,
       UserAttributes: attri.map(attribute => ({
         Name: Object.keys(attribute)[0],
         Value: attribute[Object.keys(attribute)[0]]

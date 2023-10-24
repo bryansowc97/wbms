@@ -15,7 +15,7 @@
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '60rem' }"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            [globalFilterFields]="['userName', 'name']"
+            [globalFilterFields]="['username', 'name']"
         >
             <ng-template pTemplate="caption" >
                 <div class="flex">
@@ -31,7 +31,7 @@
     <!--                <th pSortableColumn="empID" style="width:25%">Employee ID <p-sortIcon field="empID"></p-sortIcon></th>-->
     <!--                <th pSortableColumn="fullname" style="width:25%">Employee Name <p-sortIcon field="fullname"></p-sortIcon></th>-->
     <!--                <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>-->
-                <th pSortableColumn="userName" style="width:25%">Employee ID <p-sortIcon field="userName"></p-sortIcon></th>
+                <th pSortableColumn="username" style="width:25%">Employee ID <p-sortIcon field="username"></p-sortIcon></th>
                 <th pSortableColumn="name" style="width:25%">Employee Name <p-sortIcon field="name"></p-sortIcon></th>
                 <th pSortableColumn="email" style="width:25%">Email <p-sortIcon field="email"></p-sortIcon></th>
                     <th style="width:10%">Action </th>
@@ -39,7 +39,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-profile>
                 <tr>
-                    <td>{{ profile.userName }}</td>
+                    <td>{{ profile.username }}</td>
     <!--              <td>{{ profile.empID }}</td>-->
                     <td>{{ profile.name }}</td>
     <!--              <td>{{ profile.fullname }}</td>-->

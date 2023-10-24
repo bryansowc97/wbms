@@ -67,8 +67,6 @@ export class EditBookingComponent {
         
         this.bookingService.findById(this.id).subscribe( booked => {
           this.bookingDTL = booked;
-          this.bookingDTL.date = formatDate(booked.dteStart,'dd-MM-yyyy','en-US');
-          this.bookingDTL.timeslot = formatDate(booked.dteStart,'HH:mm','en-US') + ' - '+ formatDate(booked.dteEnd,'HH:mm','en-US') ;
           this.workspaceService.getWorkspaceById(booked.rescId).subscribe(r => {
             this.bookingDTL.facilityDTO = r;
             console.log('bookingDTL',this.bookingDTL);  

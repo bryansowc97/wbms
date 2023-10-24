@@ -4,8 +4,6 @@ import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
 export interface BookingDtlDTO extends Booking{
     facilityDTO: NFacilitySeat;
     userDTO: IUser;
-    date: any;
-    timeslot: any;
     employeeName: any;
 }
 

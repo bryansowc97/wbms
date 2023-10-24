@@ -23,12 +23,12 @@
                 <div class ="dtls-container">
                     <div class="flex-container">
                         <label>Date</label> 
-                        <input pInputText class="input-field" type="text" disabled placeholder="{{bookingDTL.date}}"/>
+                        <input pInputText class="input-field" type="text" disabled placeholder="{{ bookingDTL.dteStart | slice:0:10 }}"/>
                         <!-- <p-calendar class="input-field" appendTo="body" ngModel="bookingDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar> -->
                     </div>
                     <div class="flex-container">
                         <label>Time Slot</label> 
-                        <input pInputText class="input-field" type="text" disabled placeholder="{{bookingDTL.timeslot}}"/>
+                        <input pInputText class="input-field" type="text" disabled placeholder="{{ bookingDTL.dteStart | slice:11:16 }} - {{ bookingDTL.dteEnd | slice:11:16 }}"/>
                         <!-- <p-dropdown appendTo="body"
                                 class="input-field"
                                 [options]="timeSlot" 
