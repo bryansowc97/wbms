@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from "src/environment";
+import { NFacilitySeat } from '../workspace/workspace.model';
 
 @Injectable()
 
@@ -32,12 +33,12 @@ export class WorkspaceService {
     }
 
     // Create (http.post)
-    create<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.post<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
+    create<T>(param : NFacilitySeat[]): Observable<HttpResponse<T>> {
+        return this.http.post<T>(`${this.apiUrl}/createWorkspace`, param, { observe: 'response' });
     }
 
     // Update (http.put)
-    update<T>(url: string, service: string, param?: any): Observable<HttpResponse<T>> {
-        return this.http.put<T>(`${this.apiUrl[service] + url}`, param, { observe: 'response' });
+    update<T>(updateList: NFacilitySeat[], idListToDelete: number[]): Observable<HttpResponse<T>> {
+        return this.http.post<T>(`${this.apiUrl}/updateWorkspace`, {updateList: updateList, idListToDelete: idListToDelete}, { observe: 'response' });
     }
 }

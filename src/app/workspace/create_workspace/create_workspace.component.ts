@@ -5,7 +5,7 @@ import { NFacilitySeat } from '../workspace.model';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { catchError, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
   selector: 'app-workspace',
@@ -21,7 +21,8 @@ export class CreateWorkspaceComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private workspaceService: WorkspaceService
   ){
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
@@ -60,6 +61,7 @@ export class CreateWorkspaceComponent implements OnInit {
   seating: NFacilitySeat[] =[];
   seatingCopy: NFacilitySeat[] =[];
   mode: string = "";
+  idListToDelete: number[]=[];
 
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
   // seatingRotation: string[] = ['D','D','D','U','U','U','D','D','D','U','U','U', 'D', 'U'];
@@ -129,7 +131,7 @@ export class CreateWorkspaceComponent implements OnInit {
 
   createFacility(){
     //save to db
-    console.log('valid: ', this.createWorkspace.valid);
+    // console.log('valid: ', this.createWorkspace.valid);
     if(this.createWorkspace.valid){
       this.seating.forEach((seating: NFacilitySeat) => {
         seating.gp = this.createWorkspace.get('gp')?.value
@@ -137,7 +139,22 @@ export class CreateWorkspaceComponent implements OnInit {
         seating.name = this.createWorkspace.get('sub_gp')?.value + '-' + seating.posGrid
       })
 
-      console.log(this.seating)
+      if (this.seatingCopy.length>0) {
+        // update
+        this.workspaceService.update(this.seating, this.idListToDelete).subscribe((res:any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace updated successfully.' });
+          this.seating = [...res.body]
+          this.seatingCopy = [...res.body]
+          this.idListToDelete = []
+        })
+      } else {
+        // create
+        this.workspaceService.create(this.seating).subscribe((res:any) => {
+          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace created successfully.' });
+          this.seating = [...res.body]
+          this.seatingCopy = [...res.body]
+        })
+      }
     } else {
       this.createWorkspace.markAllAsTouched();
     }
@@ -148,7 +165,7 @@ export class CreateWorkspaceComponent implements OnInit {
   }
 
   cancel(){
-    if (this.mode == 'edit') {
+    if (this.seatingCopy.length > 0) {
       this.seating = [...this.seatingCopy];
       this.colsArr = [];
       for (let i=0;i<this.cols;i++) { 
@@ -192,6 +209,9 @@ export class CreateWorkspaceComponent implements OnInit {
             this.seating[seatIndex].status = this.seating[seatIndex].status == 'A' ? 'U' : 'A'
           } },
           { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            if (this.seating[seatIndex].id) {
+              this.idListToDelete.push(this.seating[seatIndex].id)
+            }
             this.seating.splice(seatIndex);
             this.colsArr[index] = 0;
           } },
@@ -209,6 +229,9 @@ export class CreateWorkspaceComponent implements OnInit {
             this.seating[seatIndex].status = this.seating[seatIndex].status == 'A' ? 'U' : 'A'
           } },
           { label: 'Delete', icon: 'pi pi-minus', command: (e) => {
+            if (this.seating[seatIndex].id) {
+              this.idListToDelete.push(this.seating[seatIndex].id)
+            }
             this.seating.splice(seatIndex);
             this.colsArr[index] = 0;
           } },
