@@ -9,6 +9,7 @@ import { WorkspaceService } from '../services/workspace.service';
 import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
 import { formatDate } from '@angular/common';
 import { Auth } from 'aws-amplify';
+import { Table } from 'primeng/table';
 import * as FusionCharts from 'fusioncharts';
 
 // const data = {
@@ -86,6 +87,7 @@ export class BookingDashboardComponent implements OnInit {
   userGroup: any[];
   isAdmin: boolean = false;
   bookingStatusEnum: { [key: string]: string } = BookingStatusEnum;
+  isLoading: boolean = true;
   stlBookingDTL: BookingDtlDTO;
   stlMode: string;
   displayView: boolean = false;
@@ -95,6 +97,7 @@ export class BookingDashboardComponent implements OnInit {
   source: any;
 
   booking: Booking[];
+  workspaceList: any[];
   bookingDtlDTOList: BookingDtlDTO[] = [];
   bookingDtlDTO: BookingDtlDTO;
   // =[
@@ -164,72 +167,70 @@ export class BookingDashboardComponent implements OnInit {
 
 
   async ngOnInit(): Promise<void> {
-    // this.fetchData();
-    this.cognitoService.getCurrentUser().then((user: any) => {
-          this.user = user.attributes;
-
-          this.cognitoService.getCurrentUserGroups().then((userGrp: any) => {
-            this.userGroup = userGrp;
-            this.messageService.add({
-              severity: "warn",
-              summary: "user info",
-              detail: userGrp,
-              sticky: false,
-            });
-            if(this.userGroup!== undefined && this.userGroup[0] === 'admin'){
+    //if admin / user access lvl view 
+    await Auth.currentAuthenticatedUser()
+      .then(user => {
+        this.user = user;
+        this.cognitoService.getCurrentUserGroups()
+        .then((userGrp: any) => {
+          this.userGroup = userGrp;
+          if(this.userGroup && this.userGroup.find(o => o === 'admin')) {
+            this.isAdmin = true;
+          }
+          this.workspaceService.findAll().subscribe(workspaceList => {
+            this.workspaceList = workspaceList;
+            if (this.isAdmin) {
               this.bookingService.findAll().subscribe(resv => {
-                resv.forEach(res => {
-                  this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
-                    this.cognitoService.findUserAndAttributesByUsername(res.employeeId).then(userData => {
-                      this.bookingDtlDTO = res;
-                      this.bookingDtlDTO.facilityDTO = r;
-                      if(userData){
-                        userData.UserAttributes.forEach(attribute => {
-                          if(attribute.Name === 'name'){
-                            this.bookingDtlDTO.employeeName = attribute.Value;
-                          }
-                        });
-                      }else{
-                        this.bookingDtlDTO.employeeName = 'UNKNOWN';
-                      }
-                      this.bookingDtlDTOList.push(this.bookingDtlDTO);
-                      console.log(this.bookingDtlDTOList);
-                    });
-                  });
-                });
-              })
-            }else{
-              console.log('out',user.username); 
-              this.bookingService.getBookingsByUser(user.username).subscribe(resv => {
-                resv.forEach(res => {
-                  this.workspaceService.getWorkspaceById(res.rescId).subscribe(r => {
-                    this.bookingDtlDTO = res;
-                    this.bookingDtlDTO.facilityDTO = r;
-                    this.bookingDtlDTOList.push(this.bookingDtlDTO);
-                    this.bookingDtlDTO.employeeName = this.user.name;
-                  });
-                });
+                this.bookingDtlDTOList = resv;
+                this.setupBookingDtlDtoList();                
+                this.isLoading = false;
               });
             }
-
-          });
+            else {
+              this.bookingService.getBookingsByUser(this.user.username).subscribe(resv => {
+                this.bookingDtlDTOList = resv;
+                this.setupBookingDtlDtoList();                
+                this.isLoading = false;
+              });
+            }
+          })
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching user profile:', error);
+        this.isLoading = false;    
       });
   }
 
-  onClickBooking(mode: string, id: any) {
-    const queryParams = {
-      mode: mode,
-      id: id
-    }
-    this.router.navigate(['/booking'], { queryParams });
-
+  public setupBookingDtlDtoList(): void {
+    this.bookingDtlDTOList.forEach(res => {
+      let workspace = this.workspaceList.find(wkspace => wkspace.id = res.rescId);
+      if (workspace) {
+        res.facilityDTO = workspace;
+      }
+    });
   }
 
   customSort(event:any):void{}
   
-  clear(event:any):void{
+  clear(table: Table):void{
     this.search_key = "";
     this.date = "";
+    table.clear();
+  }
+
+  applyFilterGlobal(table: Table, $event: Event, stringVal: string) {
+    table.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+  }
+
+  onSelectCalendarDate(event: any, table: Table) {
+    const eventDate = new Date(event);
+    let year = eventDate.getFullYear();
+    let month = eventDate.getMonth() + 1;
+    let day = eventDate.getDate();
+    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+    table.filter(formattedDate, 'dteStart', 'contains');
   }
 
   getSeverity(event:string):string{

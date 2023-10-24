@@ -10,6 +10,7 @@ import wbms.com.sg.booking.entity.Booking;
 import wbms.com.sg.booking.repository.BookingRepository;
 
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -41,7 +42,14 @@ public class BookingServiceImpl implements BookingService{
   
   @Override
   public Booking updateBookingByUser(BookingDTO bookingDTO) {
-    String help = "help me";
+    // test create new and save
+    Booking toSave = new Booking();
+    toSave.setEmployeeId("P1111111");
+    toSave.setRescId(1L);
+    toSave.setDteStart(LocalDateTime.of(2023, 10, 20, 12, 00, 00));
+    toSave.setDteEnd(LocalDateTime.of(2023, 10, 20, 19, 00, 00));
+    toSave.setStatus("B");
+    bookingRepository.save(toSave);
     return new Booking();
   }
 }

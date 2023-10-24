@@ -22,7 +22,7 @@ export interface NFacilityBooking extends NFacilitySeat{
 }
 
 export interface NFacilitySeat{
-    id : any
+    id? : any
     gp : any;
     subGp : any;
     posGrid: any;

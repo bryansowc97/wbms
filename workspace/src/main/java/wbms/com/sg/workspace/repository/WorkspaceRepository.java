@@ -10,8 +10,9 @@ import java.util.*;
 @Repository
 public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
 
-  @Query(value ="select w from Workspace w")
-  public List<Workspace> findAll();
+  @Query(value = "select w from Workspace w where gp = :gp and subGp = :subGp")
+  public List<Workspace> findByGpAndSubGp(String gp, String subGp);
 
-  Optional<Workspace> findById(Long Id);
+  @Query(value = "select distinct(w.subGp) from Workspace w where gp = :gp")
+  public List<String> findSubGpsByGp(String gp);
 }
