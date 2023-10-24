@@ -35,7 +35,7 @@ public class BookingResource {
 
   @PostMapping("/updateBooking/")
   public ResponseEntity<?> getBookingsByUser(@RequestBody BookingDTO bookingDTO) {
-    return new ResponseEntity<>(bookingService.updateBookingByUser(bookingDTO), HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PostMapping("/getBookingsByIds")

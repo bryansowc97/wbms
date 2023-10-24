@@ -17,4 +17,5 @@ public interface BookingService {
   Booking updateBookingByUser(BookingDTO bookingDTO);
 
   List<Booking> getBookingsByIds(List<Long> idList);
+  void updateBooking(BookingDTO bookingDTO);
 }
