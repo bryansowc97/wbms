@@ -40,13 +40,15 @@ phases:
       - pwd
       - echo Frontend build completed...
       #build services
-      - echo Building backend...
+      - echo Building service discovery...
       - ls -l # list all contents in the directory
       - cd ./service-discovery
       - pwd
       - mvn package
-      - cd ./docker
-      - docker build -t wbms-service-discovery-docker:service-discovery-docker .
+      - docker build -t wbms-service-discovery -f DockerFile .
+
+      - echo Building workspace service...
+      - pwd
       - cd ../../workspace/docker
       - pwd
       - docker build -t wbms-workspace-docker:workspace-docker ./docker
