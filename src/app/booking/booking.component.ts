@@ -83,6 +83,7 @@ export class BookingDashboardComponent implements OnInit {
 
   // dataSource1: any;
 
+  currdate = new Date();
   user: IUser;
   userGroup: any[];
   isAdmin: boolean = false;
@@ -182,6 +183,7 @@ export class BookingDashboardComponent implements OnInit {
             if (this.isAdmin) {
               this.bookingService.findAll().subscribe(resv => {
                 this.bookingDtlDTOList = resv;
+                
                 this.setupBookingDtlDtoList();                
                 this.isLoading = false;
               });
