@@ -14,7 +14,7 @@ public class BookingDTO {
 
   private LocalDateTime dteEnd;
 
-  private Character status;
+  private String status;
 
   public Long getId() {
     return id;
@@ -56,11 +56,11 @@ public class BookingDTO {
     this.dteEnd = dteEnd;
   }
 
-  public Character getStatus() {
+  public String getStatus() {
     return status;
   }
 
-  public void setStatus(Character status) {
+  public void setStatus(String status) {
     this.status = status;
   }
 }

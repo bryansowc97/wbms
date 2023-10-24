@@ -267,23 +267,30 @@ export class BookingDashboardComponent implements OnInit {
             status : 'C'
           };
 
-          console.log('delBook', delBook);
           this.bookingService.updateBooking(delBook).subscribe((res:any) => {
-            let a = res;
-            console.log(a);
+            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });  
+          },
+          (err: any) => {
+            this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: err.title() });
           })
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });
+          window.location.reload();
         }
     });
   }
 
   // updateBooking(): void{
-      
-  //     console.log('create',booking);
-  //     this.bookingService.updateBooking(booking).subscribe((res:any) => {
-  //       let a = res;
-  //       console.log(a);
-  //     })
-  
+  //   let booking: Booking = {
+  //     id: 1,
+  //     employeeId: 'P1313131',
+  //     rescId: 1,
+  //     dteStart: Date,
+  //     dteEnd : Date,
+  //     status: 'C',
   //   }
+  //   this.bookingService.updateBooking(booking).subscribe((res:any) => {
+  //     let a = res;
+  //     console.log(a);
+  //   })
+
+  // }
 }

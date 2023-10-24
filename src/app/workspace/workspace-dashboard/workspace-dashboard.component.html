@@ -70,7 +70,7 @@
     <ng-template pTemplate="message">
         <div class="flex-container" *ngIf="openCreateBookgDialog">
             <label>Employee ID</label>
-            <input pInputText class="input-field" type="text" placeholder="{{selectedResourceDTL.name}}" disabled />
+            <input pInputText class="input-field" type="text" placeholder="{{newSelectBookingDTL.employeeId}}" disabled />
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Facility Type</label> 
@@ -84,7 +84,7 @@
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Date</label> 
-                    <p-calendar appendTo="body" [(ngModel)]="this.bookingDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar>
+                    <p-calendar appendTo="body" [(ngModel)]="selectedResourceDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar>
                 </div>
                 <div class="flex-half-container">
                     <label>Time Slot</label> 

@@ -21,23 +21,19 @@ public class BookingResource {
     return new ResponseEntity<>(bookingService.findAll(), HttpStatus.OK);
   }
 
-//  @GetMapping("/getBookingsByUser")
-//  public ResponseEntity<?> getBookingsByUser(String employeeId) {
-//    return new ResponseEntity<>(bookingService.getBookingsByUser(employeeId), HttpStatus.OK);
-//  }
+  @GetMapping("/findById/{id}")
+  public ResponseEntity<?> findById(@PathVariable Long id) {
+    return new ResponseEntity<>(bookingService.findById(id), HttpStatus.OK);
+  }
 
   @GetMapping("/getBookingsByUser/{employeeId}")
   public ResponseEntity<?> getBookingsByUser(@PathVariable String employeeId) {
     return new ResponseEntity<>(bookingService.getBookingsByUser(employeeId), HttpStatus.OK);
   }
 
-  @GetMapping("/findById/{id}")
-  public ResponseEntity<?> findById(@PathVariable Long id) {
-    return new ResponseEntity<>(bookingService.findById(id), HttpStatus.OK);
-  }
-
   @PostMapping("/updateBooking/")
   public ResponseEntity<?> getBookingsByUser(@RequestBody BookingDTO bookingDTO) {
-    return new ResponseEntity<>(bookingService.updateBookingByUser(bookingDTO), HttpStatus.OK);
+    bookingService.updateBooking(bookingDTO);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
