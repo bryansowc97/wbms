@@ -1,27 +1,43 @@
-version: "3.0"
+version: "3"
 services:
   frontend:
     build: 
       dockerfile: Dockerfile
       context: ./
+    container_name: frontend
+    depends_on:
+      - service-discovery
+      - booking
+      - workspace
     ports:
-      -"4200"
+      - "4200:4200"
+    image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
   service-discovery:
     build:
       dockerfile: Dockerfile
       context: ./service-discovery/docker
-    #ports:
-    #  -"8761"
+    container_name: service-discovery
+    ports:
+      - "8761:8761"
+    image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery
   booking-service:
     build: 
       dockerfile: Dockerfile
       context: ./booking-service/docker
-    #ports:
-    #  -"8081"
+    container_name: booking
+    depends_on:
+      - service-discovery
+    ports:
+      - "8081:8081"
+    image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking
   workspace-service:
     build: 
       dockerfile: Dockerfile
       context: ./workspace-service/docker
-    #ports:
-    #  -"8082"
+    container_name: workspace
+    depends_on:
+      - service-discovery
+    ports:
+      - "8082:8082"
+    image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace
 

@@ -45,20 +45,20 @@ phases:
       - cd ./service-discovery
       - pwd
       - mvn package
-      - docker build -t wbms-service-discovery -f DockerFile .
+      - docker build -t wbms-service-discovery -f Dockerfile .
 
       - echo Building workspace service...
       - cd ../workspace
       - pwd
       - mvn package
-      - docker build -t wbms-workspace-service -f DockerFile .
+      - docker build -t wbms-workspace-service -f Dockerfile .
 
       - echo Building booking service...
       - cd ../booking
       - pwd
       - mvn package
-      - docker build -t wbms-booking-service -f DockerFile .
-      
+      - docker build -t wbms-booking-service -f Dockerfile .
+
       - echo Backend services build completed...
       - echo Docker images build completed...
 
