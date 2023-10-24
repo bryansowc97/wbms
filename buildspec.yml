@@ -42,7 +42,7 @@ phases:
       - echo Building backend...
       - pwd # print current directory
       - ls -l # list all contents in the directory
-      - cd wbms/service-discovery/docker
+      - cd service-discovery/docker
       - docker build -t wbms-service-discovery-docker:service-discovery-docker .
       - cd ../workspace
       - docker build -t wbms-workspace-docker:workspace-docker ./docker
