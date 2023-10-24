@@ -247,6 +247,14 @@ export class BookingDashboardComponent implements OnInit {
     return event === this.bookingStatusEnum['B'] ? 'success':'danger';
   }
 
+  viewBooking(mode:string, event: any){
+    const queryParams = {
+      mode: mode,
+      id: event
+    }
+    this.router.navigate(['/booking'], { queryParams });
+  }
+
   deleteBooking(event: Booking) {
     this.confirmationService.confirm({
         accept: () => {

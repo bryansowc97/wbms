@@ -81,7 +81,7 @@
                     <td>
                         <span class="flex-display p-buttonset">
                             <!-- <p-button class="buttonSet" icon="pi pi-pencil" [routerLink]="['/booking']" [queryParams]="{mode:'edit'}"></p-button> -->
-                            <p-button class="buttonSet" icon="pi pi-eye" [routerLink]="['/booking']" [queryParams]="{mode:'view'}"></p-button>
+                            <p-button class="buttonSet" icon="pi pi-eye" (onClick)="viewBooking('View',booking.id)"></p-button>
                             <p-button class="buttonSet" icon="pi pi-trash" (onClick)="deleteBooking(booking.emp_id)"></p-button>
                         </span>
                     </td>

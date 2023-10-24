@@ -66,6 +66,7 @@ export class EditBookingComponent {
         
         
         this.bookingService.findById(this.id).subscribe( booked => {
+          console.log('bookingDTL',booked);  
           this.bookingDTL = booked;
           this.workspaceService.getWorkspaceById(booked.rescId).subscribe(r => {
             this.bookingDTL.facilityDTO = r;
