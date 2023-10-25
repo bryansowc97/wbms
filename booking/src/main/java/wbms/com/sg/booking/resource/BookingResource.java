@@ -9,6 +9,8 @@ import wbms.com.sg.booking.dto.ComUserDTO;
 import wbms.com.sg.booking.service.BookingService;
 
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin
@@ -42,5 +44,10 @@ public class BookingResource {
   @PostMapping("/getBookingsByIds")
   public ResponseEntity<?> getBookingsByIds(@RequestBody List<Long> idList) {
     return new ResponseEntity<>(bookingService.getBookingsByIds(idList), HttpStatus.OK);
+  }
+
+  @GetMapping("/findByRescId/{rescId}/{date}")
+  public ResponseEntity<?> getBookingsByIds(@PathVariable Long rescId, @PathVariable LocalDate date) {
+    return new ResponseEntity<>(bookingService.findByRescId(rescId,date), HttpStatus.OK);
   }
 }

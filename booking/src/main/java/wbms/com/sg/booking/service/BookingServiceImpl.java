@@ -11,6 +11,7 @@ import wbms.com.sg.booking.entity.Booking;
 import wbms.com.sg.booking.repository.BookingRepository;
 
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,10 @@ public class BookingServiceImpl implements BookingService{
 
   public List<Booking> getBookingsByUser(String employeeId) {
     return bookingRepository.findByEmployeeId(employeeId);
+  }
+
+  public List<Booking> findByRescId(Long rescId, LocalDate date){
+    return bookingRepository.findByRescId(rescId, date);
   }
 
   public Booking findById(Long id){

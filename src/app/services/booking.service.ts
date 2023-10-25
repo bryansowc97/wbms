@@ -36,4 +36,8 @@ export class BookingService {
     getBookingsByIds(idList: number[]): Observable<any[]> {
         return this.http.post<any[]>(`${this.apiUrl}/getBookingsByIds`, idList);
     }
+
+    findByRescId(rescId:any, date:any): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/findByRescId/${rescId}/${date}`);
+    }
 }
