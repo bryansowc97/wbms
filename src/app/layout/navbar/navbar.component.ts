@@ -41,40 +41,56 @@ export class NavbarComponent {
     async ngOnInit(): Promise<void>{
       try {
         let userGrp = await this.cognitoService.getCurrentUserGroups(); 
-        this.items.push(
-          {
-              label: 'Home',
-              icon: 'pi pi-home',
-              routerLink: '/home'
-          },
-          {
-              label: 'Workspace',
-              icon: 'pi pi-briefcase',
-              items:[
-                {
-                  label: 'Dashboard',
-                  routerLink: '/workspaceDashboard'
-                },
-                {
-                  label: 'Create Workspace',
-                  routerLink: '/createWorkspace'
-                }
-              ]
-          },            
-          {
-              label: 'Booking',
-              icon: 'pi pi-calendar-plus',
-              routerLink: '/bookingDashboard'
-          },
-        );
         if (userGrp && userGrp.length > 0 && userGrp[0] == 'admin') {
           this.items.push(
+            {
+                label: 'Home',
+                icon: 'pi pi-home',
+                routerLink: '/home'
+            },
+            {
+                label: 'Workspace',
+                icon: 'pi pi-briefcase',
+                items:[
+                  {
+                    label: 'Dashboard',
+                    routerLink: '/workspaceDashboard'
+                  },
+                  {
+                    label: 'Create Workspace',
+                    routerLink: '/createWorkspace'
+                  }
+                ]
+            },            
+            {
+                label: 'Booking',
+                icon: 'pi pi-calendar-plus',
+                routerLink: '/bookingDashboard'
+            },
             {
               label: 'Manage User',
               icon: 'pi pi-users',
               routerLink: '/profileDashboard'
-          }
-          )
+            }
+          );
+        } else {
+          this.items.push(
+            {
+                label: 'Home',
+                icon: 'pi pi-home',
+                routerLink: '/home'
+            },
+            {
+                label: 'Workspace',
+                icon: 'pi pi-briefcase',
+                routerLink: '/workspaceDashboard'
+            },            
+            {
+                label: 'Booking',
+                icon: 'pi pi-calendar-plus',
+                routerLink: '/bookingDashboard'
+            }
+          );
         }
         this.isLoading = false;
       } catch (error) {
