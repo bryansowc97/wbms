@@ -5,6 +5,8 @@ export interface BookingDtlDTO extends Booking{
     facilityDTO: NFacilitySeat;
     userDTO: IUser;
     employeeName: any;
+    date : Date;
+    timeSlot: string;
 }
 
 

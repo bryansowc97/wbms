@@ -6,11 +6,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CognitoService, IUser } from '../cognito.service';
 import { BookingService } from '../services/booking.service';
 import { WorkspaceService } from '../services/workspace.service';
-import { FacilitySeat, NFacilitySeat } from "../workspace/workspace.model";
-import { formatDate } from '@angular/common';
 import { Auth } from 'aws-amplify';
 import { Table } from 'primeng/table';
-import * as FusionCharts from 'fusioncharts';
+import { parse } from "date-fns";
 
 // const data = {
 //   chart: {
@@ -183,7 +181,6 @@ export class BookingDashboardComponent implements OnInit {
             if (this.isAdmin) {
               this.bookingService.findAll().subscribe(resv => {
                 this.bookingDtlDTOList = resv;
-                
                 this.setupBookingDtlDtoList();                
                 this.isLoading = false;
               });
@@ -191,6 +188,7 @@ export class BookingDashboardComponent implements OnInit {
             else {
               this.bookingService.getBookingsByUser(this.user.username).subscribe(resv => {
                 this.bookingDtlDTOList = resv;
+                // resv.filter(r => this.currdate < r.dteStart);
                 this.setupBookingDtlDtoList();                
                 this.isLoading = false;
               });
@@ -206,7 +204,7 @@ export class BookingDashboardComponent implements OnInit {
 
   public setupBookingDtlDtoList(): void {
     this.bookingDtlDTOList.forEach(res => {
-      
+      res.date = new Date(res.dteStart);
       this.cognitoService.findUserAndAttributesByUsername(res.employeeId).then(
         usr => {
           usr.UserAttributes.forEach(user => {
@@ -222,8 +220,6 @@ export class BookingDashboardComponent implements OnInit {
       }
     });
   }
-
-  customSort(event:any):void{}
   
   clear(table: Table):void{
     this.search_key = "";
@@ -279,6 +275,8 @@ export class BookingDashboardComponent implements OnInit {
         }
     });
   }
+
+  
 
   // updateBooking(): void{
   //   let booking: Booking = {

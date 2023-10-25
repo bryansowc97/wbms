@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="flex-display">
     <div class="dtls-display">
-      <p-card class="card">
+      <p-card class="card" >
         <h3>Create New User</h3>
           <div class ="dtls-container">
             <div class="flex-container">
@@ -54,50 +54,59 @@
           <div class ="dtls-container">
             <div class="flex-container">
               <label>Password</label>
-              <input
+              <div class="row">
+                <input
                 pInputText
                 [type]="user.showPassword ? 'text' : 'password'"
                 id="password"
                 name="password"
                 #password="ngModel"
                 [(ngModel)]="user.password"
-                class="input-field">
-              <span><button
-                type="button"
-                class="btn btn-outline-secondary"
-                (click)="user.showPassword = !user.showPassword">
-                    <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
-                  </button></span>
+                class="input-field"
+                style="width: 80%;"
+                >
+              <span>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="user.showPassword = !user.showPassword">
+                  <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
+                </button>
+              </span>
+              </div>
             </div>
             <div class="flex-container">
               <label>Confirm Password</label>
-              <input
+              <div class="row">
+                <input
                 pInputText
                 [type]="user.showPassword ? 'text' : 'password'"
                 id="confirmPassword"
                 name="confirmPassword"
                 #password="ngModel"
                 [(ngModel)]="user.confirmPassword"
-                class="input-field">
-              <span><button
-                type="button"
-                class="btn btn-outline-secondary"
-                (click)="user.showPassword = !user.showPassword">
-                    <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
-                  </button></span>
+                class="input-field"
+                style="width: 80%;">
+              <span>
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="user.showPassword = !user.showPassword">
+                  <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
+                </button>
+              </span>
+              </div>
             </div>
           </div>
-          <div class="row">
+          <div class ="dtls-container" style="justify-content: right;">
             <div class="col d-grid">
-              <button
-                type="button"
+              <p-button
                 (click)="signUp()"
                 class="btn btn-sm btn-success"
-                [disabled]="loading"
-                [style]="{'width':'100%'}" >
+                [disabled]="loading">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="loading"></span>
                 Sign up
-              </button>
+              </p-button>
             </div>
           </div>
       </p-card>
