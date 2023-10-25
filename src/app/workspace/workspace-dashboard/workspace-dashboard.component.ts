@@ -58,9 +58,6 @@ export class WorkspaceDashboardComponent {
 
   bookingRecords : NFacilityBooking[]=[]
 
-  openDeleteWorkspaceDialog: boolean = false;
-  openCreateBookgDialog: boolean = false;
-
   selectedSeating: NFacilitySeat[] = []
 
   // seatingposGrid: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
@@ -218,8 +215,6 @@ export class WorkspaceDashboardComponent {
   }
 
   createBooking(){
-    this.openCreateBookgDialog = true;
-    this.openDeleteWorkspaceDialog = false;
     
     this.newSelectBookingDTL = {
       id: undefined,
@@ -360,22 +355,14 @@ export class WorkspaceDashboardComponent {
       this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: 'Workspace cannot be deleted because there are existing bookings.' });  
       return;
     }
-    this.openCreateBookgDialog = false;
-    this.openDeleteWorkspaceDialog = true;
-    this.confirmationService.confirm({
-      accept: () => {
-        let idListToDelete = this.selectedSeating.map((seat:NFacilitySeat) => seat.id);
-        this.workspaceService.delete(idListToDelete).subscribe((res:any) => {
-          this.openDeleteWorkspaceDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });  
-          this.getSelectedResType({value: this.selectedResourceDTL.gp})
-        },
-        (err: any) => {
-          
-          this.openDeleteWorkspaceDialog = false;
-          this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: 'Unexpected error occurred.' });
-        
-        })}
+    let idListToDelete = this.selectedSeating.map((seat:NFacilitySeat) => seat.id);
+    this.workspaceService.delete(idListToDelete).subscribe((res:any) => {
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Workspace has been deleted.' });  
+      this.getSelectedResType({value: this.selectedResourceDTL.gp})
+    },
+    (err: any) => {
+      this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: 'Unexpected error occurred.' });
+    
     });
   }
 

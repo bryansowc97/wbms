@@ -1,6 +1,6 @@
 <ic-navbar></ic-navbar>
 <form [formGroup]="createWorkspace">
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isAdmin">
     <div class="row flex-display">
         <div class="col map-display">
             <p-card class="card resourceMap">

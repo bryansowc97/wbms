@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { catchError, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { Auth } from 'aws-amplify';
+import { CognitoService, IUser } from 'src/app/cognito.service';
 
 @Component({
   selector: 'app-workspace',
@@ -22,7 +24,8 @@ export class CreateWorkspaceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private workspaceService: WorkspaceService
+    private workspaceService: WorkspaceService,
+    private cognitoService: CognitoService
   ){
     let details = this.router.getCurrentNavigation()?.extras.state;
     if (details) {
@@ -65,10 +68,19 @@ export class CreateWorkspaceComponent implements OnInit {
   mode: string = "";
   idListToDelete: number[]=[];
 
+  isAdmin: boolean = false;
+
   // seatingPos: number[] = [17, 18, 19, 32, 33, 34, 23, 24, 22, 38, 39, 37, 27, 42];
   // seatingRotation: string[] = ['D','D','D','U','U','U','D','D','D','U','U','U', 'D', 'U'];
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.cognitoService.getCurrentUserGroups()
+      .then((userGrp: any) => {
+        if(userGrp && userGrp.find(o => o === 'admin')) {
+          this.isAdmin = true;
+        }
+      });
+
     for (let i=0;i<this.cols;i++) { 
       for (let i=0;i<this.rows;i++) {
         this.colsArr.push(0)
