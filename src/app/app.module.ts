@@ -128,7 +128,7 @@ FusionChartsModule.fcRoot(FusionCharts, charts, FusionTheme);
     ConfirmDialogModule,
     ToggleButtonModule,
     MatGridListModule,
-    ContextMenuModule
+    ContextMenuModule,
   ],
   providers: [
     // SafePipe

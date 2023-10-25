@@ -39,11 +39,9 @@
             [paginator]="true"
             [rows]="15"
             [showCurrentPageReport]="true"
-            [tableStyle]="{ 'min-width': '60rem' }"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             [globalFilterFields]="['employeeId', 'facilityDTO.name']"
-            (sortFunction)="customSort($event)" 
-            [customSort]="true" 
+            sortField="date" [sortOrder]="-1"
             [tableStyle]="{'min-width': '60rem'}"
         >
             
@@ -61,12 +59,12 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th pSortableColumn="Ws_code" style="width:15%">Facility Name <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="Emp_id" style="width:15%">Employee Id <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="Emp_name" style="width:20%">Employee Names <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="time" style="width:15%">Time Slot <p-sortIcon field="code"></p-sortIcon></th>
-                    <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="code"></p-sortIcon></th>
+                    <th pSortableColumn="name" style="width:15%">Facility Name <p-sortIcon field="name"></p-sortIcon></th>
+                    <th pSortableColumn="employeeId" style="width:15%">Employee Id <p-sortIcon field="employeeId"></p-sortIcon></th>
+                    <th pSortableColumn="employeeName" style="width:20%">Employee Names <p-sortIcon field="employeeName"></p-sortIcon></th>
+                    <th pSortableColumn="date" style="width:10%">Date <p-sortIcon field="date"></p-sortIcon></th>
+                    <th pSortableColumn="time" style="width:15%">Time Slot <p-sortIcon field="time"></p-sortIcon></th>
+                    <th pSortableColumn="status" style="width:15%">Status <p-sortIcon field="status"></p-sortIcon></th>
                     <th style="width:10%">Action </th>
                 </tr>
             </ng-template>
@@ -75,7 +73,7 @@
                     <td>{{ booking.facilityDTO.name }}</td>
                     <td>{{ booking.employeeId }}</td>
                     <td>{{ booking.employeeName }}</td>
-                    <td>{{ booking.dteStart | slice:0:10 }}</td>
+                    <td>{{ booking.date | date:'yyyy-MM-dd' }}</td>
                     <td>{{ booking.dteStart | slice:11:16 }} - {{ booking.dteEnd | slice:11:16 }}</td>
                     <td><p-tag class="status-tag" [value]="bookingStatusEnum[booking.status]" [severity]="getSeverity(bookingStatusEnum[booking.status])"></p-tag></td>
                     <td>

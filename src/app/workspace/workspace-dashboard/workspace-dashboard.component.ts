@@ -124,8 +124,11 @@ export class WorkspaceDashboardComponent {
 
   getSelectedTimeSlot(event:any){
     this.selectedResourceDTL.timeSlot = event.value;
-    let startDte = new Date(this.selectedResourceDTL.date.toISOString().slice(0, 10) +"T"+ this.selectedResourceDTL.timeSlot.slice(0,5));
-    let endDte = new Date(this.selectedResourceDTL.date.toISOString().slice(0, 10) +"T"+ this.selectedResourceDTL.timeSlot.slice(8,13));
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+    let date = (new Date(this.selectedResourceDTL.date - tzoffset)).toISOString().slice(0,10);
+
+    let startDte = date +"T"+ this.selectedResourceDTL.timeSlot.slice(0,5);
+    let endDte = date +"T"+ this.selectedResourceDTL.timeSlot.slice(8,13);
     this.newSelectBookingDTL.dteStart = startDte;
     this.newSelectBookingDTL.dteEnd = endDte;
   }
