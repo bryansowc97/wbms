@@ -19,6 +19,8 @@ phases:
       - echo Checking Maven and Java Version...
       - java -version
       - mvn -version
+      - echo AWS authentication
+      - aws ecr get-bryan-P@ssw0rd --region ap-southeast-1 | docker login --username AWS --password-stdin 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com
   pre_build:
     commands:
       ## compile and build .jar files
@@ -36,32 +38,30 @@ phases:
       - echo Building docker images...
       - echo Building frontend...
       - cd ..
-      - docker build -t wbms-frontend:wbms-frontend-docker .
-      - pwd
+      - docker build -t wbms-frontend .
+      - docker tag wbms-frontend:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
       - echo Frontend build completed...
       #build services
       - echo Building service discovery...
       - ls -l # list all contents in the directory
       - cd ./service-discovery
-      - pwd
       - mvn package
-      - docker build -t wbms-service-discovery -f Dockerfile .
-
+      - docker build -t wbms-service-discovery-docker -f Dockerfile .
+      - docker tag wbms-service-discovery-docker:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
       - echo Building workspace service...
       - cd ../workspace
       - pwd
       - mvn package
-      - docker build -t wbms-workspace-service -f Dockerfile .
-
+      - docker build -t wbms-workspace-docker -f Dockerfile .
+      - docker tag wbms-workspace-docker:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
       - echo Building booking service...
       - cd ../booking
       - pwd
-      - mvn package
-      - docker build -t wbms-booking-service -f Dockerfile .
-
+      - mvn package 
+      - docker build -t wbms-booking-docker -f Dockerfile .
+      - docker tag wbms-booking-docker:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
       - echo Backend services build completed...
       - echo Docker images build completed...
-
       #- mvn package -f service-discovery/pom.xml
       #- mvn package -f workspace/pom.xml
       #- mvn package -f booking/pom.xml
@@ -69,12 +69,16 @@ phases:
     commands:
       # - echo Pushing docker images...d
       # - docker push wbms-frontend:wbms-frontend-docker .
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/wbms-frontend:latest
       # - cd service-discovery
       # - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/wbms-service-discovery:latest
       # - cd ../workspace
       # - docker push wbms-workspace-docker:workspace-docker ./docker
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/wbms-workspace:latest
       # - cd ../booking
       # - docker push wbms-booking-docker:booking-docker ./docker
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/wbms-booking:latest
       # - echo "Docker images push completed."
 
 artifacts:
