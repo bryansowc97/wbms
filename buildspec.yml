@@ -39,8 +39,8 @@ phases:
       - echo Building frontend...
       - cd ..
       - docker build -t wbms-frontend .
-      - docker tag frontend:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
+      - docker tag frontend 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
       - echo Frontend build completed...
       #build services
       - echo Building service discovery...
@@ -48,20 +48,20 @@ phases:
       - cd ./service-discovery
       - mvn package
       - docker build -t wbms-service-discovery-docker -f Dockerfile .
-      - docker tag service-discovery:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
+      - docker tag service-discovery 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery
       - echo Building workspace service...
       - cd ../workspace
       - mvn package
       - docker build -t wbms-workspace-docker -f Dockerfile .
-      - docker tag workspace:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
+      - docker tag workspace 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace
       - echo Building booking service...
       - cd ../booking
       - mvn package 
       - docker build -t wbms-booking-docker -f Dockerfile .
-      - docker tag booking:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
+      - docker tag booking 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking
       - echo Backend services build completed...
       - echo Docker images build completed...
       #- mvn package -f service-discovery/pom.xml
