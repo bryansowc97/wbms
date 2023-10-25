@@ -40,6 +40,7 @@ phases:
       - cd ..
       - docker build -t wbms-frontend .
       - docker tag frontend:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
       - echo Frontend build completed...
       #build services
       - echo Building service discovery...
@@ -48,16 +49,19 @@ phases:
       - mvn package
       - docker build -t wbms-service-discovery-docker -f Dockerfile .
       - docker tag service-discovery:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
       - echo Building workspace service...
       - cd ../workspace
       - mvn package
       - docker build -t wbms-workspace-docker -f Dockerfile .
       - docker tag workspace:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
       - echo Building booking service...
       - cd ../booking
       - mvn package 
       - docker build -t wbms-booking-docker -f Dockerfile .
       - docker tag booking:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
+      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
       - echo Backend services build completed...
       - echo Docker images build completed...
       #- mvn package -f service-discovery/pom.xml
@@ -68,17 +72,17 @@ phases:
       - echo Pushing docker images...d
       # - docker push wbms-frontend:wbms-frontend-docker .
       - cd ..
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
+      # - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
       # - cd service-discovery
       # - docker push wbms-service-discovery-docker:service-discovery-docker ./docker
       - cd ./service-discovery
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
+      # - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
       - cd ../workspace
       # - docker push wbms-workspace-docker:workspace-docker ./docker
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
+      # - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace:latest
       - cd ../booking
       # - docker push wbms-booking-docker:booking-docker ./docker
-      - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
+      # - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking:latest
       - echo "Docker images push completed."
 
 artifacts:
