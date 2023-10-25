@@ -83,7 +83,7 @@
             <div class="row" style="display: flex;">
                 <div class="flex-half-container">
                     <label>Date</label> 
-                    <p-calendar appendTo="body" [(ngModel)]="selectedResourceDTL.date" [minDate]="currdate" [showIcon]="true"></p-calendar>
+                    <p-calendar appendTo="body" [(ngModel)]="selectedResourceDTL.date" [minDate]="currdate" [showIcon]="true" (onSelect)="getTimeSlot()" (ngModelChange)="getTimeSlot()"></p-calendar>
                 </div>
                 <div class="flex-half-container">
                     <label>Time Slot</label> 

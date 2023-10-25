@@ -31,24 +31,13 @@ export class WorkspaceDashboardComponent {
   showHover: boolean = false;
   bookingDate:any;
   currdate = new Date();
-  timeSlot:any[] = [
-    '08:00 - 09:00',
-    '09:00 - 10:00',
-    '10:00 - 11:00',
-    '11:00 - 12:00',
-    '12:00 - 13:00',
-    '13:00 - 14:00',
-    '14:00 - 15:00',
-    '15:00 - 16:00',
-    '16:00 - 17:00',
-    '17:00 - 18:00',
-    '18:00 - 19:00'
-  ];
+  timeSlot=[];
 
   user: IUser;
   userGroup: any[];
   isAdmin: boolean = false;
   curUser: string ;
+  date: any;
   newSelectBookingDTL: Booking;
   showBook: boolean = false;
   selectedResourceDTL:NFacilityBooking = {} as NFacilityBooking;
@@ -121,11 +110,10 @@ export class WorkspaceDashboardComponent {
 
   getSelectedTimeSlot(event:any){
     this.selectedResourceDTL.timeSlot = event.value;
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000; 
-    let date = (new Date(this.selectedResourceDTL.date - tzoffset)).toISOString().slice(0,10);
-
-    let startDte = date +"T"+ this.selectedResourceDTL.timeSlot.slice(0,5);
-    let endDte = date +"T"+ this.selectedResourceDTL.timeSlot.slice(8,13);
+    
+    let startDte = this.date +"T"+ this.selectedResourceDTL.timeSlot.slice(0,5);
+    let endDte = this.date +"T"+ this.selectedResourceDTL.timeSlot.slice(8,13);
+    console.log('startdte', startDte);
     this.newSelectBookingDTL.dteStart = startDte;
     this.newSelectBookingDTL.dteEnd = endDte;
   }
@@ -142,6 +130,7 @@ export class WorkspaceDashboardComponent {
     this.selectedResourceDTL!.subGp = event.value;
     this.workspaceService.getWorkspaceByGpAndSubGp(this.selectedResourceDTL!.gp, event.value).subscribe((res: any) => {
       this.selectedSeating = res.body;
+      console.log('selectedSeating',this.selectedSeating);
       this.displaySltSeating(res.body);
       this.showHover = true;
 
@@ -215,7 +204,6 @@ export class WorkspaceDashboardComponent {
   }
 
   createBooking(){
-    
     this.newSelectBookingDTL = {
       id: undefined,
       employeeId: this.curUser,
@@ -248,8 +236,6 @@ export class WorkspaceDashboardComponent {
 
   submitBooking(event: Booking){
     
-    console.log('newSelectBookingDTL',this.newSelectBookingDTL);
-
     this.bookingService.updateBooking(this.newSelectBookingDTL).subscribe((res:any) => {
       let a = res;
       console.log(a);
@@ -274,6 +260,51 @@ export class WorkspaceDashboardComponent {
     //     sticky: true,
     //   });
     // });
+  }
+
+  getTimeSlot(){
+    let temp = [
+      '08:00 - 09:00',
+      '09:00 - 10:00',
+      '10:00 - 11:00',
+      '11:00 - 12:00',
+      '12:00 - 13:00',
+      '13:00 - 14:00',
+      '14:00 - 15:00',
+      '15:00 - 16:00',
+      '16:00 - 17:00',
+      '17:00 - 18:00',
+      '18:00 - 19:00'
+    ];
+
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000; 
+    this.date = (new Date(this.selectedResourceDTL.date - tzoffset)).toISOString().slice(0,10);    
+    console.log('date', this.date);
+    this.bookingService.findByRescId(this.newSelectBookingDTL.rescId, this.date).subscribe( res => {
+  
+      let actBookedList = res.map(r => r.dteStart.slice(11,16).toString());
+
+      console.log('timeslot check ',actBookedList);
+
+      temp.forEach(t => {
+        actBookedList.forEach(c => {
+          if(t.slice(0,5).includes(c)){
+            delete temp[temp.indexOf(t)];
+          }
+        })
+
+        this.timeSlot = temp.filter(
+          function (el) { 
+            return el != null;
+          }
+        );
+        
+        
+      });
+
+      console.log('tempfil', this.timeSlot);
+     
+    });
   }
 
   async ngOnInit(): Promise<void> {
