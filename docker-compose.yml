@@ -5,14 +5,14 @@ services:
     ports:
       - "8761:8761"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery
-  booking-service:
+  booking:
     container_name: booking
     depends_on:
       - service-discovery
     ports:
       - "8081:8081"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking
-  workspace-service:
+  workspace:
     container_name: workspace
     depends_on:
       - service-discovery
