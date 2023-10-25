@@ -20,7 +20,7 @@ phases:
       - java -version
       - mvn -version
       - echo AWS authentication
-      - aws ecr get-login-password --region ap-southeast-1 | docker login --bryan AWS --P@ssw0rd-stdin 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com
   pre_build:
     commands:
       ## compile and build .jar files
