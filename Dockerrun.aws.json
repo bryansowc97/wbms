@@ -1,0 +1,25 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "frontend",
+        "image": "952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend",
+        "essential": true
+      },
+      {
+        "name": "service-discovery",
+        "image": "952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery",
+        "essential": true
+      },
+      {
+        "name": "booking",
+        "image": "952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking",
+        "essential": true
+      },
+      {
+        "name": "workspace",
+        "image": "952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace",
+        "essential": true
+      }
+    ]
+}
