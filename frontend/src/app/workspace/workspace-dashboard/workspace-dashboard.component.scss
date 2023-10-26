@@ -1,0 +1,90 @@
+.map-display{
+    width: 80%;
+    margin: 0.5%;
+}
+
+.dtl-display{
+    width: 20%;
+    margin: 0.5%;
+}
+
+:host ::ng-deep{
+    .resourceMap .p-card .p-card-content {
+        padding: 1.25rem 0;
+        text-align: center;
+    }
+}
+
+:host ::ng-deep{
+    .type .p-dropdown {
+        width: 20%;
+    }
+}
+
+
+.center{
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.float{
+    float: right;
+}
+
+.card{
+    margin-bottom: unset;
+    margin-top: unset;
+ } 
+
+ 
+.input-field{
+    margin-bottom: 5%;
+  }
+
+.mat-grid-tile {
+    background: white;
+    border: solid 1px lightgray;
+}
+
+.mat-grid-tile:hover {
+    background: whitesmoke;
+}
+
+
+:host::ng-deep{
+    .seatingButton .p-button{
+        background: transparent;
+    }
+}
+
+:host ::ng-deep .p-calendar {
+    position: relative;
+    display: inline-flex;
+    max-width: 100%;
+    height: 30px;
+}
+
+
+:host ::ng-deep .p-calendar .p-inputtext {
+    padding: 5px;
+    font-size: small;
+    padding-left: 10px;
+    width: 150px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 3%;
+}
+
+
+.flex-half-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-bottom: 3%;
+    margin-right: 3%;
+}
