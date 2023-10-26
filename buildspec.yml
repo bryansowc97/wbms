@@ -7,6 +7,7 @@ phases:
       java: corretto17
     commands:
       - echo Installing Maven-3.9.5...
+      - cd ./frontend
       - npm install -g @angular/cli
       - npm install
       - curl -L -o apache-maven-3.9.5-bin.tar.gz https://dlcdn.apache.org/maven/maven-3/3.9.5/binaries/apache-maven-3.9.5-bin.tar.gz
@@ -25,7 +26,7 @@ phases:
     commands:
       ## compile and build .jar files
       - echo Compile and build backend services..
-      - cd service-discovery
+      - cd ../service-discovery
       - mvn clean install -DskipTests
       - cd ../booking
       - mvn clean install -DskipTests
@@ -37,7 +38,7 @@ phases:
       #build frontend
       - echo Building docker images...
       - echo Building frontend...
-      - cd ..
+      - cd ../frontend
       - docker build -t frontend .
       - docker tag frontend:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
       - docker push 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend:latest
@@ -45,7 +46,7 @@ phases:
       #build services
       - echo Building service discovery...
       - ls -l # list all contents in the directory
-      - cd ./service-discovery
+      - cd ../service-discovery
       - mvn package
       - docker build -t service-discovery -f Dockerfile .
       - docker tag service-discovery:latest 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery:latest
@@ -87,7 +88,7 @@ phases:
 
 artifacts:
   files:
-    - ./dist/**/*  # Angular frontend build artifacts
+    - ./frontend/dist/**/*  # Angular frontend build artifacts
     - ./service-discovery/target/*.jar
     - ./workspace/target/*.jar
     - ./booking/target/*.jar
@@ -97,7 +98,7 @@ artifacts:
 #cache dependencies
 cache:
   paths:
-    - node_modules/**/*
+    - frontend/node_modules/**/*
     - service-discovery/.m2/repository/**/*
     - workspace/.m2/repository/**/*
     - booking/.m2/repository/**/*
