@@ -21,10 +21,10 @@ services:
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace
   frontend:
     container_name: frontend
-    depends_on:
-      - service-discovery
-      - booking
-      - workspace
+    #depends_on:
+    #  - service-discovery
+    #  - booking
+    #  - workspace
     ports:
       - "4200:4200"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
