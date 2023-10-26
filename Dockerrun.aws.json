@@ -4,7 +4,13 @@
       {
         "name": "frontend",
         "image": "952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend",
-        "essential": true
+        "essential": true,
+        "portMappings": [
+          {
+            "hostPort": 4200,
+            "containerPort": 4200
+          }
+        ]
       },
       {
         "name": "service-discovery",
