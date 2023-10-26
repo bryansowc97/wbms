@@ -194,8 +194,9 @@ export class WorkspaceDashboardComponent {
     seatDTL = this.selectedSeating.filter((seat:NFacilitySeat) => seat.posGrid===(seatIndex));
     this.selectedResourceDTL!.name = seatDTL[0].name;
     this.selectedResourceDTL!.id = seatDTL[0].id;
+    this.selectedResourceDTL!.status = seatDTL[0].status;
     
-    if(this.selectedResourceDTL.name !== undefined){
+    if(this.selectedResourceDTL.name !== undefined && this.selectedResourceDTL.status == 'A'){
       this.showBook=true;
     }else{
       this.showBook=false;
@@ -239,8 +240,11 @@ export class WorkspaceDashboardComponent {
     this.bookingService.updateBooking(this.newSelectBookingDTL).subscribe((res:any) => {
       let a = res;
       console.log(a);
-      
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been deleted.' });  
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Booking has been created.' }); 
+        let subgpCopy = this.selectedResourceDTL.subGp;
+        this.getSelectedResType({value: this.selectedResourceDTL.gp})
+        this.getSelectedResName({value: subgpCopy}) 
+        this.getTimeSlot();
       },
       (err: any) => {
         this.messageService.add({ severity: 'warn', summary: 'Unsuccessful', detail: err.title() });
