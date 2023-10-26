@@ -11,6 +11,7 @@
                      id="username"
                      name="username"
                      #username="ngModel"
+                     maxlength="8"
                      [(ngModel)]="user.username"
                      class="input-field"/>
             </div>
@@ -65,14 +66,9 @@
                 class="input-field"
                 style="width: 80%;"
                 >
-              <span>
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  (click)="user.showPassword = !user.showPassword">
-                  <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
-                </button>
-              </span>
+                <p-button class="btn-sm" icon="pi pi-eye" (onClick)="user.showPassword = !user.showPassword" *ngIf="!user.showPassword"></p-button>
+                <p-button class="btn-sm" icon="pi pi-eye-slash" (onClick)="user.showPassword = !user.showPassword" *ngIf="user.showPassword"></p-button>
+                      
               </div>
             </div>
             <div class="flex-container">
@@ -87,14 +83,8 @@
                 [(ngModel)]="user.confirmPassword"
                 class="input-field"
                 style="width: 80%;">
-              <span>
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  (click)="user.showPassword = !user.showPassword">
-                  <i class="bi" [ngClass]="{'bi-eye-fill': !user.showPassword, 'bi-eye-slash-fill': user.showPassword}"></i>
-                </button>
-              </span>
+                <p-button class="p-button-sm" icon="pi pi-eye" (onClick)="user.showPassword = !user.showPassword" *ngIf="!user.showPassword"></p-button>
+                <p-button class="p-button-sm" icon="pi pi-eye-slash" (onClick)="user.showPassword = !user.showPassword" *ngIf="user.showPassword"></p-button>
               </div>
             </div>
           </div>
