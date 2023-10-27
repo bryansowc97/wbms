@@ -26,6 +26,6 @@ services:
     #  - booking
     #  - workspace
     ports:
-      - "4200:4200"
+      - "80:4200"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
 
