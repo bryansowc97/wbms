@@ -10,6 +10,7 @@ export const environment = {
   awsConfig:  { 
     region: 'ap-southeast-1', 
     identitiyPoolId: 'ap-southeast-1:bd9a5a4f-10e2-4f15-98ce-ba67670e1c1d', 
-  }
+  },
+  disableHostCheck: true,
 }
 
