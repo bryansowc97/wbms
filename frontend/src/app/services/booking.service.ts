@@ -3,14 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Booking } from '../booking/booking.model';
 import { RequestService } from './request.service';
+import { environment } from 'src/environment';
 
 @Injectable()
 
 export class BookingService {
 
-    apiUrl = 'http://localhost:8081/api/booking';
-    bookingApi = 'booking'
-    
+    apiUrl: any = environment.api.booking;
+
   constructor(
         private http: HttpClient,
         private requestService: RequestService
@@ -30,7 +30,7 @@ export class BookingService {
     }
     
     updateBooking(booking: Booking): Observable<any[]> {
-        return this.requestService.create(`/updateBooking/`, this.bookingApi, booking);
+        return this.requestService.create(`/updateBooking/`, this.apiUrl, booking);
     }  
 
     getBookingsByIds(idList: number[]): Observable<any[]> {

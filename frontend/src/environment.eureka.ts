@@ -1,7 +1,7 @@
 export const environment = {
   api: {
-    booking: 'http://booking-service/api/booking', 
-    workspace: 'http://workspace-service/api/workspace', 
+    booking: 'http://wbms-ly.ap-southeast-1.elasticbeanstalk.com:8081/api/workspace', // Base URL for local development
+    workspace: 'http://wbms-ly.ap-southeast-1.elasticbeanstalk.com:8082/api/workspace', // Base URL for local development
   },
   cognito: {
     userPoolId: 'ap-southeast-1_Djqfxom8g',
