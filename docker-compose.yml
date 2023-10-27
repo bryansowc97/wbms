@@ -3,21 +3,21 @@ services:
   service-discovery:
     container_name: service-discovery
     ports:
-      - "8761:8761"
+      - "80:8761"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/service-discovery
   booking:
     container_name: booking
     depends_on:
       - service-discovery
     ports:
-      - "8081:8081"
+      - "80:8081"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/booking
   workspace:
     container_name: workspace
     depends_on:
       - service-discovery
     ports:
-      - "8082:8082"
+      - "80:8082"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/workspace
   frontend:
     container_name: frontend
@@ -26,6 +26,6 @@ services:
     #  - booking
     #  - workspace
     ports:
-      - "80:4200"
+      - "80:80"
     image: 952359380490.dkr.ecr.ap-southeast-1.amazonaws.com/frontend
 

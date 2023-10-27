@@ -1,7 +1,10 @@
 FROM node:18
 WORKDIR /app
-COPY . .
+ENV NODE_OPTIONS="--max_old_space_size=8192"
+COPY package*.json ./
+RUN npm install -g @angular/cli
 RUN npm install
-RUN npm run build
-EXPOSE 4200
-CMD ["npm", "start"]
+COPY . .
+RUN ng build
+EXPOSE 80
+CMD ["ng", "serve", "--host", "0.0.0.0" , "--port", "80"]
