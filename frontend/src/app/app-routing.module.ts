@@ -22,10 +22,10 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  {
-    path: 'home',
-    component: HomeComponent
-  },
+  // {
+  //   path: 'home',
+  //   component: HomeComponent
+  // },
   {
     path: 'login',
     component: LoginComponent,

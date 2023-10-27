@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 
-                <p>Workspace map include meeting room & work desk</p>    
+                <p>Workspaces include meeting room & work desk</p>    
                 <mat-grid-list cols={{cols}} rowHeight="5em">
                     <mat-grid-tile *ngFor="let a of colsArr; let index = index" [style.opacity]="checkOpacity(index)">                   
                         <img src="{{getGridImg(colsArr[index])}}" height="60" [pTooltip]="getHover(index)" (click)="selectSeat(index)"/>

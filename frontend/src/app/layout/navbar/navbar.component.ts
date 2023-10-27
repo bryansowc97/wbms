@@ -43,11 +43,11 @@ export class NavbarComponent {
         let userGrp = await this.cognitoService.getCurrentUserGroups(); 
         if (userGrp && userGrp.length > 0 && userGrp[0] == 'admin') {
           this.items.push(
-            {
-                label: 'Home',
-                icon: 'pi pi-home',
-                routerLink: '/home'
-            },
+            // {
+            //     label: 'Home',
+            //     icon: 'pi pi-home',
+            //     routerLink: '/home'
+            // },
             {
                 label: 'Workspace',
                 icon: 'pi pi-briefcase',
@@ -75,11 +75,11 @@ export class NavbarComponent {
           );
         } else {
           this.items.push(
-            {
-                label: 'Home',
-                icon: 'pi pi-home',
-                routerLink: '/home'
-            },
+            // {
+            //     label: 'Home',
+            //     icon: 'pi pi-home',
+            //     routerLink: '/home'
+            // },
             {
                 label: 'Workspace',
                 icon: 'pi pi-briefcase',
