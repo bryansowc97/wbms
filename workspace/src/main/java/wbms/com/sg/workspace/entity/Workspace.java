@@ -2,9 +2,11 @@ package wbms.com.sg.workspace.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "workspace_resc")
-public class Workspace {
+public class Workspace implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
